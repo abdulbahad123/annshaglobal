@@ -11,11 +11,6 @@ server/node_modules/
 .env.production.local
 server/.env
 
-# Build outputs
-client/dist/
-dist/
-build/
-
 # Logs
 *.log
 npm-debug.log*
@@ -34,3 +29,4 @@ client.log
 *.sw?
 .DS_Store
 Thumbs.db
+
