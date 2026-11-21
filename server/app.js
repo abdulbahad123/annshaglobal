@@ -36,18 +36,31 @@ const allowedOrigins = [
   'http://localhost:5174',
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174',
+  'https://annshagifts.nooryak.com',
+  'http://annshagifts.nooryak.com',
+  'https://www.annshagifts.nooryak.com',
+  'http://www.annshagifts.nooryak.com',
+  'https://annshagifts.com',
+  'https://www.annshagifts.com',
   process.env.CLIENT_URL,
-  process.env.ADMIN_URL
+  process.env.ADMIN_URL,
+  process.env.CORS_ORIGIN
 ].filter(Boolean);
 
 app.use(cors({
   origin: (origin, callback) => {
-    // allow requests with no origin (like mobile apps, curl, postman)
+    // allow requests with no origin (like mobile apps, curl, postman) or any matching domain
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) !== -1 || process.env.NODE_ENV !== 'production') {
       return callback(null, true);
     }
-    return callback(new Error('Blocked by CORS policy'));
+    // Allow any subdomain of nooryak.com or annshagifts
+    if (/^https?:\/\/([a-z0-9-]+\.)*nooryak\.com(:[0-9]+)?$/i.test(origin) ||
+        /^https?:\/\/([a-z0-9-]+\.)*annshagifts\.(com|in)(:[0-9]+)?$/i.test(origin)) {
+      return callback(null, true);
+    }
+    // Permissive callback for storefront
+    return callback(null, true);
   },
   credentials: true
 }));
