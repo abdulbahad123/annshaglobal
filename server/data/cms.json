@@ -1,0 +1,250 @@
+{
+  "key": "homepage_config",
+  "announcementBar": {
+    "enabled": true,
+    "shippingText": "Free Shipping on Orders Above $50",
+    "returnsText": "Easy Returns Within 7 Days",
+    "supportText": "24/7 Customer Support",
+    "socialLinks": {
+      "facebook": "https://facebook.com",
+      "instagram": "https://instagram.com",
+      "youtube": "https://youtube.com",
+      "pinterest": "https://pinterest.com"
+    }
+  },
+  "heroBanners": [
+    {
+      "tagline": "PREMIUM COLLECTION",
+      "title": "Care, Style and Home,\nAll in One Place.",
+      "subtitle": "Discover Premium Products with Unbeatable Deals.",
+      "buttonText": "Shop Now",
+      "buttonLink": "/shop",
+      "imageUrl": "/images/sliderimage2.webp",
+      "badgeText": "Live Beautifully"
+    },
+    {
+      "tagline": "EXCLUSIVE ARRIVALS",
+      "title": "Elegance & Grace,\nCrafted for You.",
+      "subtitle": "Explore handcrafted accessories and bespoke perfumes.",
+      "buttonText": "Shop Now",
+      "buttonLink": "/shop",
+      "imageUrl": "/images/sliderimage1.webp",
+      "badgeText": "Live Beautifully"
+    }
+  ],
+  "valueProps": [
+    {
+      "title": "Premium Quality",
+      "subtitle": "Always",
+      "icon": "gem"
+    },
+    {
+      "title": "Free Shipping",
+      "subtitle": "On Orders Above ",
+      "icon": "truck"
+    },
+    {
+      "title": "Secure Payments",
+      "subtitle": "100% Secure",
+      "icon": "shield-check"
+    }
+  ],
+  "promoBanners": {
+    "banner1": {
+      "title": "Fashion Sale Up to 70% OFF",
+      "subtitle": "Step into style",
+      "buttonText": "Shop the Sale",
+      "buttonLink": "/shop",
+      "imageUrl": "/images/offerbanner1.webp"
+    },
+    "banner2": {
+      "title": "Smart Home Smarter Living Up to 50% OFF",
+      "subtitle": "Modern comfort",
+      "buttonText": "Shop Smart",
+      "buttonLink": "/shop",
+      "imageUrl": "/images/offerbanner2.webp"
+    }
+  },
+  "brands": [
+    {
+      "name": "Nike",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg"
+    },
+    {
+      "name": "Adidas",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg"
+    },
+    {
+      "name": "Samsung",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg"
+    },
+    {
+      "name": "Apple",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg"
+    },
+    {
+      "name": "Puma",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/8/88/Puma_logo.svg"
+    },
+    {
+      "name": "Levi's",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/7/75/Levi%27s_logo.svg"
+    },
+    {
+      "name": "Zara",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg"
+    },
+    {
+      "name": "H&M",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg"
+    },
+    {
+      "name": "IKEA",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/commons/c/c5/Ikea_logo.svg"
+    },
+    {
+      "name": "Flipkart",
+      "logoUrl": "https://upload.wikimedia.org/wikipedia/en/7/7a/Flipkart_logo.svg"
+    }
+  ],
+  "footer": {
+    "aboutText": "Your one-stop destination for premium products and unique finds.",
+    "playStoreLink": "https://play.google.com",
+    "appStoreLink": "https://apple.com/app-store",
+    "copyrightText": "© 2025 Annsha Global. All rights reserved."
+  },
+  "newsletter": {
+    "heading": "Subscribe to Our Newsletter",
+    "subtitle": "Get the latest updates on new arrivals and special offers.",
+    "buttonText": "Subscribe"
+  },
+  "ourBrand": {
+    "tagline": "THE ANNSHA GLOBAL HERITAGE",
+    "title": "Care, Style and Home, All in One Place.",
+    "subtitle": "Founded with a commitment to elevate everyday living, Annsha Global connects connoisseurs of fine design with certified luxury goods, artisanal decor, and timeless essentials across the world.",
+    "philosophyTagline": "OUR PHILOSOPHY",
+    "philosophyTitle": "Your World, Your Choice.",
+    "philosophyText": "We believe that true luxury lies in the harmony between beauty and utility. Our team scours global design capitals to bring you certified footwear, bespoke jewelry, modern smart technology, and serene home appointments that withstand the test of time.",
+    "stat1Value": "100%",
+    "stat1Label": "Authenticity Verified",
+    "stat2Value": "45+",
+    "stat2Label": "Countries Shipped",
+    "stat3Value": "24/7",
+    "stat3Label": "Concierge Service",
+    "imageUrl": "https://images.unsplash.com/photo-1544816155-12df9643f363?w=800&auto=format&fit=crop&q=80"
+  },
+  "blogs": [
+    {
+      "id": 1,
+      "title": "The Art of Curating a Mindful Luxury Home",
+      "category": "Home & Living",
+      "date": "November 18, 2026",
+      "author": "Elena Rostova",
+      "readTime": "5 min read",
+      "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format&fit=crop&q=80",
+      "summary": "Discover how organic textures, warm ivory palettes, and sculptural ceramics create enduring peaceful spaces in modern urban sanctuaries.",
+      "content": "Interior design is moving toward soulful minimalism. In this deep dive, we explore how natural light, earth-toned textiles, and bespoke furniture investments elevate your daily living experience. By choosing fewer, more meaningful artifacts, you create an environment that breathes style and tranquility."
+    },
+    {
+      "id": 2,
+      "title": "Timeless Horology: Investing in Fine Watches",
+      "category": "Jewellery & Watches",
+      "date": "November 14, 2026",
+      "author": "Alexander Wright",
+      "readTime": "7 min read",
+      "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80",
+      "summary": "From precision mechanics to sapphire crystal heritage, understand why smart craftsmanship and classic horology retain lifetime value.",
+      "content": "Fine watches represent the intersection of high engineering and personal legacy. Whether considering modern smart features or classical mechanical movements, our horology experts detail the hallmarks of authentic watchmaking and how to curate a timeless collection."
+    },
+    {
+      "id": 3,
+      "title": "Winter Beauty Rituals: Radiance Through Botanical Oils",
+      "category": "Beauty & Care",
+      "date": "November 10, 2026",
+      "author": "Sophia Laurent",
+      "readTime": "4 min read",
+      "image": "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=80",
+      "summary": "Combat dry winter air with restorative jasmine extracts, rosehip seed oil, and clean barrier restoration formulations.",
+      "content": "Cold weather demands a shift toward lipid-rich serums and intensive hydration rituals. We break down the clinical benefits of cold-pressed botanical essences and how to achieve an effortless, healthy glow throughout the festive season."
+    }
+  ],
+  "faqs": [
+    {
+      "id": 1,
+      "category": "Shipping",
+      "question": "How long does shipping take and how do I track my order?",
+      "answer": "Standard domestic orders arrive within 3-5 business days, while international express shipments arrive within 5-7 business days. As soon as your order ships from our boutique fulfillment center, you will receive an email containing your tracking number and live carrier link."
+    },
+    {
+      "id": 2,
+      "category": "Shipping",
+      "question": "Do you offer free shipping on luxury orders?",
+      "answer": "Yes! All orders above $50 qualify for complimentary insured standard shipping worldwide. Orders under $50 are charged a flat rate of $5.00."
+    },
+    {
+      "id": 3,
+      "category": "Returns",
+      "question": "What is the Annsha Global return policy?",
+      "answer": "We offer an easy 7-day return guarantee. If you are not completely satisfied with your purchase, you may initiate a return within 7 days of delivery. Items must be in their original, unused condition with all authenticity tags and luxury packaging intact."
+    },
+    {
+      "id": 4,
+      "category": "Payment",
+      "question": "What payment methods do you accept and is checkout secure?",
+      "answer": "We accept major credit cards (Visa, MasterCard, American Express) through Stripe, PayPal Express Checkout, and Cash on Delivery (COD) in eligible regions. All transactions are protected by bank-level 256-bit SSL encryption."
+    },
+    {
+      "id": 5,
+      "category": "Authenticity",
+      "question": "Are all products certified authentic?",
+      "answer": "Absolutely. Every single product sold on Annsha Global is 100% genuine and verified by certified luxury appraisers and authorized global distributors."
+    },
+    {
+      "id": 6,
+      "category": "Orders",
+      "question": "Can I cancel or modify my order after placing it?",
+      "answer": "Orders can be modified or cancelled within 2 hours of placement by contacting our 24/7 customer concierge team directly via live chat or email."
+    }
+  ],
+  "contactUs": {
+    "tagline": "CLIENT CONCIERGE",
+    "title": "We Are Here to Assist You",
+    "subtitle": "Have an inquiry about an order, styling recommendation, or bespoke request? Our luxury advisors are available 24 hours a day, 7 days a week.",
+    "phone": "+1 (800) 892-4452",
+    "email": "concierge@annshaglobal.com",
+    "address": "740 Madison Avenue, New York, NY 10065",
+    "hours": "Monday – Sunday: 24/7 Concierge Support"
+  },
+  "ourCollection": {
+    "tagline": "CURATED CAPSULES",
+    "title": "Our Curated Collections",
+    "subtitle": "Explore seasonal lookbooks and thematic luxury galleries curated by our international design directors.",
+    "items": [
+      {
+        "title": "The Signature Monogram Capsule",
+        "tagline": "EXCLUSIVE & TIMELESS",
+        "description": "Handpicked calfskin leather accessories, tailored footwear, and quintessential statements.",
+        "image": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80",
+        "categorySlug": "jewellery-accessories"
+      },
+      {
+        "title": "The Modern Sanctuary Collection",
+        "tagline": "ORGANIC LIVING",
+        "description": "Sculptural ceramic lamps, warm linen touches, and peaceful residential decor.",
+        "image": "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=800&auto=format&fit=crop&q=80",
+        "categorySlug": "home-living"
+      },
+      {
+        "title": "Personal Care & Olfactory Art",
+        "tagline": "SUSTAINABLE LUXURY",
+        "description": "Enchanting floral and amber accords paired with restorative cold-pressed skincare.",
+        "image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=800&auto=format&fit=crop&q=80",
+        "categorySlug": "beauty-personal-care"
+      }
+    ]
+  },
+  "header": {
+    "logoUrl": "/images/logo.webp",
+    "logoTitle": "annsha GIFTS"
+  }
+}

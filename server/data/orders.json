@@ -1,0 +1,146 @@
+[
+  {
+    "_id": "ord_1795178822208",
+    "orderNumber": "AG-2026-31245",
+    "customer": "usr_admin",
+    "customerName": "Annsha Administrator",
+    "customerEmail": "admin@annshaglobal.com",
+    "items": [
+      {
+        "product": "prod_1",
+        "title": "Nike Air Force 1 Sneakersd",
+        "image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80",
+        "price": 69.99,
+        "quantity": 1,
+        "total": 69.99
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "abdul ",
+      "phone": "9095222",
+      "addressLine": "14 Rue de la Paix",
+      "city": "New York",
+      "state": "NY",
+      "postalCode": "10001",
+      "country": "United States"
+    },
+    "subtotal": 69.99,
+    "shippingFee": 0,
+    "tax": 3.5,
+    "grandTotal": 73.49,
+    "paymentMethod": "cod",
+    "paymentStatus": "pending",
+    "orderStatus": "pending",
+    "createdAt": "2026-11-20T12:47:02.208Z"
+  },
+  {
+    "_id": "ord_1",
+    "orderNumber": "AG-2026-10481",
+    "customer": "usr_1",
+    "customerName": "Sophia Laurent",
+    "customerEmail": "sophia@example.com",
+    "items": [
+      {
+        "product": "prod_1",
+        "title": "Nike Air Force 1 Sneakers",
+        "image": "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80",
+        "price": 69.99,
+        "quantity": 1,
+        "total": 69.99
+      },
+      {
+        "product": "prod_4",
+        "title": "Luxury Perfume",
+        "image": "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&auto=format&fit=crop&q=80",
+        "price": 79.99,
+        "quantity": 1,
+        "total": 79.99
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Sophia Laurent",
+      "phone": "+33 6 12 34 56 78",
+      "addressLine": "14 Rue de la Paix",
+      "city": "Paris",
+      "state": "Île-de-France",
+      "postalCode": "75001",
+      "country": "France"
+    },
+    "subtotal": 149.98,
+    "shippingFee": 0,
+    "tax": 7.5,
+    "grandTotal": 157.48,
+    "paymentMethod": "stripe",
+    "paymentStatus": "paid",
+    "orderStatus": "delivered",
+    "createdAt": "2026-11-19T12:43:33.586Z"
+  },
+  {
+    "_id": "ord_2",
+    "orderNumber": "AG-2026-10482",
+    "customer": "usr_2",
+    "customerName": "Alexander Wright",
+    "customerEmail": "alex@example.com",
+    "items": [
+      {
+        "product": "prod_2",
+        "title": "Smart Watch Series 7",
+        "image": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80",
+        "price": 99.99,
+        "quantity": 1,
+        "total": 99.99
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Alexander Wright",
+      "phone": "+44 7911 123456",
+      "addressLine": "42 Baker Street",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "NW1 6XE",
+      "country": "United Kingdom"
+    },
+    "subtotal": 99.99,
+    "shippingFee": 0,
+    "tax": 5,
+    "grandTotal": 104.99,
+    "paymentMethod": "paypal",
+    "paymentStatus": "paid",
+    "orderStatus": "processing",
+    "createdAt": "2026-11-18T12:43:33.586Z"
+  },
+  {
+    "_id": "ord_3",
+    "orderNumber": "AG-2026-10483",
+    "customer": "usr_4",
+    "customerName": "Tariq Al-Mansoor",
+    "customerEmail": "tariq@example.com",
+    "items": [
+      {
+        "product": "prod_6",
+        "title": "Noise Cancelling Headphones",
+        "image": "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80",
+        "price": 89.99,
+        "quantity": 2,
+        "total": 179.98
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Tariq Al-Mansoor",
+      "phone": "+971 50 123 4567",
+      "addressLine": "Villa 12, Jumeirah Beach Road",
+      "city": "Dubai",
+      "state": "Dubai",
+      "postalCode": "00000",
+      "country": "United Arab Emirates"
+    },
+    "subtotal": 179.98,
+    "shippingFee": 0,
+    "tax": 9,
+    "grandTotal": 188.98,
+    "paymentMethod": "cod",
+    "paymentStatus": "pending",
+    "orderStatus": "pending",
+    "createdAt": "2026-11-19T12:43:33.586Z"
+  }
+]

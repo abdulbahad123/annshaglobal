@@ -1,0 +1,28 @@
+{
+  "name": "annsha-global",
+  "version": "1.0.0",
+  "description": "Annsha Global Luxury E-Commerce & Admin CMS Platform",
+  "private": true,
+  "workspaces": [
+    "server",
+    "client",
+    "admin"
+  ],
+  "scripts": {
+    "server": "npm --prefix server run dev",
+    "client": "npm --prefix client run dev",
+    "admin": "npm --prefix admin run dev",
+    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\" \"npm --prefix admin run dev\"",
+    "build": "npm --prefix client run build && npm --prefix admin run build"
+  },
+  "keywords": [
+    "ecommerce",
+    "mern",
+    "luxury",
+    "admin-panel",
+    "annsha-global"
+  ],
+  "author": "Annsha Global Team",
+  "license": "ISC"
+}
+

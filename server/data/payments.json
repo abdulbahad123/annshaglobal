@@ -1,0 +1,22 @@
+{
+  "key": "global_payment_settings",
+  "stripe": {
+    "enabled": true,
+    "publishableKey": "pk_test_sample",
+    "secretKey": "sk_test_sample",
+    "isLive": false
+  },
+  "paypal": {
+    "enabled": true,
+    "clientId": "sb-client-id",
+    "secretKey": "sb-secret",
+    "isLive": false
+  },
+  "cod": {
+    "enabled": true,
+    "extraFee": 0,
+    "maxOrderAmount": 1000
+  },
+  "currency": "USD",
+  "currencySymbol": "$"
+}

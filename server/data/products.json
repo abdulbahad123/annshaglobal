@@ -1,0 +1,495 @@
+[
+  {
+    "_id": "prod_1",
+    "title": "Nike Air Force 1 Sneakers",
+    "slug": "nike-air-force-1-sneakers",
+    "sku": "AG-NK-101",
+    "description": "Timeless style with premium leather construction and lightweight Air cushioning for all-day luxury comfort.",
+    "category": "cat_2",
+    "price": 69.99,
+    "comparePrice": 89.99,
+    "stock": 44,
+    "rating": 4.5,
+    "numReviews": 128,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/nike-air-force-1.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 1,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "Timeless style with premium leather construction and lightweight Air c...",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/nike-air-force-1.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/nike-air-force-1.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/nike-air-force-1.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/nike-air-force-1.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_2",
+    "title": "Smart Watch Series 7",
+    "slug": "smart-watch-series-7",
+    "sku": "AG-SW-202",
+    "description": "Cutting-edge OLED retina display, ECG monitor, fitness tracking, and waterproof titanium chassis.",
+    "category": "cat_2",
+    "price": 99.99,
+    "comparePrice": 129.99,
+    "stock": 30,
+    "rating": 4.5,
+    "numReviews": 104,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/smart-watch-series-7.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 2,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "Cutting-edge OLED retina display, ECG monitor, fitness tracking, and w...",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/smart-watch-series-7.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/smart-watch-series-7.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/smart-watch-series-7.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/smart-watch-series-7.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_3",
+    "title": "Premium Leather Handbag",
+    "slug": "stylish-handbag",
+    "sku": "AG-HB-303",
+    "description": "Handcrafted genuine calfskin leather with polished gold hardware and versatile shoulder strap.",
+    "category": "cat_3",
+    "price": 69.99,
+    "comparePrice": 99.99,
+    "stock": 22,
+    "rating": 4.5,
+    "numReviews": 12480,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/stylish-handbag.webp",
+      "/images/sliderimage2.webp",
+      "/images/sliderimage1.webp",
+      "/images/offerbanner1.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 3,
+    "features": [
+      "Premium genuine leather",
+      "Spacious compartments",
+      "Stylish and versatile design",
+      "Adjustable shoulder strap with gold-tone hardware",
+      "Multiple internal pockets and zippered compartment"
+    ],
+    "weight": "0.85 kg",
+    "dimensions": "28 x 14 x 20 cm",
+    "material": "100% Genuine Italian Leather",
+    "subtitle": "Elegant, stylish and spacious handbag for every occasion.",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/stylish-handbag.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/sliderimage1.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/stylish-handbag.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/stylish-handbag.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_4",
+    "title": "Luxury Perfume",
+    "slug": "luxury-perfume",
+    "sku": "AG-PF-404",
+    "description": "An enchanting blend of warm amber, blooming jasmine, and delicate Madagascar vanilla.",
+    "category": "cat_1",
+    "price": 79.99,
+    "comparePrice": 99.99,
+    "stock": 60,
+    "rating": 4.5,
+    "numReviews": 57,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/luxury-perfume.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 4,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "An enchanting blend of warm amber, blooming jasmine, and delicate Mada...",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/luxury-perfume.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/luxury-perfume.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/luxury-perfume.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/luxury-perfume.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_5",
+    "title": "Running Shoes",
+    "slug": "running-shoes",
+    "sku": "AG-RS-505",
+    "description": "Engineered mesh upper with responsive foam midsole designed for distance performance.",
+    "category": "cat_2",
+    "price": 59.99,
+    "comparePrice": 89.99,
+    "stock": 18,
+    "rating": 4.5,
+    "numReviews": 68,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/running-shoes.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 5,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "Engineered mesh upper with responsive foam midsole designed for distan...",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/running-shoes.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/running-shoes.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/running-shoes.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/running-shoes.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_6",
+    "title": "Noise Cancelling Headphones",
+    "slug": "noise-cancelling-headphones",
+    "sku": "AG-HP-606",
+    "description": "Industry-leading active noise cancellation with 40-hour battery life and spatial audio immersion.",
+    "category": "cat_2",
+    "price": 89.99,
+    "comparePrice": 129.99,
+    "stock": 35,
+    "rating": 4.5,
+    "numReviews": 71,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/noise-cancelling-headphones.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 6,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "Industry-leading active noise cancellation with 40-hour battery life a...",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/noise-cancelling-headphones.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/noise-cancelling-headphones.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/noise-cancelling-headphones.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/noise-cancelling-headphones.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_7",
+    "title": "Gold Pendant Necklace",
+    "slug": "gold-pendant-necklace",
+    "sku": "AG-GP-707",
+    "description": "18k gold plated handcrafted delicate chain with solitaire cubic zirconia.",
+    "category": "cat_3",
+    "price": 34.99,
+    "comparePrice": 49.99,
+    "stock": 25,
+    "rating": 4.8,
+    "numReviews": 89,
+    "badge": "top_rated",
+    "images": [
+      "/images/products/gold-pendant-necklace.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 7,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "18k gold plated handcrafted delicate chain with solitaire cubic zircon...",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/gold-pendant-necklace.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/gold-pendant-necklace.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/gold-pendant-necklace.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/gold-pendant-necklace.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  },
+  {
+    "_id": "prod_8",
+    "title": "Ceramic Table Lamp",
+    "slug": "ceramic-table-lamp",
+    "sku": "AG-CL-808",
+    "description": "Minimalist beige textured ceramic body with warm linen fabric shade.",
+    "category": "cat_4",
+    "price": 64,
+    "comparePrice": 85,
+    "stock": 15,
+    "rating": 4.9,
+    "numReviews": 42,
+    "badge": "new_arrivals",
+    "images": [
+      "/images/products/ceramic-table-lamp.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-19T12:43:33.586Z",
+    "orderIndex": 8,
+    "features": [
+      "Premium high-grade materials & craftsmanship",
+      "Engineered for long-lasting luxury & durability",
+      "Comfortable, ergonomic & timeless design"
+    ],
+    "weight": "0.75 kg",
+    "dimensions": "25 x 15 x 10 cm",
+    "material": "Luxury Grade Material",
+    "subtitle": "Minimalist beige textured ceramic body with warm linen fabric shade....",
+    "variants": [
+      {
+        "name": "Beige",
+        "color": "Beige",
+        "hex": "#E4CFBA",
+        "image": "/images/products/ceramic-table-lamp.webp"
+      },
+      {
+        "name": "Purple",
+        "color": "Purple",
+        "hex": "#C2A5D8",
+        "image": "/images/products/ceramic-table-lamp.webp"
+      },
+      {
+        "name": "Black",
+        "color": "Black",
+        "hex": "#2B2B2B",
+        "image": "/images/products/ceramic-table-lamp.webp"
+      },
+      {
+        "name": "Pink",
+        "color": "Pink",
+        "hex": "#F3A7BD",
+        "image": "/images/products/ceramic-table-lamp.webp"
+      }
+    ],
+    "sizes": [
+      "Standard",
+      "Medium",
+      "Large"
+    ]
+  }
+]

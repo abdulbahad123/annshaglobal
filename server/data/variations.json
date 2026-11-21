@@ -1,0 +1,81 @@
+[
+  {
+    "_id": "var_1",
+    "name": "Color",
+    "category": "Beauty & Personal Care",
+    "categorySlug": "beauty-personal-care",
+    "subcategory": "-",
+    "options": [
+      { "name": "Beige", "colorCode": "#E4CFBA", "hex": "#E4CFBA" },
+      { "name": "Purple", "colorCode": "#C2A5D8", "hex": "#C2A5D8" },
+      { "name": "Black", "colorCode": "#2B2B2B", "hex": "#2B2B2B" },
+      { "name": "Pink", "colorCode": "#F3A7BD", "hex": "#F3A7BD" }
+    ],
+    "createdAt": "2026-11-20T10:00:00.000Z"
+  },
+  {
+    "_id": "var_2",
+    "name": "Size",
+    "category": "Beauty & Personal Care",
+    "categorySlug": "beauty-personal-care",
+    "subcategory": "-",
+    "options": [
+      { "name": "30ml Travel", "colorCode": "", "hex": "" },
+      { "name": "50ml Standard", "colorCode": "", "hex": "" },
+      { "name": "100ml Luxury", "colorCode": "", "hex": "" }
+    ],
+    "createdAt": "2026-11-20T10:05:00.000Z"
+  },
+  {
+    "_id": "var_3",
+    "name": "Color",
+    "category": "Jewellery & Accessories",
+    "categorySlug": "jewellery-accessories",
+    "subcategory": "-",
+    "options": [
+      { "name": "18K Yellow Gold", "colorCode": "#D4AF37", "hex": "#D4AF37" },
+      { "name": "Sterling Silver", "colorCode": "#C0C0C0", "hex": "#C0C0C0" },
+      { "name": "Rose Gold", "colorCode": "#B76E79", "hex": "#B76E79" }
+    ],
+    "createdAt": "2026-11-20T10:10:00.000Z"
+  },
+  {
+    "_id": "var_4",
+    "name": "Capacity",
+    "category": "Electronics & Gadgets",
+    "categorySlug": "electronics-gadgets",
+    "subcategory": "-",
+    "options": [
+      { "name": "64GB", "colorCode": "", "hex": "" },
+      { "name": "128GB", "colorCode": "", "hex": "" },
+      { "name": "256GB", "colorCode": "", "hex": "" }
+    ],
+    "createdAt": "2026-11-20T10:15:00.000Z"
+  },
+  {
+    "_id": "var_5",
+    "name": "Color",
+    "category": "Electronics & Gadgets",
+    "categorySlug": "electronics-gadgets",
+    "subcategory": "-",
+    "options": [
+      { "name": "Midnight Black", "colorCode": "#1C1C1E", "hex": "#1C1C1E" },
+      { "name": "Starlight White", "colorCode": "#F5F5F7", "hex": "#F5F5F7" },
+      { "name": "Space Gray", "colorCode": "#4A4A4A", "hex": "#4A4A4A" }
+    ],
+    "createdAt": "2026-11-20T10:20:00.000Z"
+  },
+  {
+    "_id": "var_6",
+    "name": "Size",
+    "category": "Home & Living",
+    "categorySlug": "home-living",
+    "subcategory": "-",
+    "options": [
+      { "name": "Medium", "colorCode": "", "hex": "" },
+      { "name": "Large", "colorCode": "", "hex": "" },
+      { "name": "Extra Large", "colorCode": "", "hex": "" }
+    ],
+    "createdAt": "2026-11-20T10:25:00.000Z"
+  }
+]
