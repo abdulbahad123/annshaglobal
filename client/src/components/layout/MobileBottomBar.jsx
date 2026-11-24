@@ -58,7 +58,7 @@ export default function MobileBottomBar({ activeTab, onSelectTab, onOpenAuthModa
 
         {/* Account */}
         <button
-          onClick={() => onOpenAuthModal('account')}
+          onClick={() => onSelectTab ? onSelectTab('account') : onOpenAuthModal('account')}
           className={`flex flex-col items-center gap-1 py-1 transition-colors ${activeTab === 'account' ? 'text-[#704214]' : 'text-[#7A6E65]'}`}
         >
           <User className="w-5 h-5" />

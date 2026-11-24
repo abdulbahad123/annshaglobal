@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { Mail, Facebook, Instagram, Youtube, Linkedin } from 'lucide-react';
+import { Mail, Facebook, Instagram, Youtube, Linkedin, CheckCircle2 } from 'lucide-react';
+import axiosClient from '../../api/axiosClient';
 import footerCtaLeft from '../../images/footercta_leftside.png';
 import footerCtaRight from '../../images/footercta_rightside.png';
 
@@ -20,12 +21,22 @@ export default function Newsletter({ config = {} }) {
   const subtitle = config?.subtitle || 'Get the latest updates on new arrivals and special offers.';
   const buttonText = config?.buttonText || 'Subscribe';
 
-  const handleSubmit = (e) => {
+  const [subMsg, setSubMsg] = useState('');
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (email) {
+    if (!email) return;
+    try {
+      const res = await axiosClient.post('/subscribers', { email, source: 'homepage_newsletter' });
       setSubscribed(true);
-      setTimeout(() => setSubscribed(false), 4000);
-      setEmail('');
+      setSubMsg(res.message || 'Subscribed successfully!');
+      setTimeout(() => {
+        setSubscribed(false);
+        setSubMsg('');
+        setEmail('');
+      }, 5000);
+    } catch (err) {
+      alert(err.message || 'Failed to subscribe. Please try again.');
     }
   };
 

@@ -4,7 +4,7 @@ import { useAuth } from '../../context/AuthContext';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 
-export default function Header({ logoUrl, headerBg, onOpenMobileNav, onSearch, onOpenAuthModal, onOpenAdmin, onLogoClick, onOpenWishlist }) {
+export default function Header({ logoUrl, headerBg, onOpenMobileNav, onSearch, onOpenAuthModal, onOpenAccount, onOpenAdmin, onLogoClick, onOpenWishlist }) {
   const { user, logout, isAdmin } = useAuth();
   const { totalCount, setIsCartOpen } = useCart();
   const { wishlistCount } = useWishlist();
@@ -104,6 +104,14 @@ export default function Header({ logoUrl, headerBg, onOpenMobileNav, onSearch, o
                         📍 {user.city || 'Verified Customer'}, {user.country || 'Global'}
                       </span>
                     </div>
+
+                    <button
+                      onClick={() => { setIsAccountOpen(false); if (onOpenAccount) onOpenAccount(); }}
+                      className="w-full text-left px-4 py-2 hover:bg-[#F5EBE1] text-[#704214] font-semibold flex items-center justify-between"
+                    >
+                      <span>My Orders &amp; Account</span>
+                      <span>→</span>
+                    </button>
 
                     <button
                       onClick={() => { setIsAccountOpen(false); if (onOpenWishlist) onOpenWishlist(); }}

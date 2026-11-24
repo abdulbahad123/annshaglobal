@@ -11,6 +11,7 @@ import {
   ArrowRight
 } from 'lucide-react';
 import PreFooterNewsletter from '../components/common/PreFooterNewsletter';
+import axiosClient from '../api/axiosClient';
 
 export default function ContactUsPage({ config = {} }) {
   const [formData, setFormData] = useState({
@@ -33,15 +34,19 @@ export default function ContactUsPage({ config = {} }) {
   const hoursWeekday = config.hoursWeekday || 'Mon - Sat: 9:00 AM - 8:00 PM';
   const hoursWeekend = config.hoursWeekend || 'Sun: 10:00 AM - 6:00 PM';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+    try {
+      await axiosClient.post('/inquiries', formData);
       setIsSuccess(true);
       setFormData({ name: '', email: '', subject: '', message: '' });
-      setTimeout(() => setIsSuccess(false), 5000);
-    }, 800);
+      setTimeout(() => setIsSuccess(false), 6000);
+    } catch (err) {
+      alert(err.message || 'Failed to send message. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

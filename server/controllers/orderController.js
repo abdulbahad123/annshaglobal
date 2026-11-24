@@ -162,12 +162,24 @@ export const createOrder = async (req, res, next) => {
 
 export const getMyOrders = async (req, res, next) => {
   try {
+    const userEmail = req.user?.email ? req.user.email.toLowerCase().trim() : null;
+    const userId = req.user?._id;
+
     if (isMongoConnected()) {
-      const orders = await Order.find({ customer: req.user._id }).sort({ createdAt: -1 });
+      const orConditions = [];
+      if (userId) orConditions.push({ customer: userId });
+      if (userEmail) orConditions.push({ customerEmail: { $regex: new RegExp(`^${userEmail}$`, 'i') } });
+
+      const query = orConditions.length > 0 ? { $or: orConditions } : { customer: userId };
+      const orders = await Order.find(query).sort({ createdAt: -1 });
       return res.status(200).json({ success: true, count: orders.length, orders });
     }
 
-    const orders = dbStore.read('orders').filter(o => String(o.customer) === String(req.user._id));
+    const allOrders = dbStore.read('orders') || [];
+    const orders = allOrders.filter(o => 
+      (userId && String(o.customer) === String(userId)) ||
+      (userEmail && o.customerEmail && o.customerEmail.toLowerCase().trim() === userEmail)
+    );
     res.status(200).json({ success: true, count: orders.length, orders });
   } catch (err) {
     next(err);

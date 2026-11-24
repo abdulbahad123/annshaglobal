@@ -1,0 +1,20 @@
+[
+  {
+    "_id": "inq_1",
+    "name": "Marcus Aurelius Vance",
+    "email": "marcus.vance@boutique.com",
+    "subject": "Custom Artisan Ring Engraving Query",
+    "message": "Hello Annsha Global team, I would like to inquire whether you offer custom initials engraving on the Polished Gold Chain with Ornate Ring Pendant. Please let me know the lead time for bespoke orders.",
+    "status": "unread",
+    "createdAt": "2026-11-24T08:30:00.000Z"
+  },
+  {
+    "_id": "inq_2",
+    "name": "Lady Catherine Seymour",
+    "email": "catherine.seymour@mayfair.co.uk",
+    "subject": "Bulk Corporate Gift Hampers",
+    "message": "We are preparing executive holiday gifts for our partners and are interested in 50 luxury botanical skincare gift sets. Kindly provide corporate tier discounts and international delivery timeframe to London.",
+    "status": "read",
+    "createdAt": "2026-11-23T15:10:00.000Z"
+  }
+]

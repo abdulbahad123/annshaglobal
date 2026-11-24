@@ -1,0 +1,30 @@
+[
+  {
+    "_id": "sub_1",
+    "email": "elena.rostova@example.com",
+    "status": "active",
+    "source": "storefront_footer",
+    "createdAt": "2026-11-20T10:15:00.000Z"
+  },
+  {
+    "_id": "sub_2",
+    "email": "sophia.laurent@luxurybuyer.fr",
+    "status": "active",
+    "source": "storefront_footer",
+    "createdAt": "2026-11-21T14:22:00.000Z"
+  },
+  {
+    "_id": "sub_3",
+    "email": "alex.wright@couturelondon.co.uk",
+    "status": "active",
+    "source": "homepage_newsletter",
+    "createdAt": "2026-11-22T09:30:00.000Z"
+  },
+  {
+    "_id": "sub_4",
+    "email": "tariq.mansoor@dubai-estate.ae",
+    "status": "active",
+    "source": "storefront_footer",
+    "createdAt": "2026-11-23T16:45:00.000Z"
+  }
+]

@@ -5,15 +5,13 @@
   "private": true,
   "workspaces": [
     "server",
-    "client",
-    "admin"
+    "client"
   ],
   "scripts": {
     "server": "npm --prefix server run dev",
     "client": "npm --prefix client run dev",
-    "admin": "npm --prefix admin run dev",
-    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\" \"npm --prefix admin run dev\"",
-    "build": "npm --prefix client run build && npm --prefix admin run build"
+    "dev": "concurrently \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "build": "npm --prefix client run build"
   },
   "keywords": [
     "ecommerce",

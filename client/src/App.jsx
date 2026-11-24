@@ -26,6 +26,7 @@ import ContactUsPage from './pages/ContactUsPage';
 import WishlistPage from './pages/WishlistPage';
 import CheckoutPage from './pages/CheckoutPage';
 import AuthPage from './pages/AuthPage';
+import CustomerDashboardPage from './pages/CustomerDashboardPage';
 
 // Modals
 import CartDrawer from './components/cart/CartDrawer';
@@ -71,7 +72,7 @@ export default function App() {
     try {
       const [catsRes, prodsRes, cmsRes] = await Promise.all([
         axiosClient.get('/categories'),
-        axiosClient.get('/products?limit=24'),
+        axiosClient.get('/products?limit=100'),
         axiosClient.get('/cms/config')
       ]);
 
@@ -127,18 +128,10 @@ export default function App() {
   }, [isProductRoute, productParam, products]);
 
   // Category selection handler (navigates to dedicated /category/:slug or /shop)
-  const handleSelectCategory = async (slug) => {
+  const handleSelectCategory = (slug) => {
     setSelectedCategory(slug);
     setSelectedProduct(null);
     navigate(slug ? `/category/${slug}` : '/shop');
-
-    try {
-      const query = slug ? `/products?category=${slug}` : '/products?limit=24';
-      const res = await axiosClient.get(query);
-      if (res.success) setProducts(res.products);
-    } catch (err) {
-      console.error(err);
-    }
   };
 
   // Search handler (switches to shop page with search results)
@@ -173,6 +166,7 @@ export default function App() {
     else if (navId === 'faq') navigate('/faq');
     else if (navId === 'contact') navigate('/contact');
     else if (navId === 'wishlist') navigate('/wishlist');
+    else if (navId === 'account') navigate('/account');
     else navigate(`/${navId}`);
   };
 
@@ -226,6 +220,7 @@ export default function App() {
         onOpenMobileNav={() => setIsMobileNavOpen(true)}
         onSearch={handleSearch}
         onOpenAuthModal={(mode) => navigate(mode === 'register' || mode === 'signup' ? '/signup' : '/login')}
+        onOpenAccount={() => navigate('/account')}
         onOpenAdmin={() => navigate('/admin')}
         onLogoClick={() => handleSelectNav('home')}
         onOpenWishlist={() => handleSelectNav('wishlist')}
@@ -343,6 +338,15 @@ export default function App() {
         {/* I. WISHLIST ROUTE: /wishlist */}
         {currentPath === '/wishlist' && (
           <WishlistPage
+            onSelectProduct={handleSelectProduct}
+            onShopNow={() => handleSelectNav('shop')}
+          />
+        )}
+
+        {/* CUSTOMER DASHBOARD & ORDER TRACKING ROUTE: /account, /dashboard */}
+        {(currentPath === '/account' || currentPath === '/dashboard') && (
+          <CustomerDashboardPage
+            navigate={navigate}
             onSelectProduct={handleSelectProduct}
             onShopNow={() => handleSelectNav('shop')}
           />

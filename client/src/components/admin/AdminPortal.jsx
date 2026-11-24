@@ -36,7 +36,15 @@ import {
   MapPin,
   List,
   Grid,
-  BookOpen
+  BookOpen,
+  Mail,
+  MessageSquare,
+  Send,
+  Bell,
+  Inbox,
+  AtSign,
+  Download,
+  AlertCircle
 } from 'lucide-react';
 import axiosClient from '../../api/axiosClient';
 import { useAuth } from '../../context/AuthContext';
@@ -116,6 +124,12 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
     currentView = 'website_editor';
   } else if (activePath === '/admin/revenue') {
     currentView = 'revenue';
+  } else if (activePath === '/admin/subscribers' || activePath === '/admin/newsletter') {
+    currentView = 'subscribers';
+  } else if (activePath === '/admin/inquiries' || activePath === '/admin/messages') {
+    currentView = 'inquiries';
+  } else if (activePath === '/admin/smtp' || activePath === '/admin/email-settings') {
+    currentView = 'smtp';
   } else if (activePath === '/admin/payments') {
     currentView = 'payments';
   } else if (activePath === '/admin/products' || activePath === '/admin/items') {
@@ -163,6 +177,32 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
       }
     }
   }, [activePath]);
+
+  // Newsletter Subscribers State
+  const [subscribers, setSubscribers] = useState([]);
+  const [subscribersLoading, setSubscribersLoading] = useState(false);
+  const [subscriberSearch, setSubscriberSearch] = useState('');
+
+  // Contact Inquiries State
+  const [inquiries, setInquiries] = useState([]);
+  const [inquiriesLoading, setInquiriesLoading] = useState(false);
+  const [inquirySearch, setInquirySearch] = useState('');
+  const [inquiryStatusFilter, setInquiryStatusFilter] = useState('all');
+  const [selectedInquiry, setSelectedInquiry] = useState(null);
+
+  // SMTP Settings State
+  const [smtpForm, setSmtpForm] = useState({
+    host: 'mail.nooryak.com',
+    port: 465,
+    secure: true,
+    user: 'support@annshagifts.nooryak.com',
+    pass: '',
+    fromName: 'Annsha Global Support',
+    fromEmail: 'support@annshagifts.nooryak.com'
+  });
+  const [showSmtpPass, setShowSmtpPass] = useState(false);
+  const [smtpSaving, setSmtpSaving] = useState(false);
+  const [smtpMsg, setSmtpMsg] = useState('');
 
   const [products, setProducts] = useState([]);
   const [productSearch, setProductSearch] = useState('');
@@ -269,6 +309,15 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
     } else if (currentView === 'staff') {
       setActiveMenu('staff');
       if (isAdmin) fetchStaff();
+    } else if (currentView === 'subscribers') {
+      setActiveMenu('subscribers');
+      if (isAdmin) fetchSubscribers();
+    } else if (currentView === 'inquiries') {
+      setActiveMenu('inquiries');
+      if (isAdmin) fetchInquiries();
+    } else if (currentView === 'smtp') {
+      setActiveMenu('smtp');
+      if (isAdmin) fetchCMSConfig();
     } else if (currentView === 'website_editor') {
       setActiveMenu('website_editor');
       if (isAdmin) fetchCMSConfig();
@@ -278,6 +327,15 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
   }, [activePath, isAdmin]);
 
   // Fetch initial dashboard and overview data whenever admin is authenticated
+  useEffect(() => {
+    if (cmsConfig?.smtpSettings) {
+      setSmtpForm(prev => ({
+        ...prev,
+        ...cmsConfig.smtpSettings
+      }));
+    }
+  }, [cmsConfig]);
+
   useEffect(() => {
     fetchDbStatus();
     if (isAdmin) {
@@ -291,7 +349,12 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
       if (currentView === 'delivery') { fetchCMSConfig(); }
       if (currentView === 'customers') { fetchCustomers(1); }
       if (currentView === 'staff') { fetchStaff(); }
+      if (currentView === 'subscribers') { fetchSubscribers(); }
+      if (currentView === 'inquiries') { fetchInquiries(); }
+      if (currentView === 'smtp') { fetchCMSConfig(); }
       if (currentView === 'website_editor') { fetchCMSConfig(); }
+      fetchSubscribers();
+      fetchInquiries();
       if (currentView === 'revenue' || currentView === 'payments') { fetchDashboardData(); }
     }
   }, [isAdmin]);
@@ -437,6 +500,121 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
       fetchStaff();
     } catch (err) {
       alert(err.message || 'Failed to toggle status');
+    }
+  };
+
+  // Newsletter Subscribers Handlers
+  const fetchSubscribers = async () => {
+    setSubscribersLoading(true);
+    try {
+      const res = await axiosClient.get('/subscribers');
+      if (res.success && Array.isArray(res.subscribers)) {
+        setSubscribers(res.subscribers);
+      }
+    } catch (err) {
+      console.error('Failed to load subscribers:', err);
+    } finally {
+      setSubscribersLoading(false);
+    }
+  };
+
+  const handleDeleteSubscriber = async (id, email) => {
+    if (!window.confirm(`Are you sure you want to remove subscriber "${email}"?`)) return;
+    try {
+      const res = await axiosClient.delete(`/subscribers/${id}`);
+      if (res.success) {
+        setSubscribers(prev => prev.filter(s => String(s._id || s.id) !== String(id)));
+        showNotification(`Subscriber "${email}" removed.`);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete subscriber');
+    }
+  };
+
+  const handleExportSubscribersCSV = () => {
+    if (subscribers.length === 0) {
+      alert('No subscribers to export.');
+      return;
+    }
+    const headers = ['Email,Source,Status,Subscribed At'];
+    const rows = subscribers.map(s => `"${s.email}","${s.source || 'Website'}","${s.status || 'active'}","${s.createdAt || ''}"`);
+    const csvContent = 'data:text/csv;charset=utf-8,' + [headers, ...rows].join('\n');
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement('a');
+    link.setAttribute('href', encodedUri);
+    link.setAttribute('download', `annsha_subscribers_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  // Contact Inquiries Handlers
+  const fetchInquiries = async () => {
+    setInquiriesLoading(true);
+    try {
+      const res = await axiosClient.get('/inquiries');
+      if (res.success && Array.isArray(res.inquiries)) {
+        setInquiries(res.inquiries);
+      }
+    } catch (err) {
+      console.error('Failed to load inquiries:', err);
+    } finally {
+      setInquiriesLoading(false);
+    }
+  };
+
+  const handleUpdateInquiryStatus = async (id, status, notes = '') => {
+    try {
+      const res = await axiosClient.patch(`/inquiries/${id}/status`, { status, replyNotes: notes });
+      if (res.success && res.inquiry) {
+        setInquiries(prev => prev.map(inq => (String(inq._id || inq.id) === String(id) ? res.inquiry : inq)));
+        if (selectedInquiry && String(selectedInquiry._id || selectedInquiry.id) === String(id)) {
+          setSelectedInquiry(res.inquiry);
+        }
+        showNotification(`Inquiry status marked as "${status}".`);
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to update inquiry status');
+    }
+  };
+
+  const handleDeleteInquiry = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this customer inquiry?')) return;
+    try {
+      const res = await axiosClient.delete(`/inquiries/${id}`);
+      if (res.success) {
+        setInquiries(prev => prev.filter(inq => String(inq._id || inq.id) !== String(id)));
+        if (selectedInquiry && String(selectedInquiry._id || selectedInquiry.id) === String(id)) {
+          setSelectedInquiry(null);
+        }
+        showNotification('Inquiry deleted successfully.');
+      }
+    } catch (err) {
+      alert(err.response?.data?.message || 'Failed to delete inquiry');
+    }
+  };
+
+  // SMTP Settings Handlers
+  const handleSaveSmtp = async (e) => {
+    if (e) e.preventDefault();
+    setSmtpSaving(true);
+    setSmtpMsg('');
+    try {
+      const updatedConfig = {
+        ...(cmsConfig || {}),
+        smtpSettings: smtpForm
+      };
+      const res = await axiosClient.put('/cms/config', updatedConfig);
+      if (res.success) {
+        setCmsConfig(res.config);
+        setSmtpMsg('SMTP Configuration saved successfully!');
+        showNotification('SMTP email credentials saved.');
+        setTimeout(() => setSmtpMsg(''), 4000);
+      }
+    } catch (err) {
+      setSmtpMsg(err.response?.data?.message || 'Failed to save SMTP configuration');
+    } finally {
+      setSmtpSaving(false);
     }
   };
 
@@ -1322,6 +1500,43 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
               <span>Staff / Team Management</span>
             </button>
 
+            {/* Communication & Inquiries Section */}
+            <div className="pt-3 pb-1 px-3.5 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
+              Communication &amp; Inquiries
+            </div>
+            {/* Newsletter Subscribers */}
+            <button
+              type="button"
+              onClick={() => handleNavigate('/admin/subscribers')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${currentView === 'subscribers' ? 'bg-[#704214] text-white font-semibold shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}
+            >
+              <div className="flex items-center gap-3">
+                <Mail className="w-4 h-4 text-amber-400" />
+                <span>Newsletter Subscribers</span>
+              </div>
+              {subscribers.length > 0 && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 font-bold">
+                  {subscribers.length}
+                </span>
+              )}
+            </button>
+            {/* Contact Inquiries */}
+            <button
+              type="button"
+              onClick={() => handleNavigate('/admin/inquiries')}
+              className={`w-full flex items-center justify-between px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${currentView === 'inquiries' ? 'bg-[#704214] text-white font-semibold shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}
+            >
+              <div className="flex items-center gap-3">
+                <MessageSquare className="w-4 h-4 text-sky-400" />
+                <span>Contact Inquiries</span>
+              </div>
+              {inquiries.filter(i => i.status === 'new').length > 0 && (
+                <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-rose-500 text-white font-bold animate-pulse">
+                  {inquiries.filter(i => i.status === 'new').length}
+                </span>
+              )}
+            </button>
+
             {/* Appearance Section */}
             <div className="pt-3 pb-1 px-3.5 text-[10px] uppercase font-bold text-slate-400 tracking-wider">
               Appearance &amp; Content
@@ -1401,6 +1616,13 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
             >
               <CreditCard className="w-4 h-4 text-purple-400" />
               <span>Payment Gateways</span>
+            </button>
+            <button
+              onClick={() => handleNavigate('/admin/smtp')}
+              className={`w-full flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-xs font-medium transition-all ${currentView === 'smtp' ? 'bg-[#704214] text-white font-semibold shadow-xs' : 'text-slate-300 hover:text-white hover:bg-slate-800/80'}`}
+            >
+              <Send className="w-4 h-4 text-sky-400" />
+              <span>SMTP Email Settings</span>
             </button>
           </div>
 
@@ -5955,6 +6177,513 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
                   </div>
 
                 </div>
+              </div>
+            )}
+
+            {/* 8. NEWSLETTER SUBSCRIBERS VIEW */}
+            {(currentView === 'subscribers' || activeMenu === 'subscribers') && (
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <h1 className="font-sans text-2xl font-bold text-slate-900 flex items-center gap-2">
+                      <Mail className="w-6 h-6 text-[#704214]" />
+                      <span>Newsletter Subscribers</span>
+                    </h1>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Manage all email newsletter subscriptions captured from the storefront and footer forms.
+                    </p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={handleExportSubscribersCSV}
+                      className="px-4 py-2 bg-white border border-slate-200 text-slate-700 hover:text-slate-900 hover:bg-slate-50 rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center gap-2"
+                    >
+                      <Download className="w-4 h-4 text-emerald-600" />
+                      <span>Export CSV</span>
+                    </button>
+                    <button
+                      onClick={fetchSubscribers}
+                      disabled={subscribersLoading}
+                      className="px-4 py-2 bg-[#704214] text-white hover:bg-[#59330E] rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center gap-2"
+                    >
+                      <RefreshCw className={`w-3.5 h-3.5 ${subscribersLoading ? 'animate-spin' : ''}`} />
+                      <span>Refresh</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Metric Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">Total Subscribers</span>
+                    <h3 className="text-2xl font-bold text-slate-900 mt-1 font-serif">{subscribers.length}</h3>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">Active Subscriptions</span>
+                    <h3 className="text-2xl font-bold text-emerald-600 mt-1 font-serif">
+                      {subscribers.filter(s => (s.status || 'active') === 'active').length}
+                    </h3>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">Latest Acquisition Source</span>
+                    <h3 className="text-base font-bold text-[#704214] mt-1 truncate">
+                      {subscribers[0]?.source || 'Homepage Newsletter'}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Filter and Search */}
+                <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center justify-between gap-4">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search subscribers by email..."
+                      value={subscriberSearch}
+                      onChange={(e) => setSubscriberSearch(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#704214]"
+                    />
+                  </div>
+                  <span className="text-xs text-slate-500 font-medium">
+                    Showing {subscribers.filter(s => s.email?.toLowerCase().includes(subscriberSearch.toLowerCase())).length} subscribers
+                  </span>
+                </div>
+
+                {/* Subscribers Table */}
+                <div className="bg-white rounded-2xl border border-slate-200/80 shadow-xs overflow-hidden">
+                  {subscribersLoading ? (
+                    <div className="p-12 text-center text-slate-500 text-xs">
+                      <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#704214] mb-2" />
+                      Loading verified subscriber list...
+                    </div>
+                  ) : subscribers.length === 0 ? (
+                    <div className="p-12 text-center text-slate-500 text-xs">
+                      <Mail className="w-8 h-8 mx-auto text-slate-400 mb-2 opacity-50" />
+                      No subscribers recorded yet.
+                    </div>
+                  ) : (
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-left text-xs">
+                        <thead className="bg-slate-50 border-b border-slate-200 text-slate-500 uppercase text-[10px] tracking-wider font-bold">
+                          <tr>
+                            <th className="px-5 py-3.5">Subscriber Email</th>
+                            <th className="px-5 py-3.5">Source</th>
+                            <th className="px-5 py-3.5">Subscribed Date</th>
+                            <th className="px-5 py-3.5">Status</th>
+                            <th className="px-5 py-3.5 text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody className="divide-y divide-slate-100">
+                          {subscribers
+                            .filter(s => s.email?.toLowerCase().includes(subscriberSearch.toLowerCase()))
+                            .map((sub) => (
+                              <tr key={sub._id || sub.email} className="hover:bg-slate-50/50 transition-colors">
+                                <td className="px-5 py-3.5 font-semibold text-slate-900 flex items-center gap-2.5">
+                                  <div className="w-7 h-7 rounded-full bg-amber-50 text-[#704214] flex items-center justify-center font-bold text-[10px]">
+                                    @
+                                  </div>
+                                  <span>{sub.email}</span>
+                                </td>
+                                <td className="px-5 py-3.5 text-slate-600">
+                                  <span className="px-2 py-0.5 rounded-full bg-slate-100 text-slate-700 text-[10px] font-medium border border-slate-200">
+                                    {sub.source || 'Website'}
+                                  </span>
+                                </td>
+                                <td className="px-5 py-3.5 text-slate-500">
+                                  {new Date(sub.createdAt || Date.now()).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'short',
+                                    day: 'numeric'
+                                  })}
+                                </td>
+                                <td className="px-5 py-3.5">
+                                  <span className="px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-bold">
+                                    {sub.status || 'Active'}
+                                  </span>
+                                </td>
+                                <td className="px-5 py-3.5 text-right">
+                                  <button
+                                    onClick={() => handleDeleteSubscriber(sub._id || sub.id, sub.email)}
+                                    className="p-1.5 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                                    title="Delete Subscriber"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </td>
+                              </tr>
+                            ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 9. CONTACT INQUIRIES VIEW */}
+            {(currentView === 'inquiries' || activeMenu === 'inquiries') && (
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <h1 className="font-sans text-2xl font-bold text-slate-900 flex items-center gap-2">
+                      <MessageSquare className="w-6 h-6 text-[#704214]" />
+                      <span>Contact Us Inquiries</span>
+                    </h1>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Customer messages and inquiries submitted through the boutique Contact Us page.
+                    </p>
+                  </div>
+                  <button
+                    onClick={fetchInquiries}
+                    disabled={inquiriesLoading}
+                    className="px-4 py-2 bg-[#704214] text-white hover:bg-[#59330E] rounded-xl text-xs font-semibold shadow-xs transition-all flex items-center gap-2"
+                  >
+                    <RefreshCw className={`w-3.5 h-3.5 ${inquiriesLoading ? 'animate-spin' : ''}`} />
+                    <span>Refresh Inquiries</span>
+                  </button>
+                </div>
+
+                {/* Metric Cards */}
+                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">Total Inquiries</span>
+                    <h3 className="text-2xl font-bold text-slate-900 mt-1 font-serif">{inquiries.length}</h3>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">New / Unread</span>
+                    <h3 className="text-2xl font-bold text-rose-600 mt-1 font-serif">
+                      {inquiries.filter(i => i.status === 'new').length}
+                    </h3>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">In Progress</span>
+                    <h3 className="text-2xl font-bold text-amber-600 mt-1 font-serif">
+                      {inquiries.filter(i => i.status === 'in_progress').length}
+                    </h3>
+                  </div>
+                  <div className="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+                    <span className="text-xs text-slate-500 font-medium">Resolved</span>
+                    <h3 className="text-2xl font-bold text-emerald-600 mt-1 font-serif">
+                      {inquiries.filter(i => i.status === 'resolved').length}
+                    </h3>
+                  </div>
+                </div>
+
+                {/* Filters */}
+                <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div className="relative flex-1 max-w-md">
+                    <Search className="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                    <input
+                      type="text"
+                      placeholder="Search inquiries by name, email, or subject..."
+                      value={inquirySearch}
+                      onChange={(e) => setInquirySearch(e.target.value)}
+                      className="w-full pl-9 pr-4 py-2 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#704214]"
+                    />
+                  </div>
+                  <div className="flex items-center gap-1.5 overflow-x-auto">
+                    {[
+                      { id: 'all', label: 'All Inquiries' },
+                      { id: 'new', label: 'New' },
+                      { id: 'in_progress', label: 'In Progress' },
+                      { id: 'resolved', label: 'Resolved' }
+                    ].map(f => (
+                      <button
+                        key={f.id}
+                        onClick={() => setInquiryStatusFilter(f.id)}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all whitespace-nowrap ${
+                          inquiryStatusFilter === f.id
+                            ? 'bg-[#704214] text-white shadow-xs'
+                            : 'bg-slate-100 text-slate-600 hover:bg-slate-200'
+                        }`}
+                      >
+                        {f.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Inquiries Cards Grid */}
+                <div className="space-y-4">
+                  {inquiriesLoading ? (
+                    <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center text-slate-500 text-xs">
+                      <RefreshCw className="w-6 h-6 animate-spin mx-auto text-[#704214] mb-2" />
+                      Loading contact inquiries...
+                    </div>
+                  ) : inquiries.length === 0 ? (
+                    <div className="bg-white p-12 rounded-2xl border border-slate-200 text-center text-slate-500 text-xs">
+                      <MessageSquare className="w-8 h-8 mx-auto text-slate-400 mb-2 opacity-50" />
+                      No customer inquiries found.
+                    </div>
+                  ) : (
+                    inquiries
+                      .filter(inq => {
+                        const matchesFilter = inquiryStatusFilter === 'all' || inq.status === inquiryStatusFilter;
+                        const term = inquirySearch.toLowerCase();
+                        const matchesSearch = !term || 
+                          inq.name?.toLowerCase().includes(term) || 
+                          inq.email?.toLowerCase().includes(term) || 
+                          inq.subject?.toLowerCase().includes(term) ||
+                          inq.message?.toLowerCase().includes(term);
+                        return matchesFilter && matchesSearch;
+                      })
+                      .map((inq) => (
+                        <div
+                          key={inq._id || inq.id}
+                          className="bg-white p-5 sm:p-6 rounded-2xl border border-slate-200/80 shadow-xs hover:shadow-md transition-shadow space-y-4"
+                        >
+                          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-100">
+                            <div>
+                              <div className="flex items-center gap-2">
+                                <h3 className="font-bold text-sm text-slate-900">{inq.name}</h3>
+                                <span className={`text-[10px] font-bold px-2.5 py-0.5 rounded-full border ${
+                                  inq.status === 'resolved' 
+                                    ? 'bg-emerald-50 text-emerald-700 border-emerald-200' 
+                                    : inq.status === 'in_progress' 
+                                      ? 'bg-amber-50 text-amber-700 border-amber-200' 
+                                      : 'bg-rose-50 text-rose-700 border-rose-200'
+                                }`}>
+                                  {inq.status === 'resolved' ? 'Resolved' : inq.status === 'in_progress' ? 'In Progress' : 'New Inquiry'}
+                                </span>
+                              </div>
+                              <p className="text-xs text-slate-500 mt-0.5 flex items-center gap-2">
+                                <Mail className="w-3.5 h-3.5 text-slate-400" />
+                                <span>{inq.email}</span>
+                                {inq.phone && <span>• 📞 {inq.phone}</span>}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center gap-2">
+                              {/* Quick status selector */}
+                              <select
+                                value={inq.status || 'new'}
+                                onChange={(e) => handleUpdateInquiryStatus(inq._id || inq.id, e.target.value)}
+                                className="px-2.5 py-1 rounded-lg border border-slate-200 text-xs font-semibold bg-slate-50 text-slate-700"
+                              >
+                                <option value="new">Mark as New</option>
+                                <option value="in_progress">Mark In Progress</option>
+                                <option value="resolved">Mark Resolved</option>
+                              </select>
+
+                              {/* Email Reply */}
+                              <a
+                                href={`mailto:${inq.email}?subject=Re: ${encodeURIComponent(inq.subject || 'Your Inquiry with Annsha Global')}&body=Dear ${encodeURIComponent(inq.name)},%0D%0A%0D%0AThank you for contacting Annsha Global Luxury Boutique.`}
+                                className="px-3 py-1 bg-amber-50 text-[#704214] hover:bg-amber-100 rounded-lg text-xs font-bold transition-colors inline-flex items-center gap-1.5"
+                              >
+                                <Send className="w-3 h-3" />
+                                <span>Reply</span>
+                              </a>
+
+                              {/* Delete */}
+                              <button
+                                onClick={() => handleDeleteInquiry(inq._id || inq.id)}
+                                className="p-1 text-slate-400 hover:text-rose-600 rounded-lg hover:bg-rose-50 transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div>
+                            <p className="text-xs font-bold text-slate-800 mb-1">
+                              Subject: {inq.subject || 'General Inquiry'}
+                            </p>
+                            <div className="p-3.5 rounded-xl bg-slate-50 border border-slate-100 text-xs text-slate-700 leading-relaxed whitespace-pre-wrap">
+                              {inq.message}
+                            </div>
+                          </div>
+
+                          <div className="flex items-center justify-between text-[11px] text-slate-400 pt-1">
+                            <span>
+                              Received: {new Date(inq.createdAt || Date.now()).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'short',
+                                day: 'numeric',
+                                hour: '2-digit',
+                                minute: '2-digit'
+                              })}
+                            </span>
+                            {inq.replyNotes && (
+                              <span className="text-slate-600 italic">Notes: {inq.replyNotes}</span>
+                            )}
+                          </div>
+                        </div>
+                      ))
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* 10. SMTP SETTINGS VIEW */}
+            {(currentView === 'smtp' || activeMenu === 'smtp') && (
+              <div className="space-y-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                  <div>
+                    <h1 className="font-sans text-2xl font-bold text-slate-900 flex items-center gap-2">
+                      <Send className="w-6 h-6 text-[#704214]" />
+                      <span>SMTP Email Configuration</span>
+                    </h1>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Configure your outgoing mail server for customer order receipts, password resets, and notifications.
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleSaveSmtp}
+                    disabled={smtpSaving}
+                    className="px-6 py-2.5 bg-[#704214] hover:bg-[#59330E] text-white rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2 disabled:opacity-50"
+                  >
+                    <CheckCircle className="w-4 h-4 text-[#C59B27]" />
+                    <span>{smtpSaving ? 'Saving Credentials...' : 'Save SMTP Settings'}</span>
+                  </button>
+                </div>
+
+                {smtpMsg && (
+                  <div className={`p-4 rounded-xl text-xs font-medium ${
+                    smtpMsg.includes('success') 
+                      ? 'bg-emerald-50 text-emerald-800 border border-emerald-200' 
+                      : 'bg-rose-50 text-rose-800 border border-rose-200'
+                  }`}>
+                    {smtpMsg}
+                  </div>
+                )}
+
+                {/* Server info banner */}
+                <div className="bg-amber-50/60 border border-amber-200/80 rounded-2xl p-5 text-xs text-amber-900 space-y-2">
+                  <div className="flex items-center gap-2 font-bold text-amber-950">
+                    <AlertCircle className="w-4 h-4 text-amber-700" />
+                    <span>cPanel / Production Mail Server Setup</span>
+                  </div>
+                  <p className="text-amber-900/80 leading-relaxed">
+                    Use your cPanel webmail credentials or Google Workspace SMTP relay. Typical settings for cPanel are Host: <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">mail.nooryak.com</code>, Port: <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">465</code> (SSL) or <code className="bg-amber-100 px-1.5 py-0.5 rounded text-amber-900 font-mono">587</code> (TLS).
+                  </p>
+                </div>
+
+                {/* Settings Form */}
+                <form onSubmit={handleSaveSmtp} className="bg-white rounded-2xl border border-slate-200/80 shadow-xs p-6 sm:p-8 space-y-6">
+                  
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                        SMTP Host / Server <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={smtpForm.host}
+                        onChange={(e) => setSmtpForm({ ...smtpForm, host: e.target.value })}
+                        placeholder="e.g. mail.nooryak.com or smtp.gmail.com"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono focus:outline-none focus:border-[#704214]"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                          SMTP Port <span className="text-rose-500">*</span>
+                        </label>
+                        <input
+                          type="number"
+                          required
+                          value={smtpForm.port}
+                          onChange={(e) => setSmtpForm({ ...smtpForm, port: Number(e.target.value) })}
+                          placeholder="465"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono focus:outline-none focus:border-[#704214]"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                          Security
+                        </label>
+                        <select
+                          value={smtpForm.secure ? 'ssl' : 'tls'}
+                          onChange={(e) => setSmtpForm({ ...smtpForm, secure: e.target.value === 'ssl' })}
+                          className="w-full px-3 py-2.5 rounded-xl border border-slate-200 text-xs font-semibold focus:outline-none focus:border-[#704214]"
+                        >
+                          <option value="ssl">SSL / TLS (Port 465)</option>
+                          <option value="tls">STARTTLS (Port 587)</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                        SMTP Username / Email <span className="text-rose-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={smtpForm.user}
+                        onChange={(e) => setSmtpForm({ ...smtpForm, user: e.target.value })}
+                        placeholder="support@annshagifts.nooryak.com"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono focus:outline-none focus:border-[#704214]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                        SMTP Password / App Secret <span className="text-rose-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <input
+                          type={showSmtpPass ? 'text' : 'password'}
+                          required
+                          value={smtpForm.pass}
+                          onChange={(e) => setSmtpForm({ ...smtpForm, pass: e.target.value })}
+                          placeholder="Enter mail server password"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono focus:outline-none focus:border-[#704214] pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowSmtpPass(!showSmtpPass)}
+                          className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600"
+                        >
+                          {showSmtpPass ? <Eye className="w-4 h-4" /> : <Eye className="w-4 h-4 opacity-50" />}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-5 border-t border-slate-100 pt-5">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                        Sender Display Name
+                      </label>
+                      <input
+                        type="text"
+                        value={smtpForm.fromName}
+                        onChange={(e) => setSmtpForm({ ...smtpForm, fromName: e.target.value })}
+                        placeholder="Annsha Global Luxury Gifts"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs focus:outline-none focus:border-[#704214]"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs font-bold text-slate-800 mb-1.5">
+                        From Email Address
+                      </label>
+                      <input
+                        type="email"
+                        value={smtpForm.fromEmail}
+                        onChange={(e) => setSmtpForm({ ...smtpForm, fromEmail: e.target.value })}
+                        placeholder="orders@annshagifts.nooryak.com"
+                        className="w-full px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-mono focus:outline-none focus:border-[#704214]"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex justify-end pt-2">
+                    <button
+                      type="submit"
+                      disabled={smtpSaving}
+                      className="px-6 py-2.5 bg-[#704214] text-white hover:bg-[#59330E] rounded-xl text-xs font-bold shadow-xs transition-all flex items-center gap-2 disabled:opacity-50"
+                    >
+                      {smtpSaving && <RefreshCw className="w-3.5 h-3.5 animate-spin" />}
+                      <span>Save &amp; Apply Configuration</span>
+                    </button>
+                  </div>
+                </form>
               </div>
             )}
           </main>

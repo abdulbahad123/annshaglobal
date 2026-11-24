@@ -4,6 +4,7 @@ import {
   SlidersHorizontal, Check, ShoppingCart, Truck, ShieldCheck, Headphones, Gift, RotateCcw
 } from 'lucide-react';
 import ProductCard from '../components/home/ProductCard';
+import { CategoryShimmer, ProductGridShimmer } from '../components/common/Shimmer';
 
 const ITEMS_PER_PAGE = 12;
 
@@ -416,10 +417,13 @@ export default function ShopPage({
           </div>
 
           {/* Enlarged Horizontal Track with Larger Pedestals */}
-          <div 
-            id="shop-cats-slider"
-            className="flex items-center gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-2"
-          >
+          {dynamicCategories.length === 0 ? (
+            <CategoryShimmer count={6} />
+          ) : (
+            <div 
+              id="shop-cats-slider"
+              className="flex items-center gap-4 sm:gap-6 overflow-x-auto no-scrollbar py-2"
+            >
             {/* "All" Category Pedestal */}
             <div
               onClick={() => {
@@ -446,7 +450,7 @@ export default function ShopPage({
                 All Products
               </span>
               <span className="text-[11px] text-[#7A6E65] mt-0.5">
-                {products.length} items
+                {products.length} {products.length === 1 ? 'item' : 'items'}
               </span>
             </div>
 
@@ -493,12 +497,13 @@ export default function ShopPage({
 
                   {/* Category Count */}
                   <span className="text-[11px] text-[#7A6E65] mt-0.5 font-medium">
-                    {cat.count} items
+                    {cat.count} {cat.count === 1 ? 'item' : 'items'}
                   </span>
                 </div>
               );
             })}
           </div>
+          )}
 
         </div>
       </section>
@@ -605,8 +610,10 @@ export default function ShopPage({
               </div>
             )}
 
-            {/* Products Grid */}
-            {currentProducts.length === 0 ? (
+            {/* Products Grid with Shimmer while Loading */}
+            {products.length === 0 ? (
+              <ProductGridShimmer count={8} />
+            ) : currentProducts.length === 0 ? (
               <div className="bg-white rounded-3xl border border-[#EADBCC] p-12 text-center space-y-4">
                 <div className="w-16 h-16 rounded-full bg-[#FAF5EE] text-[#704214] flex items-center justify-center mx-auto">
                   <Filter className="w-8 h-8" />

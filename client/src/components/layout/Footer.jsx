@@ -14,11 +14,11 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
 
   return (
     <footer 
-      className="text-[#EFE7DD] pt-12 pb-6 border-t border-[#542B15] relative overflow-hidden"
-      style={{ backgroundColor: '#3A1B0B' }}
+      className="text-[#EFE7DD] pt-12 pb-6 border-t border-[#461F0C] relative overflow-hidden"
+      style={{ backgroundColor: '#220D04' }}
     >
       {/* Subtle decorative gold leaf corner illustration matching Image 2 */}
-      <div className="absolute right-0 bottom-0 pointer-events-none select-none opacity-25">
+      <div className="absolute right-0 bottom-0 pointer-events-none select-none opacity-20">
         <svg width="220" height="180" viewBox="0 0 220 180" fill="none">
           <path d="M120 180 C130 130 170 100 220 90 C180 85 140 100 120 140 Z" fill="#C59B27" />
           <path d="M140 180 C160 140 190 120 220 120 C190 120 160 140 140 180 Z" fill="#D4AF37" />
@@ -28,10 +28,10 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
 
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16">
         {/* Main 5 Columns: 2 columns per row on mobile, 5 columns on desktop */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-y-8 gap-x-4 sm:gap-x-6 lg:gap-0 pb-10 border-b border-[#542B15]">
+        <div className="grid grid-cols-2 lg:grid-cols-5 gap-y-8 gap-x-4 sm:gap-x-6 lg:gap-0 pb-10 border-b border-[#461F0C]">
           
           {/* Column 1: Brand Info & Logo (spans 2 columns on mobile for prominence) */}
-          <div className="col-span-2 lg:col-span-1 space-y-4 lg:pr-6 lg:border-r border-[#542B15] pb-2 lg:pb-0">
+          <div className="col-span-2 lg:col-span-1 space-y-4 lg:pr-6 lg:border-r border-[#461F0C] pb-2 lg:pb-0">
             <button
               onClick={() => onSelectNav && onSelectNav('home')}
               className="flex items-center gap-3 text-left group"
@@ -39,7 +39,7 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
               <img
                 src={logoUrl || '/images/logo.png'}
                 alt="ANNSHA GLOBAL"
-                className="h-10 sm:h-11 w-auto object-contain brightness-110 transition-transform duration-300 group-hover:scale-105"
+                className="h-10 sm:h-12 w-auto object-contain brightness-110 transition-transform duration-300 group-hover:scale-105"
                 onError={(e) => {
                   e.target.onerror = null;
                   e.target.src = '/images/logo.png';
@@ -47,7 +47,7 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
               />
             </button>
 
-            <p className="text-xs text-[#C2B2A3] leading-relaxed max-w-sm">
+            <p className="text-xs sm:text-[13px] text-[#D8CCC2] leading-relaxed max-w-sm">
               {footerData?.aboutText || 'Your one-stop destination for premium products and unique finds.'}
             </p>
 
@@ -56,28 +56,28 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
               <a 
                 href="#" 
                 aria-label="Facebook"
-                className="w-7 h-7 rounded-full bg-[#542B15] hover:bg-[#C59B27] hover:text-[#3A1B0B] text-[#EFE7DD] flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-full bg-[#461F0C] hover:bg-[#C59B27] hover:text-[#220D04] text-[#EFE7DD] flex items-center justify-center transition-colors"
               >
                 <Facebook className="w-3.5 h-3.5 fill-current" />
               </a>
               <a 
                 href="#" 
                 aria-label="Instagram"
-                className="w-7 h-7 rounded-full bg-[#542B15] hover:bg-[#C59B27] hover:text-[#3A1B0B] text-[#EFE7DD] flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-full bg-[#461F0C] hover:bg-[#C59B27] hover:text-[#220D04] text-[#EFE7DD] flex items-center justify-center transition-colors"
               >
                 <Instagram className="w-3.5 h-3.5" />
               </a>
               <a 
                 href="#" 
                 aria-label="LinkedIn"
-                className="w-7 h-7 rounded-full bg-[#542B15] hover:bg-[#C59B27] hover:text-[#3A1B0B] text-[#EFE7DD] flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-full bg-[#461F0C] hover:bg-[#C59B27] hover:text-[#220D04] text-[#EFE7DD] flex items-center justify-center transition-colors"
               >
                 <Linkedin className="w-3.5 h-3.5 fill-current" />
               </a>
               <a 
                 href="#" 
                 aria-label="Pinterest"
-                className="w-7 h-7 rounded-full bg-[#542B15] hover:bg-[#C59B27] hover:text-[#3A1B0B] text-[#EFE7DD] flex items-center justify-center transition-colors"
+                className="w-7 h-7 rounded-full bg-[#461F0C] hover:bg-[#C59B27] hover:text-[#220D04] text-[#EFE7DD] flex items-center justify-center transition-colors"
               >
                 <PinterestIcon className="w-3.5 h-3.5" />
               </a>
@@ -85,26 +85,26 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
           </div>
 
           {/* Column 2: Quick Links (Col 1 on mobile row 2) */}
-          <div className="col-span-1 space-y-3 lg:px-6 lg:border-r border-[#542B15]">
-            <h3 className="font-serif text-sm font-semibold text-white tracking-wide">
+          <div className="col-span-1 space-y-3 lg:px-6 lg:border-r border-[#461F0C]">
+            <h3 className="font-serif text-[15px] sm:text-base font-bold text-white tracking-wide">
               Quick Links
             </h3>
-            <ul className="space-y-2 text-xs text-[#C2B2A3]">
+            <ul className="space-y-2.5 text-xs sm:text-[13px] text-[#D8CCC2]">
               <li><button onClick={() => onSelectNav && onSelectNav('home')} className="hover:text-white transition-colors">Home</button></li>
               <li><button onClick={() => onSelectNav && onSelectNav('shop')} className="hover:text-white transition-colors">Shop</button></li>
               <li><button onClick={() => onSelectNav && onSelectNav('blogs')} className="hover:text-white transition-colors">Blogs</button></li>
-              <li><button onClick={() => onSelectNav && onSelectNav('our_collection')} className="hover:text-white transition-colors">Our Collection</button></li>
+              <li><button onClick={() => onSelectNav && onSelectNav('flash_deals')} className="hover:text-white transition-colors">Flash Deals</button></li>
               <li><button onClick={() => onSelectNav && onSelectNav('our_brand')} className="hover:text-white transition-colors">Our Brand</button></li>
               <li><button onClick={() => onSelectNav && onSelectNav('contact')} className="hover:text-white transition-colors">Contact</button></li>
             </ul>
           </div>
 
           {/* Column 3: Customer Care (Col 2 on mobile row 2) */}
-          <div className="col-span-1 space-y-3 lg:px-6 lg:border-r border-[#542B15]">
-            <h3 className="font-serif text-sm font-semibold text-white tracking-wide">
+          <div className="col-span-1 space-y-3 lg:px-6 lg:border-r border-[#461F0C]">
+            <h3 className="font-serif text-[15px] sm:text-base font-bold text-white tracking-wide">
               Customer Care
             </h3>
-            <ul className="space-y-2 text-xs text-[#C2B2A3]">
+            <ul className="space-y-2.5 text-xs sm:text-[13px] text-[#D8CCC2]">
               <li><button onClick={() => onSelectNav && onSelectNav('faq')} className="hover:text-white transition-colors">FAQs</button></li>
               <li><button onClick={() => onSelectNav && onSelectNav('faq')} className="hover:text-white transition-colors">Shipping Policy</button></li>
               <li><button onClick={() => onSelectNav && onSelectNav('faq')} className="hover:text-white transition-colors">Return Policy</button></li>
@@ -115,29 +115,29 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
           </div>
 
           {/* Column 4: Our Categories (Col 1 on mobile row 3) */}
-          <div className="col-span-1 space-y-3 lg:px-6 lg:border-r border-[#542B15]">
-            <h3 className="font-serif text-sm font-semibold text-white tracking-wide">
+          <div className="col-span-1 space-y-3 lg:px-6 lg:border-r border-[#461F0C]">
+            <h3 className="font-serif text-[15px] sm:text-base font-bold text-white tracking-wide">
               Our Categories
             </h3>
-            <ul className="space-y-2 text-xs text-[#C2B2A3]">
-              <li><button onClick={() => onSelectCategory && onSelectCategory('fashion-wear')} className="hover:text-white transition-colors">Fashion &amp; Wear</button></li>
-              <li><button onClick={() => onSelectCategory && onSelectCategory('electronics-gadgets')} className="hover:text-white transition-colors">Electronics</button></li>
+            <ul className="space-y-2.5 text-xs sm:text-[13px] text-[#D8CCC2]">
+              <li><button onClick={() => onSelectCategory && onSelectCategory('fashion-apparel')} className="hover:text-white transition-colors">Fashion &amp; Apparel</button></li>
+              <li><button onClick={() => onSelectCategory && onSelectCategory('electronics')} className="hover:text-white transition-colors">Electronics &amp; Gadgets</button></li>
               <li><button onClick={() => onSelectCategory && onSelectCategory('home-living')} className="hover:text-white transition-colors">Home &amp; Living</button></li>
-              <li><button onClick={() => onSelectCategory && onSelectCategory('beauty-personal-care')} className="hover:text-white transition-colors">Beauty &amp; Care</button></li>
-              <li><button onClick={() => onSelectCategory && onSelectCategory('sports-fitness')} className="hover:text-white transition-colors">Sports &amp; Fitness</button></li>
+              <li><button onClick={() => onSelectCategory && onSelectCategory('beauty-personal-care')} className="hover:text-white transition-colors">Beauty &amp; Personal Care</button></li>
+              <li><button onClick={() => onSelectCategory && onSelectCategory('jewellery-accessories')} className="hover:text-white transition-colors">Jewellery &amp; Accessories</button></li>
               <li><button onClick={() => onSelectCategory && onSelectCategory('gifts-more')} className="hover:text-white transition-colors">Gifts &amp; More</button></li>
             </ul>
           </div>
 
           {/* Column 5: Download Our App (Col 2 on mobile row 3) */}
           <div className="col-span-1 space-y-4 lg:pl-6">
-            <h3 className="font-serif text-sm font-semibold text-white tracking-wide">
+            <h3 className="font-serif text-[15px] sm:text-base font-bold text-white tracking-wide">
               Download Our App
             </h3>
 
             {/* Google Play & App Store buttons */}
             <div className="space-y-2">
-              <div className="bg-[#201007] hover:bg-[#2C170B] px-3.5 py-2 rounded-xl flex items-center gap-3 border border-[#4D2713] cursor-pointer transition-colors">
+              <div className="bg-[#120602] hover:bg-[#1E0B04] px-3.5 py-2 rounded-xl flex items-center gap-3 border border-[#461F0C] cursor-pointer transition-colors">
                 <svg className="w-5 h-5 fill-current text-white shrink-0" viewBox="0 0 24 24">
                   <path d="M3.6 1.8l10.9 10.9-4.2 4.2-8.3-4.8c-.8-.5-1.3-1.3-1.3-2.3 0-.9.5-1.8 1.3-2.3l1.6-5.7zm11.9 11.9l2.7-2.7c.6-.6.6-1.5 0-2.1l-2.7-2.7-3.1 3.1 3.1 4.4z"/>
                 </svg>
@@ -147,7 +147,7 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
                 </div>
               </div>
 
-              <div className="bg-[#201007] hover:bg-[#2C170B] px-3.5 py-2 rounded-xl flex items-center gap-3 border border-[#4D2713] cursor-pointer transition-colors">
+              <div className="bg-[#120602] hover:bg-[#1E0B04] px-3.5 py-2 rounded-xl flex items-center gap-3 border border-[#461F0C] cursor-pointer transition-colors">
                 <svg className="w-5 h-5 fill-current text-white shrink-0" viewBox="0 0 24 24">
                   <path d="M18.7 19.5c-.8 1.2-1.7 2.4-3.1 2.5-1.3.1-1.8-.8-3.3-.8-1.5 0-2 .7-3.3.8-1.3.1-2.3-1.2-3.1-2.5-1.7-2.4-3-6.9-1.2-9.9.9-1.5 2.4-2.5 4-2.5 1.3 0 2.5.9 3.3.9.8 0 2.2-.9 3.7-.9 1.5 0 2.9.8 3.7 2-3.2 1.7-2.7 6.1.7 7.5-.7 1.8-1.6 3.6-2.7 5.4zM15.4 6.6c.7-.9 1.2-2.1 1-3.3-1.1.1-2.3.7-3 1.6-.6.8-1.2 2-1 3.2 1.2.1 2.3-.6 3-1.5z"/>
                 </svg>
@@ -158,19 +158,22 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
               </div>
             </div>
 
-            {/* Accepted Payments Row matching Reference Image 2 */}
+            {/* Accepted Payments Row - Fixed with Flex-wrap so it NEVER cuts off on mobile */}
             <div className="pt-2">
-              <div className="flex items-center gap-1.5">
-                <span className="px-2 py-1 bg-white text-[#1A1F71] font-black text-[10px] rounded tracking-tight shadow-sm">
+              <span className="text-[10px] text-[#A8988C] font-semibold uppercase tracking-wider block mb-1.5">
+                Guaranteed Safe Checkout
+              </span>
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                <span className="px-2.5 py-1 bg-white text-[#1A1F71] font-black text-[10px] rounded tracking-tight shadow-sm">
                   VISA
                 </span>
-                <span className="px-2 py-1 bg-white text-[#EB001B] font-bold text-[10px] rounded tracking-tight shadow-sm">
+                <span className="px-2.5 py-1 bg-white text-[#EB001B] font-bold text-[10px] rounded tracking-tight shadow-sm">
                   Mastercard
                 </span>
-                <span className="px-2 py-1 bg-white text-[#003087] font-bold text-[10px] rounded tracking-tight shadow-sm">
+                <span className="px-2.5 py-1 bg-white text-[#003087] font-bold text-[10px] rounded tracking-tight shadow-sm">
                   PayPal
                 </span>
-                <span className="px-2 py-1 bg-white text-[#635BFF] font-bold text-[10px] rounded tracking-tight shadow-sm">
+                <span className="px-2.5 py-1 bg-white text-[#635BFF] font-bold text-[10px] rounded tracking-tight shadow-sm">
                   stripe
                 </span>
               </div>
@@ -179,10 +182,10 @@ export default function Footer({ config, logoUrl, onSelectNav, onSelectCategory,
 
         </div>
 
-        {/* Bottom Bar: Copyright & Legal */}
+        {/* Bottom Bar: Copyright & Legal (Legal links hidden on mobile per Task 4) */}
         <div className="pt-5 flex flex-col sm:flex-row items-center justify-between text-[11px] text-[#A8988C] gap-3">
           <p>{footerData?.copyrightText || '© 2025 Annsha Global. All rights reserved.'}</p>
-          <div className="flex items-center gap-5">
+          <div className="hidden sm:flex items-center gap-5">
             <button onClick={() => onSelectNav && onSelectNav('faq')} className="hover:text-white transition-colors">Privacy Policy</button>
             <span>|</span>
             <button onClick={() => onSelectNav && onSelectNav('faq')} className="hover:text-white transition-colors">Terms of Service</button>

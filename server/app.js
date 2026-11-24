@@ -21,6 +21,8 @@ import paymentRoutes from './routes/paymentRoutes.js';
 import variationRoutes from './routes/variationRoutes.js';
 import couponRoutes from './routes/couponRoutes.js';
 import staffRoutes from './routes/staffRoutes.js';
+import subscriberRoutes from './routes/subscriberRoutes.js';
+import inquiryRoutes from './routes/inquiryRoutes.js';
 
 import { errorHandler } from './middlewares/errorHandler.js';
 import { apiLimiter } from './middlewares/rateLimiter.js';
@@ -98,6 +100,8 @@ app.use('/api/v1/payments', paymentRoutes);
 app.use('/api/v1/variations', variationRoutes);
 app.use('/api/v1/coupons', couponRoutes);
 app.use('/api/v1/staff', staffRoutes);
+app.use('/api/v1/subscribers', subscriberRoutes);
+app.use('/api/v1/inquiries', inquiryRoutes);
 
 // Health check endpoint with Live Database diagnostics
 app.get('/api/health', (req, res) => {

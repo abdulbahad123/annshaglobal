@@ -1,19 +1,28 @@
 import React, { useState } from 'react';
 import { Mail, CheckCircle2 } from 'lucide-react';
+import axiosClient from '../../api/axiosClient';
 
 export default function PreFooterNewsletter({ onSubscribe }) {
   const [email, setEmail] = useState('');
   const [subscribed, setSubscribed] = useState(false);
+  const [subMsg, setSubMsg] = useState('');
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!email) return;
-    setSubscribed(true);
-    if (onSubscribe) onSubscribe(email);
-    setTimeout(() => {
-      setSubscribed(false);
-      setEmail('');
-    }, 4000);
+    try {
+      const res = await axiosClient.post('/subscribers', { email, source: 'page_prefooter_newsletter' });
+      setSubscribed(true);
+      setSubMsg(res.message || 'Subscribed successfully!');
+      if (onSubscribe) onSubscribe(email);
+      setTimeout(() => {
+        setSubscribed(false);
+        setSubMsg('');
+        setEmail('');
+      }, 5000);
+    } catch (err) {
+      alert(err.message || 'Subscription failed. Please check your email.');
+    }
   };
 
   return (
