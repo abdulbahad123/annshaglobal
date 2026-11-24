@@ -14,7 +14,7 @@ const initialCategories = [
     name: 'Beauty & Personal Care',
     slug: 'beauty-personal-care',
     description: 'Luxury skincare, fragrances and personal care essentials',
-    image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=80',
+    image: '/images/categories/beauty-care.webp',
     orderIndex: 1,
     productCount: 2,
     isActive: true,
@@ -25,7 +25,7 @@ const initialCategories = [
     name: 'Electronics & Gadgets',
     slug: 'electronics-gadgets',
     description: 'Smart watches, wireless headphones and modern tech',
-    image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop&q=80',
+    image: '/images/categories/electronics.webp',
     orderIndex: 2,
     productCount: 3,
     isActive: true,
@@ -36,7 +36,7 @@ const initialCategories = [
     name: 'Jewellery & Accessories',
     slug: 'jewellery-accessories',
     description: 'Elegantly crafted gold, silver and gemstone accessories',
-    image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=80',
+    image: '/images/categories/jewellery.webp',
     orderIndex: 3,
     productCount: 2,
     isActive: true,
@@ -47,7 +47,7 @@ const initialCategories = [
     name: 'Home & Living',
     slug: 'home-living',
     description: 'Refined decor, premium seating and cozy accents',
-    image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=80',
+    image: '/images/categories/home-living.webp',
     orderIndex: 4,
     productCount: 1,
     isActive: true,
@@ -58,7 +58,7 @@ const initialCategories = [
     name: 'Books & Media',
     slug: 'books-media',
     description: 'Bestselling titles, stationery and premium journals',
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80',
+    image: '/images/categories/books-media.webp',
     orderIndex: 5,
     productCount: 1,
     isActive: true,
@@ -69,7 +69,7 @@ const initialCategories = [
     name: 'Gifts & More',
     slug: 'gifts-more',
     description: 'Thoughtful luxury gift sets and celebration boxes',
-    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=500&auto=format&fit=crop&q=80',
+    image: '/images/categories/gifts-more.webp',
     orderIndex: 6,
     productCount: 1,
     isActive: true,
@@ -91,7 +91,7 @@ const initialProducts = [
     rating: 4.5,
     numReviews: 128,
     badge: 'todays_deals',
-    images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/nike-air-force-1.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -109,7 +109,7 @@ const initialProducts = [
     rating: 4.5,
     numReviews: 104,
     badge: 'todays_deals',
-    images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/smart-watch-series-7.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -127,7 +127,7 @@ const initialProducts = [
     rating: 4.5,
     numReviews: 77,
     badge: 'todays_deals',
-    images: ['https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/stylish-handbag.webp', '/images/sliderimage1.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -145,7 +145,7 @@ const initialProducts = [
     rating: 4.5,
     numReviews: 57,
     badge: 'todays_deals',
-    images: ['https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/luxury-perfume.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -163,7 +163,7 @@ const initialProducts = [
     rating: 4.5,
     numReviews: 68,
     badge: 'todays_deals',
-    images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/running-shoes.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -181,7 +181,7 @@ const initialProducts = [
     rating: 4.5,
     numReviews: 71,
     badge: 'todays_deals',
-    images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/noise-cancelling-headphones.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -199,7 +199,7 @@ const initialProducts = [
     rating: 4.8,
     numReviews: 89,
     badge: 'top_rated',
-    images: ['https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/gold-pendant-necklace.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -217,7 +217,7 @@ const initialProducts = [
     rating: 4.9,
     numReviews: 42,
     badge: 'new_arrivals',
-    images: ['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&auto=format&fit=crop&q=80'],
+    images: ['/images/products/ceramic-table-lamp.webp'],
     isFeatured: true,
     isActive: true,
     createdAt: new Date().toISOString()
@@ -323,15 +323,23 @@ const initialCMS = {
       subtitle: 'Discover Premium Products with Unbeatable Deals.',
       buttonText: 'Shop Now',
       buttonLink: '/shop',
-      imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&auto=format&fit=crop&q=80',
+      imageUrl: '/images/sliderimage2.webp',
+      badgeText: 'Live Beautifully'
+    },
+    {
+      tagline: 'EXCLUSIVE ARRIVALS',
+      title: 'Elegance & Grace,\nCrafted for You.',
+      subtitle: 'Explore handcrafted accessories and bespoke perfumes.',
+      buttonText: 'Shop Now',
+      buttonLink: '/shop',
+      imageUrl: '/images/sliderimage1.webp',
       badgeText: 'Live Beautifully'
     }
   ],
   valueProps: [
-    { title: 'Free Shipping', subtitle: 'On All Orders', icon: 'truck' },
-    { title: 'Secure Payments', subtitle: '100% Secure', icon: 'shield-check' },
-    { title: 'Easy Returns', subtitle: 'Within 7 Days', icon: 'rotate-ccw' },
-    { title: 'Exclusive Offers', subtitle: 'Save More', icon: 'gift' }
+    { title: 'Premium Quality', subtitle: 'Always', icon: 'gem' },
+    { title: 'Free Shipping', subtitle: 'On Orders Above $50', icon: 'truck' },
+    { title: 'Secure Payments', subtitle: '100% Secure', icon: 'shield-check' }
   ],
   promoBanners: {
     banner1: {
@@ -339,14 +347,14 @@ const initialCMS = {
       subtitle: 'Step into style',
       buttonText: 'Shop the Sale',
       buttonLink: '/shop',
-      imageUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80'
+      imageUrl: '/images/offerbanner1.webp'
     },
     banner2: {
       title: 'Smart Home Smarter Living Up to 50% OFF',
       subtitle: 'Modern comfort',
       buttonText: 'Shop Smart',
       buttonLink: '/shop',
-      imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&auto=format&fit=crop&q=80'
+      imageUrl: '/images/offerbanner2.webp'
     }
   },
   brands: [

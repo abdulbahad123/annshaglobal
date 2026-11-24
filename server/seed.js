@@ -114,42 +114,42 @@ const seedData = async () => {
         name: 'Beauty & Personal Care',
         slug: 'beauty-personal-care',
         description: 'Luxury skincare, fragrances and personal care essentials',
-        image: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=500&auto=format&fit=crop&q=80',
+        image: '/images/categories/beauty-care.webp',
         orderIndex: 1
       },
       {
         name: 'Electronics & Gadgets',
         slug: 'electronics-gadgets',
         description: 'Smart watches, wireless headphones and modern tech',
-        image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?w=500&auto=format&fit=crop&q=80',
+        image: '/images/categories/electronics.webp',
         orderIndex: 2
       },
       {
         name: 'Jewellery & Accessories',
         slug: 'jewellery-accessories',
         description: 'Elegantly crafted gold, silver and gemstone accessories',
-        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500&auto=format&fit=crop&q=80',
+        image: '/images/categories/jewellery.webp',
         orderIndex: 3
       },
       {
         name: 'Home & Living',
         slug: 'home-living',
         description: 'Refined decor, premium seating and cozy accents',
-        image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=500&auto=format&fit=crop&q=80',
+        image: '/images/categories/home-living.webp',
         orderIndex: 4
       },
       {
         name: 'Books & Media',
         slug: 'books-media',
         description: 'Bestselling titles, stationery and premium journals',
-        image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=500&auto=format&fit=crop&q=80',
+        image: '/images/categories/books-media.webp',
         orderIndex: 5
       },
       {
         name: 'Gifts & More',
         slug: 'gifts-more',
         description: 'Thoughtful luxury gift sets and celebration boxes',
-        image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=500&auto=format&fit=crop&q=80',
+        image: '/images/categories/gifts-more.webp',
         orderIndex: 6
       }
     ]);
@@ -166,6 +166,7 @@ const seedData = async () => {
         slug: 'nike-air-force-1-sneakers',
         sku: 'AG-NK-101',
         description: 'Timeless style with premium leather construction and lightweight Air cushioning for all-day luxury comfort.',
+        subtitle: 'Timeless style with premium leather construction and lightweight Air cushioning',
         category: catMap['electronics-gadgets'],
         price: 69.99,
         comparePrice: 89.99,
@@ -173,7 +174,23 @@ const seedData = async () => {
         rating: 4.5,
         numReviews: 128,
         badge: 'todays_deals',
-        images: ['https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/nike-air-force-1.webp'],
+        orderIndex: 1,
+        weight: '0.75 kg',
+        dimensions: '25 x 15 x 10 cm',
+        material: 'Premium Leather',
+        features: [
+          'Premium high-grade materials & craftsmanship',
+          'Engineered for long-lasting luxury & durability',
+          'Comfortable, ergonomic & timeless design'
+        ],
+        variants: [
+          { name: 'Beige', color: 'Beige', hex: '#E4CFBA', image: '/images/products/nike-air-force-1.webp' },
+          { name: 'Purple', color: 'Purple', hex: '#C2A5D8', image: '/images/products/nike-air-force-1.webp' },
+          { name: 'Black', color: 'Black', hex: '#2B2B2B', image: '/images/products/nike-air-force-1.webp' },
+          { name: 'Pink', color: 'Pink', hex: '#F3A7BD', image: '/images/products/nike-air-force-1.webp' }
+        ],
+        sizes: ['Standard', 'Medium', 'Large'],
         isFeatured: true
       },
       {
@@ -181,6 +198,7 @@ const seedData = async () => {
         slug: 'smart-watch-series-7',
         sku: 'AG-SW-202',
         description: 'Cutting-edge OLED retina display, ECG monitor, fitness tracking, and waterproof titanium chassis.',
+        subtitle: 'Cutting-edge OLED retina display, ECG monitor and fitness tracking',
         category: catMap['electronics-gadgets'],
         price: 99.99,
         comparePrice: 129.99,
@@ -188,14 +206,30 @@ const seedData = async () => {
         rating: 4.5,
         numReviews: 104,
         badge: 'todays_deals',
-        images: ['https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/smart-watch-series-7.webp'],
+        orderIndex: 2,
+        weight: '0.15 kg',
+        dimensions: '44 x 38 x 10.7 mm',
+        material: 'Titanium & Sapphire Glass',
+        features: [
+          'Always-On Retina OLED display with 1000 nits',
+          'Blood Oxygen and ECG app with irregular rhythm notification',
+          'Fast USB-C magnetic wireless charging'
+        ],
+        variants: [
+          { name: 'Midnight Black', color: 'Black', hex: '#1C1C1E', image: '/images/products/smart-watch-series-7.webp' },
+          { name: 'Gold Stainless', color: 'Gold', hex: '#D4AF37', image: '/images/products/smart-watch-series-7.webp' },
+          { name: 'Silver Aluminum', color: 'Silver', hex: '#E5E5EA', image: '/images/products/smart-watch-series-7.webp' }
+        ],
+        sizes: ['41mm', '45mm'],
         isFeatured: true
       },
       {
-        title: 'Stylish Handbag',
+        title: 'Premium Leather Handbag',
         slug: 'stylish-handbag',
         sku: 'AG-HB-303',
         description: 'Handcrafted genuine calfskin leather with polished gold hardware and versatile shoulder strap.',
+        subtitle: 'Handcrafted genuine calfskin leather with polished gold hardware',
         category: catMap['jewellery-accessories'],
         price: 49.99,
         comparePrice: 79.99,
@@ -203,7 +237,23 @@ const seedData = async () => {
         rating: 4.5,
         numReviews: 77,
         badge: 'todays_deals',
-        images: ['https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/stylish-handbag.webp', '/images/sliderimage1.webp'],
+        orderIndex: 3,
+        weight: '0.68 kg',
+        dimensions: '28 x 20 x 12 cm',
+        material: '100% Genuine Italian Calfskin',
+        features: [
+          'Hand-stitched full grain calfskin leather',
+          '24k gold-plated brass lock mechanism and key fob',
+          'Detachable cross-body shoulder strap'
+        ],
+        variants: [
+          { name: 'Warm Beige', color: 'Beige', hex: '#D5BA98', image: '/images/products/stylish-handbag.webp' },
+          { name: 'Lavender Purple', color: 'Purple', hex: '#B8A1D1', image: '/images/products/stylish-handbag.webp' },
+          { name: 'Noir Black', color: 'Black', hex: '#1E1E1E', image: '/images/products/stylish-handbag.webp' },
+          { name: 'Blush Pink', color: 'Pink', hex: '#F0B7CD', image: '/images/products/stylish-handbag.webp' }
+        ],
+        sizes: ['Mini', 'Medium', 'Grande'],
         isFeatured: true
       },
       {
@@ -211,6 +261,7 @@ const seedData = async () => {
         slug: 'luxury-perfume',
         sku: 'AG-PF-404',
         description: 'An enchanting blend of warm amber, blooming jasmine, and delicate Madagascar vanilla.',
+        subtitle: 'An enchanting blend of warm amber, blooming jasmine, and delicate Madagascar vanilla',
         category: catMap['beauty-personal-care'],
         price: 79.99,
         comparePrice: 99.99,
@@ -218,7 +269,21 @@ const seedData = async () => {
         rating: 4.5,
         numReviews: 57,
         badge: 'todays_deals',
-        images: ['https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/luxury-perfume.webp'],
+        orderIndex: 4,
+        weight: '0.35 kg',
+        dimensions: '15 x 8 x 8 cm',
+        material: 'French Crystal Bottle with Gold Cap',
+        features: [
+          'Eau de Parfum concentration with 14+ hours longevity',
+          'Sustainably harvested Grasse rose and vanilla notes',
+          'Heavy crystal flacon with magnetic atomizer'
+        ],
+        variants: [
+          { name: 'Rose Prestige', color: 'Rose', hex: '#E8A598', image: '/images/products/luxury-perfume.webp' },
+          { name: 'Amber Royal', color: 'Amber', hex: '#C68B59', image: '/images/products/luxury-perfume.webp' }
+        ],
+        sizes: ['50ml', '100ml'],
         isFeatured: true
       },
       {
@@ -226,6 +291,7 @@ const seedData = async () => {
         slug: 'running-shoes',
         sku: 'AG-RS-505',
         description: 'Engineered mesh upper with responsive foam midsole designed for distance performance.',
+        subtitle: 'Engineered mesh upper with responsive foam midsole',
         category: catMap['electronics-gadgets'],
         price: 59.99,
         comparePrice: 89.99,
@@ -233,7 +299,21 @@ const seedData = async () => {
         rating: 4.5,
         numReviews: 68,
         badge: 'todays_deals',
-        images: ['https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/running-shoes.webp'],
+        orderIndex: 5,
+        weight: '0.52 kg',
+        dimensions: '30 x 18 x 12 cm',
+        material: 'Breathable Flyknit & Zoom Foam',
+        features: [
+          'Ultra-lightweight aerodynamic silhouette',
+          'Shock-absorbing high-rebound midsole',
+          'Anti-slip waffle rubber outsole'
+        ],
+        variants: [
+          { name: 'Ocean Blue', color: 'Blue', hex: '#2A52BE', image: '/images/products/running-shoes.webp' },
+          { name: 'Volt Black', color: 'Black', hex: '#111111', image: '/images/products/running-shoes.webp' }
+        ],
+        sizes: ['US 8', 'US 9', 'US 10', 'US 11'],
         isFeatured: true
       },
       {
@@ -241,6 +321,7 @@ const seedData = async () => {
         slug: 'noise-cancelling-headphones',
         sku: 'AG-HP-606',
         description: 'Industry-leading active noise cancellation with 40-hour battery life and spatial audio immersion.',
+        subtitle: 'Industry-leading active noise cancellation with 40-hour battery life',
         category: catMap['electronics-gadgets'],
         price: 89.99,
         comparePrice: 129.99,
@@ -248,7 +329,21 @@ const seedData = async () => {
         rating: 4.5,
         numReviews: 71,
         badge: 'todays_deals',
-        images: ['https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/noise-cancelling-headphones.webp'],
+        orderIndex: 6,
+        weight: '0.25 kg',
+        dimensions: '20 x 18 x 8 cm',
+        material: 'Anodized Aluminum & Memory Foam',
+        features: [
+          'Hybrid active noise cancellation with 6 microphones',
+          'Hi-Res Audio Certified with 40mm beryllium drivers',
+          'Multipoint Bluetooth 5.3 connection'
+        ],
+        variants: [
+          { name: 'Midnight Navy', color: 'Navy', hex: '#1E293B', image: '/images/products/noise-cancelling-headphones.webp' },
+          { name: 'Matte Silver', color: 'Silver', hex: '#94A3B8', image: '/images/products/noise-cancelling-headphones.webp' }
+        ],
+        sizes: ['Over-Ear'],
         isFeatured: true
       },
       // Additional items for other tabs
@@ -257,6 +352,7 @@ const seedData = async () => {
         slug: 'gold-pendant-necklace',
         sku: 'AG-GP-707',
         description: '18k gold plated handcrafted delicate chain with solitaire cubic zirconia.',
+        subtitle: '18k gold plated handcrafted delicate chain with solitaire pendant',
         category: catMap['jewellery-accessories'],
         price: 34.99,
         comparePrice: 49.99,
@@ -264,7 +360,21 @@ const seedData = async () => {
         rating: 4.8,
         numReviews: 89,
         badge: 'top_rated',
-        images: ['https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/gold-pendant-necklace.webp'],
+        orderIndex: 7,
+        weight: '0.04 kg',
+        dimensions: '45 cm chain length',
+        material: '18K Yellow Gold Vermeil on Sterling Silver',
+        features: [
+          'Triple micro-plated in 18k yellow gold for lifetime luster',
+          'Hypoallergenic, nickel-free & lead-free',
+          'Secure lobster claw clasp with 5cm extension'
+        ],
+        variants: [
+          { name: '18k Yellow Gold', color: 'Gold', hex: '#E5B842', image: '/images/products/gold-pendant-necklace.webp' },
+          { name: 'Rose Gold', color: 'Rose Gold', hex: '#B76E79', image: '/images/products/gold-pendant-necklace.webp' }
+        ],
+        sizes: ['45cm', '50cm'],
         isFeatured: true
       },
       {
@@ -272,6 +382,7 @@ const seedData = async () => {
         slug: 'ceramic-table-lamp',
         sku: 'AG-CL-808',
         description: 'Minimalist beige textured ceramic body with warm linen fabric shade.',
+        subtitle: 'Minimalist beige textured ceramic body with warm linen fabric shade',
         category: catMap['home-living'],
         price: 64.00,
         comparePrice: 85.00,
@@ -279,7 +390,21 @@ const seedData = async () => {
         rating: 4.9,
         numReviews: 42,
         badge: 'new_arrivals',
-        images: ['https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600&auto=format&fit=crop&q=80'],
+        images: ['/images/products/ceramic-table-lamp.webp'],
+        orderIndex: 8,
+        weight: '1.8 kg',
+        dimensions: '35 x 20 x 20 cm',
+        material: 'Hand-thrown Ceramic & Natural Linen',
+        features: [
+          'Handmade artisanal ceramic base with matte sand glaze',
+          '3-way dimmable touch switch with warm LED included',
+          'Braided cloth cord with gold accents'
+        ],
+        variants: [
+          { name: 'Sand Beige', color: 'Beige', hex: '#D7C4B7', image: '/images/products/ceramic-table-lamp.webp' },
+          { name: 'Terracotta', color: 'Terracotta', hex: '#E07A5F', image: '/images/products/ceramic-table-lamp.webp' }
+        ],
+        sizes: ['Small (35cm)', 'Large (48cm)'],
         isFeatured: true
       }
     ]);
@@ -315,30 +440,38 @@ const seedData = async () => {
           subtitle: 'Discover Premium Products with Unbeatable Deals.',
           buttonText: 'Shop Now',
           buttonLink: '/shop',
-          imageUrl: 'https://images.unsplash.com/photo-1544816155-12df9643f363?w=1200&auto=format&fit=crop&q=80',
+          imageUrl: '/images/sliderimage2.webp',
+          badgeText: 'Live Beautifully'
+        },
+        {
+          tagline: 'EXCLUSIVE ARRIVALS',
+          title: 'Elegance & Grace,\nCrafted for You.',
+          subtitle: 'Explore handcrafted accessories and bespoke perfumes.',
+          buttonText: 'Shop Now',
+          buttonLink: '/shop',
+          imageUrl: '/images/sliderimage1.webp',
           badgeText: 'Live Beautifully'
         }
       ],
       valueProps: [
-        { title: 'Free Shipping', subtitle: 'On All Orders', icon: 'truck' },
-        { title: 'Secure Payments', subtitle: '100% Secure', icon: 'shield-check' },
-        { title: 'Easy Returns', subtitle: 'Within 7 Days', icon: 'rotate-ccw' },
-        { title: 'Exclusive Offers', subtitle: 'Save More', icon: 'gift' }
+        { title: 'Premium Quality', subtitle: 'Always', icon: 'gem' },
+        { title: 'Free Shipping', subtitle: 'On Orders Above $50', icon: 'truck' },
+        { title: 'Secure Payments', subtitle: '100% Secure', icon: 'shield-check' }
       ],
       promoBanners: {
         banner1: {
           title: 'Fashion Sale Up to 70% OFF',
           subtitle: 'Step into style',
           buttonText: 'Shop the Sale',
-          buttonLink: '/shop?category=jewellery-accessories',
-          imageUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80'
+          buttonLink: '/shop',
+          imageUrl: '/images/offerbanner1.webp'
         },
         banner2: {
           title: 'Smart Home Smarter Living Up to 50% OFF',
           subtitle: 'Modern comfort',
           buttonText: 'Shop Smart',
-          buttonLink: '/shop?category=home-living',
-          imageUrl: 'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=800&auto=format&fit=crop&q=80'
+          buttonLink: '/shop',
+          imageUrl: '/images/offerbanner2.webp'
         }
       },
       brands: [

@@ -157,3 +157,4 @@
    - Visit `https://annshagifts.nooryak.com/admin`
    - Login: `admin@annshaglobal.com` / `admin123`
    - Edit products at `/admin/product/:id`, categories at `/admin/category/:id`, and variations under "Variation by Category".
+
