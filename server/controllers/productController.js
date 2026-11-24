@@ -464,3 +464,91 @@ export const deleteProduct = async (req, res, next) => {
     next(err);
   }
 };
+
+export const addProductReview = async (req, res, next) => {
+  try {
+    const { rating, title, comment } = req.body;
+    const { id } = req.params;
+
+    if (!rating || !comment) {
+      return res.status(400).json({ success: false, message: 'Please provide rating and review comment.' });
+    }
+
+    let product;
+    if (isMongoConnected()) {
+      product = await Product.findById(id) || await Product.findOne({ slug: id });
+    } else {
+      const products = dbStore.read('products');
+      product = products.find(p => String(p._id) === String(id) || p.slug === id);
+    }
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    const review = {
+      user: req.user?._id,
+      userName: req.user?.name || 'Verified Customer',
+      rating: Number(rating),
+      title: title || '',
+      comment: comment.trim(),
+      isVerified: true,
+      createdAt: new Date()
+    };
+
+    if (!product.reviews) product.reviews = [];
+    product.reviews.unshift(review);
+
+    const totalReviews = product.reviews.length;
+    const avgRating = product.reviews.reduce((acc, item) => item.rating + acc, 0) / totalReviews;
+
+    product.numReviews = totalReviews;
+    product.rating = Number(avgRating.toFixed(1));
+
+    if (isMongoConnected()) {
+      await product.save();
+    } else {
+      const products = dbStore.read('products');
+      const idx = products.findIndex(p => String(p._id) === String(product._id));
+      if (idx !== -1) products[idx] = product;
+      dbStore.write('products', products);
+    }
+
+    res.status(201).json({
+      success: true,
+      message: 'Review submitted successfully!',
+      review,
+      rating: product.rating,
+      numReviews: product.numReviews,
+      reviews: product.reviews
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getProductReviews = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    let product;
+    if (isMongoConnected()) {
+      product = await Product.findById(id) || await Product.findOne({ slug: id });
+    } else {
+      const products = dbStore.read('products');
+      product = products.find(p => String(p._id) === String(id) || p.slug === id);
+    }
+
+    if (!product) {
+      return res.status(404).json({ success: false, message: 'Product not found.' });
+    }
+
+    res.status(200).json({
+      success: true,
+      rating: product.rating,
+      numReviews: product.numReviews || product.reviews?.length || 0,
+      reviews: product.reviews || []
+    });
+  } catch (error) {
+    next(error);
+  }
+};

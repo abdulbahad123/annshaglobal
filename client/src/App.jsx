@@ -25,6 +25,7 @@ import FAQPage from './pages/FAQPage';
 import ContactUsPage from './pages/ContactUsPage';
 import WishlistPage from './pages/WishlistPage';
 import CheckoutPage from './pages/CheckoutPage';
+import AuthPage from './pages/AuthPage';
 
 // Modals
 import CartDrawer from './components/cart/CartDrawer';
@@ -201,6 +202,16 @@ export default function App() {
     );
   }
 
+  // Dedicated Full Customer Auth Page Route: /login, /signup, /register (Tasks 1 & 2 - Dedicated Page, No Popup Modal!)
+  if (currentPath === '/login' || currentPath === '/signup' || currentPath === '/register') {
+    return (
+      <AuthPage
+        mode={currentPath === '/login' ? 'login' : 'signup'}
+        onNavigate={navigate}
+      />
+    );
+  }
+
   const logoUrl = cmsConfig?.header?.logoUrl || '/images/logo.webp';
 
   return (
@@ -211,9 +222,10 @@ export default function App() {
       {/* 2. Main Header with Annsha Gifts Graphic Logo (Task 1) & Action Counters */}
       <Header
         logoUrl={logoUrl}
+        headerBg={cmsConfig?.header?.backgroundImage || '/images/Soft Ivory Wave Gradient.png'}
         onOpenMobileNav={() => setIsMobileNavOpen(true)}
         onSearch={handleSearch}
-        onOpenAuthModal={(mode) => setAuthModal({ isOpen: true, mode })}
+        onOpenAuthModal={(mode) => navigate(mode === 'register' || mode === 'signup' ? '/signup' : '/login')}
         onOpenAdmin={() => navigate('/admin')}
         onLogoClick={() => handleSelectNav('home')}
         onOpenWishlist={() => handleSelectNav('wishlist')}
@@ -222,6 +234,7 @@ export default function App() {
       {/* 3. Navigation Bar (All Categories Dropdown + Menu Links) */}
       <Navbar
         categories={categories}
+        headerBg={cmsConfig?.header?.backgroundImage || '/images/Soft Ivory Wave Gradient.png'}
         activeCategory={categoryParam || selectedCategory}
         onSelectCategory={handleSelectCategory}
         activeNav={currentNavTab}
@@ -242,6 +255,7 @@ export default function App() {
             onSelectCategory={handleSelectCategory}
             onShopBanner={() => navigate('/shop')}
             onBuyNow={() => navigate('/checkout')}
+            onOpenAuthModal={(mode) => navigate(mode === 'register' || mode === 'signup' ? '/signup' : '/login')}
           />
         )}
 
@@ -386,12 +400,12 @@ export default function App() {
         activeTab={currentNavTab}
         onSelectTab={(tab) => {
           if (tab === 'account') {
-            setAuthModal({ isOpen: true, mode: 'login' });
+            navigate('/login');
           } else {
             handleSelectNav(tab);
           }
         }}
-        onOpenAuthModal={(mode) => setAuthModal({ isOpen: true, mode })}
+        onOpenAuthModal={(mode) => navigate(mode === 'register' || mode === 'signup' ? '/signup' : '/login')}
       />
 
       {/* Slide-out Cart Drawer */}

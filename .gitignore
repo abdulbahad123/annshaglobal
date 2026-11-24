@@ -29,4 +29,5 @@ client.log
 *.sw?
 .DS_Store
 Thumbs.db
+scratch/
 

@@ -1,0 +1,88 @@
+[
+  {
+    "_id": "staff_001",
+    "name": "Annsha Administrator",
+    "email": "admin@annshaglobal.com",
+    "role": "Administrator",
+    "department": "Executive",
+    "phone": "+1 (555) 019-2834",
+    "status": "active",
+    "permissions": [
+      "products",
+      "orders",
+      "customers",
+      "cms",
+      "coupons",
+      "settings",
+      "staff"
+    ],
+    "notes": "Primary Super Admin & System Owner",
+    "lastLogin": "2026-11-24T12:00:00.000Z",
+    "createdAt": "2026-01-15T08:30:00.000Z"
+  },
+  {
+    "_id": "staff_002",
+    "name": "Marcus Vance",
+    "email": "marcus.v@annshaglobal.com",
+    "role": "Store Manager",
+    "department": "Operations",
+    "phone": "+1 (555) 234-5678",
+    "status": "active",
+    "permissions": [
+      "products",
+      "orders",
+      "customers",
+      "coupons"
+    ],
+    "notes": "Head of Boutique Merchandising & Inventory",
+    "lastLogin": "2026-11-24T10:15:00.000Z",
+    "createdAt": "2026-03-10T09:00:00.000Z"
+  },
+  {
+    "_id": "staff_003",
+    "name": "Elena Rostova",
+    "email": "elena.concierge@annshaglobal.com",
+    "role": "Support Agent",
+    "department": "Customer Care",
+    "phone": "+1 (555) 876-5432",
+    "status": "active",
+    "permissions": [
+      "orders",
+      "customers"
+    ],
+    "notes": "24/7 VIP Concierge & Customer Resolution Lead",
+    "lastLogin": "2026-11-24T11:45:00.000Z",
+    "createdAt": "2026-04-18T11:20:00.000Z"
+  },
+  {
+    "_id": "staff_004",
+    "name": "Julian Thorne",
+    "email": "julian.editor@annshaglobal.com",
+    "role": "Content Editor",
+    "department": "Marketing",
+    "phone": "+1 (555) 345-6789",
+    "status": "active",
+    "permissions": [
+      "cms",
+      "products"
+    ],
+    "notes": "Editorial Journalist & Brand Storyteller",
+    "lastLogin": "2026-11-23T16:20:00.000Z",
+    "createdAt": "2026-06-01T14:10:00.000Z"
+  },
+  {
+    "_id": "staff_005",
+    "name": "David Sterling",
+    "email": "david.dispatch@annshaglobal.com",
+    "role": "Order Manager",
+    "department": "Logistics",
+    "phone": "+1 (555) 987-6543",
+    "status": "active",
+    "permissions": [
+      "orders"
+    ],
+    "notes": "Air Courier & Global Dispatch Supervisor",
+    "lastLogin": "2026-11-24T08:00:00.000Z",
+    "createdAt": "2026-07-22T10:00:00.000Z"
+  }
+]

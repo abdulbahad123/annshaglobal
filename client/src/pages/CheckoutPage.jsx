@@ -72,13 +72,13 @@ export default function CheckoutPage({ navigate, onSelectProduct }) {
   useEffect(() => {
     try {
       const savedCoupon = localStorage.getItem('annsha_applied_coupon');
-      if (savedCoupon && !appliedCoupon) {
+      if (savedCoupon && !appliedCoupon && subtotal > 0) {
         applyDiscountCode(savedCoupon);
       }
     } catch (e) {
       // ignore
     }
-  }, []);
+  }, [subtotal]);
 
   // Fetch live payment settings from backend
   useEffect(() => {
@@ -91,32 +91,36 @@ export default function CheckoutPage({ navigate, onSelectProduct }) {
       .catch(err => console.warn('Could not load payment settings:', err));
   }, []);
 
-  // Available Coupon Definitions
-  const availableCoupons = {
-    'DIWALI200': { code: 'DIWALI200', discount: 200, minOrder: 1000, type: 'fixed', label: 'Flat ₹200 OFF' },
-    'SAVE100': { code: 'SAVE100', discount: 100, minOrder: 500, type: 'fixed', label: 'Flat ₹100 OFF' },
-    'WELCOME10': { code: 'WELCOME10', discount: 10, minOrder: 300, type: 'percent', label: '10% OFF' },
-    'ANNSHA50': { code: 'ANNSHA50', discount: 50, minOrder: 250, type: 'fixed', label: 'Flat ₹50 OFF' }
-  };
-
-  const applyDiscountCode = (codeToApply) => {
+  // Dynamic Server-side Coupon Validation
+  const applyDiscountCode = async (codeToApply) => {
     setCouponError('');
     const code = (codeToApply || couponInput).trim().toUpperCase();
     if (!code) return;
 
-    const coupon = availableCoupons[code];
-    if (!coupon) {
-      setCouponError(`Coupon code "${code}" is not valid or has expired.`);
-      return;
-    }
+    try {
+      const res = await axiosClient.post('/coupons/validate', {
+        code,
+        cartTotal: subtotal,
+        customerEmail: customerInfo.email || user?.email || ''
+      });
 
-    if (subtotal < coupon.minOrder) {
-      setCouponError(`Minimum order amount of ${formatPrice(coupon.minOrder)} required for "${code}".`);
-      return;
+      if (res.valid && res.coupon) {
+        setAppliedCoupon({
+          code: res.coupon.code,
+          discount: res.coupon.discount,
+          type: res.coupon.discountType || 'fixed',
+          discountAmount: res.discountAmount,
+          label: res.coupon.title || `Flat ₹${res.coupon.discount} OFF`,
+          minPurchaseAmount: res.coupon.minPurchaseAmount
+        });
+        setCouponInput('');
+        setCouponError('');
+      } else {
+        setCouponError(res.message || `Coupon code "${code}" is not valid.`);
+      }
+    } catch (err) {
+      setCouponError(err.response?.data?.message || err.message || `Coupon "${code}" is not valid or has expired.`);
     }
-
-    setAppliedCoupon(coupon);
-    setCouponInput('');
   };
 
   const removeCoupon = () => {
@@ -135,7 +139,9 @@ export default function CheckoutPage({ navigate, onSelectProduct }) {
   
   let discountAmount = 0;
   if (appliedCoupon) {
-    if (appliedCoupon.type === 'percent') {
+    if (appliedCoupon.discountAmount !== undefined) {
+      discountAmount = appliedCoupon.discountAmount;
+    } else if (appliedCoupon.type === 'percent') {
       discountAmount = Math.round((subtotal * appliedCoupon.discount) / 100);
     } else {
       discountAmount = appliedCoupon.discount;

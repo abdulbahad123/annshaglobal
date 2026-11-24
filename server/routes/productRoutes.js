@@ -5,7 +5,9 @@ import {
   getAllProductsAdmin,
   createProduct,
   updateProduct,
-  deleteProduct
+  deleteProduct,
+  addProductReview,
+  getProductReviews
 } from '../controllers/productController.js';
 import { verifyToken } from '../middlewares/authMiddleware.js';
 import { requireAdmin } from '../middlewares/roleMiddleware.js';
@@ -15,6 +17,8 @@ import { processImageToWebP } from '../middlewares/imageProcessor.js';
 const router = express.Router();
 
 router.get('/', getProducts);
+router.get('/:id/reviews', getProductReviews);
+router.post('/:id/reviews', verifyToken, addProductReview);
 router.get('/detail/:slug', getProductBySlug);
 router.get('/:slug', getProductBySlug);
 router.get('/admin/all', verifyToken, requireAdmin, getAllProductsAdmin);

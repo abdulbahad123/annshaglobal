@@ -50,22 +50,22 @@ export default function HeroBanner({ banners = [], valueProps = [], onShopNow })
   const prevSlide = () => setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
 
   return (
-    <section className="relative w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 pt-2 pb-5">
-      {/* Hero Container: Border-free, Shadow-free, seamless luxury look matching Reference Image 2 */}
+    <section className="relative w-full pt-0 pb-4">
+      {/* Hero Container: 100% Full-Width edge-to-edge (Task 4: Zero Right-Side Gap) */}
       <div 
-        className="relative overflow-hidden rounded-2xl sm:rounded-3xl min-h-[400px] sm:min-h-[480px] lg:min-h-[540px] xl:min-h-[580px] flex items-center bg-[#FAF5EE] w-full border-0 shadow-none outline-none"
+        className="relative overflow-hidden min-h-[420px] sm:min-h-[500px] lg:min-h-[560px] xl:min-h-[600px] flex items-center bg-[#FAF5EE] w-full border-0 shadow-none outline-none"
       >
-        {/* Full-width High-Definition Slider Image Background */}
+        {/* Full-width High-Definition Slider Image Background stretched edge-to-edge */}
         <div 
           key={currentSlide}
-          className="absolute inset-0 bg-cover bg-[position:85%_center] lg:bg-right transition-all duration-700 pointer-events-none"
+          className="absolute inset-0 bg-cover bg-[position:right_center] w-full h-full transition-all duration-700 pointer-events-none"
           style={{ 
             backgroundImage: `url(${slide.imageUrl || '/images/sliderimage2.webp'})` 
           }}
         />
 
         {/* Dynamic Subtle Cream Gradient on Left for Flawless Text Readability */}
-        <div className="absolute inset-0 bg-gradient-to-r from-[#FAF5EE] via-[#FAF5EE]/75 to-transparent sm:via-[#FAF5EE]/50 sm:to-transparent pointer-events-none max-w-xl sm:max-w-2xl lg:max-w-3xl" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#FAF5EE] via-[#FAF5EE]/80 to-transparent sm:via-[#FAF5EE]/60 sm:to-transparent pointer-events-none max-w-xl sm:max-w-2xl lg:max-w-3xl" />
 
         {/* Left Navigation Arrow */}
         <button
@@ -136,7 +136,8 @@ export default function HeroBanner({ banners = [], valueProps = [], onShopNow })
       </div>
 
       {/* 4 Trust Badges Horizontal Card Bar (Matching Reference Images 2, 4 & 9) */}
-      <div className="mt-4 sm:mt-5 p-3.5 sm:p-5 rounded-2xl bg-[#FFFDF9] border border-[#F0E7DB] shadow-sm grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
+      <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 mt-4 sm:mt-5">
+        <div className="p-3.5 sm:p-5 rounded-2xl bg-[#FFFDF9] border border-[#F0E7DB] shadow-sm grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         <div className="flex items-center gap-3">
           <div className="w-8 sm:w-10 h-8 sm:h-10 rounded-xl bg-[#FAF5EE] flex items-center justify-center shrink-0 text-[#704214]">
             <Truck className="w-4 sm:w-5 h-4 sm:h-5" />
@@ -177,6 +178,7 @@ export default function HeroBanner({ banners = [], valueProps = [], onShopNow })
           </div>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 }

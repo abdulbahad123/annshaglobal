@@ -148,7 +148,7 @@ export const createStripeIntent = async (req, res, next) => {
     // Call Real Stripe API
     try {
       const stripeInstance = new Stripe(secretKey);
-      
+
       // Zero-decimal currencies like JPY vs standard 2-decimal like USD/INR
       const multiplier = ['jpy', 'krw'].includes(currency.toLowerCase()) ? 1 : 100;
       const chargeAmount = Math.round(Number(amount) * multiplier);

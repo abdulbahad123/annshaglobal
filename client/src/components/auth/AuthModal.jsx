@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
-import { X, Lock, Mail, User, Phone } from 'lucide-react';
+import { X, Lock, Mail, User, Phone, Eye, EyeOff, CheckCircle2 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
   const [mode, setMode] = useState(initialMode);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [error, setError] = useState('');
@@ -18,6 +21,18 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+
+    if (mode === 'register') {
+      if (password.length < 6) {
+        setError('Password must be at least 6 characters.');
+        return;
+      }
+      if (password !== confirmPassword) {
+        setError('Passwords do not match.');
+        return;
+      }
+    }
+
     setLoading(true);
 
     try {
@@ -34,20 +49,6 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
     }
   };
 
-  const handleDemoAdminLogin = async () => {
-    setEmail('admin@annshaglobal.com');
-    setPassword('adminPassword123!');
-    setLoading(true);
-    try {
-      await login('admin@annshaglobal.com', 'adminPassword123!');
-      onClose();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
@@ -58,23 +59,51 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
 
       {/* Modal Dialog */}
       <div className="relative w-full max-w-md bg-[#FFFDF9] rounded-3xl shadow-2xl border border-[#F0E7DB] z-10 overflow-hidden">
-        {/* Header */}
-        <div className="p-5 border-b border-[#F0E7DB] flex items-center justify-between bg-[#FBF7F0]">
-          <div>
-            <h2 className="font-serif text-lg font-bold text-[#2B1E16]">
-              {mode === 'login' ? 'Welcome Back' : 'Create an Account'}
-            </h2>
-            <p className="text-[11px] text-[#7A6E65]">
-              {mode === 'login' ? 'Sign in to access your luxury account.' : 'Join Annsha Global for exclusive rewards.'}
-            </p>
+        {/* Header with Mode Toggle Tabs */}
+        <div className="p-5 border-b border-[#F0E7DB] bg-[#FBF7F0]">
+          <div className="flex items-center justify-between mb-3">
+            <div>
+              <h2 className="font-serif text-lg font-bold text-[#2B1E16]">
+                {mode === 'login' ? 'Customer Sign In' : 'Create an Account'}
+              </h2>
+              <p className="text-[11px] text-[#7A6E65]">
+                {mode === 'login' ? 'Sign in to access orders, wishlist, and reviews.' : 'Join Annsha Gifts for exclusive customer rewards.'}
+              </p>
+            </div>
+            <button
+              onClick={onClose}
+              className="p-1.5 rounded-full text-[#7A6E65] hover:bg-[#F5EBE1]"
+              aria-label="Close"
+            >
+              <X className="w-5 h-5" />
+            </button>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-full text-[#7A6E65] hover:bg-[#F5EBE1]"
-            aria-label="Close"
-          >
-            <X className="w-5 h-5" />
-          </button>
+
+          {/* Clean Customer Auth Switcher Tabs */}
+          <div className="grid grid-cols-2 p-1 bg-[#FAF5EE] rounded-xl border border-[#EADBCC]">
+            <button
+              type="button"
+              onClick={() => { setMode('login'); setError(''); }}
+              className={`py-1.5 text-xs font-bold rounded-lg transition-all ${
+                mode === 'login' 
+                  ? 'bg-white text-[#704214] shadow-xs' 
+                  : 'text-[#7A6E65] hover:text-[#2B1E16]'
+              }`}
+            >
+              Sign In
+            </button>
+            <button
+              type="button"
+              onClick={() => { setMode('register'); setError(''); }}
+              className={`py-1.5 text-xs font-bold rounded-lg transition-all ${
+                mode === 'register' 
+                  ? 'bg-white text-[#704214] shadow-xs' 
+                  : 'text-[#7A6E65] hover:text-[#2B1E16]'
+              }`}
+            >
+              Create Account
+            </button>
+          </div>
         </div>
 
         {/* Body */}
@@ -139,15 +168,52 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
               <div className="relative flex items-center">
                 <Lock className="w-4 h-4 text-[#A4978C] absolute left-3.5" />
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="••••••••••••"
-                  className="w-full pl-10 pr-4 py-2.5 text-xs rounded-xl bg-[#FFFDF9] border border-[#EADBCC] focus:border-[#704214] focus:outline-none"
+                  className="w-full pl-10 pr-10 py-2.5 text-xs rounded-xl bg-[#FFFDF9] border border-[#EADBCC] focus:border-[#704214] focus:outline-none"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 text-[#A4978C] hover:text-[#704214]"
+                >
+                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                </button>
               </div>
             </div>
+
+            {mode === 'register' && (
+              <div>
+                <label className="text-[11px] font-medium text-[#605248] block mb-1">Confirm Password</label>
+                <div className="relative flex items-center">
+                  <Lock className="w-4 h-4 text-[#A4978C] absolute left-3.5" />
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    required
+                    value={confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    placeholder="••••••••••••"
+                    className="w-full pl-10 pr-10 py-2.5 text-xs rounded-xl bg-[#FFFDF9] border border-[#EADBCC] focus:border-[#704214] focus:outline-none"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className="absolute right-3 text-[#A4978C] hover:text-[#704214]"
+                  >
+                    {showConfirmPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                  </button>
+                </div>
+                {confirmPassword && password === confirmPassword && (
+                  <p className="text-[10px] text-[#007017] font-semibold mt-1 flex items-center gap-1">
+                    <CheckCircle2 className="w-3 h-3" />
+                    <span>Passwords match</span>
+                  </p>
+                )}
+              </div>
+            )}
 
             <button
               type="submit"
@@ -157,17 +223,6 @@ export default function AuthModal({ isOpen, onClose, initialMode = 'login' }) {
               {loading ? 'Please wait...' : mode === 'login' ? 'Sign In' : 'Create Account'}
             </button>
           </form>
-
-          {/* Quick Demo Admin Login Pill */}
-          <div className="pt-2 border-t border-[#F0E7DB] text-center">
-            <button
-              type="button"
-              onClick={handleDemoAdminLogin}
-              className="w-full py-2 bg-[#FAF3EC] hover:bg-[#F5EBE1] text-[#704214] rounded-full text-[11px] font-bold transition-all border border-[#EADBCC]"
-            >
-              🔑 Instant Demo Admin Sign In (1-Click)
-            </button>
-          </div>
 
           {/* Toggle between Login and Register */}
           <div className="text-center pt-2">

@@ -1,0 +1,68 @@
+[
+  {
+    "_id": "cat_1",
+    "name": "Beauty & Personal Care",
+    "slug": "beauty-personal-care",
+    "description": "Luxury skincare, fragrances and personal care essentials",
+    "image": "/images/categories/beauty-care.webp",
+    "orderIndex": 1,
+    "productCount": 2,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.263Z"
+  },
+  {
+    "_id": "cat_2",
+    "name": "Electronics & Gadgets",
+    "slug": "electronics-gadgets",
+    "description": "Smart watches, wireless headphones and modern tech",
+    "image": "/images/categories/electronics.webp",
+    "orderIndex": 2,
+    "productCount": 3,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "cat_3",
+    "name": "Jewellery & Accessories",
+    "slug": "jewellery-accessories",
+    "description": "Elegantly crafted gold, silver and gemstone accessories",
+    "image": "/images/categories/jewellery.webp",
+    "orderIndex": 3,
+    "productCount": 2,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "cat_4",
+    "name": "Home & Living",
+    "slug": "home-living",
+    "description": "Refined decor, premium seating and cozy accents",
+    "image": "/images/categories/home-living.webp",
+    "orderIndex": 4,
+    "productCount": 1,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "cat_5",
+    "name": "Books & Media",
+    "slug": "books-media",
+    "description": "Bestselling titles, stationery and premium journals",
+    "image": "/images/categories/books-media.webp",
+    "orderIndex": 5,
+    "productCount": 1,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "cat_6",
+    "name": "Gifts & More",
+    "slug": "gifts-more",
+    "description": "Thoughtful luxury gift sets and celebration boxes",
+    "image": "/images/categories/gifts-more.webp",
+    "orderIndex": 6,
+    "productCount": 1,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  }
+]

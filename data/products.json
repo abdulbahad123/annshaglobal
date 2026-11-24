@@ -1,0 +1,163 @@
+[
+  {
+    "_id": "prod_1",
+    "title": "Nike Air Force 1 Sneakers",
+    "slug": "nike-air-force-1-sneakers",
+    "sku": "AG-NK-101",
+    "description": "Timeless style with premium leather construction and lightweight Air cushioning for all-day luxury comfort.",
+    "category": "cat_2",
+    "price": 69.99,
+    "comparePrice": 89.99,
+    "stock": 45,
+    "rating": 4.5,
+    "numReviews": 128,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/nike-air-force-1.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_2",
+    "title": "Smart Watch Series 7",
+    "slug": "smart-watch-series-7",
+    "sku": "AG-SW-202",
+    "description": "Cutting-edge OLED retina display, ECG monitor, fitness tracking, and waterproof titanium chassis.",
+    "category": "cat_2",
+    "price": 99.99,
+    "comparePrice": 129.99,
+    "stock": 30,
+    "rating": 4.5,
+    "numReviews": 104,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/smart-watch-series-7.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_3",
+    "title": "Stylish Handbag",
+    "slug": "stylish-handbag",
+    "sku": "AG-HB-303",
+    "description": "Handcrafted genuine calfskin leather with polished gold hardware and versatile shoulder strap.",
+    "category": "cat_3",
+    "price": 49.99,
+    "comparePrice": 79.99,
+    "stock": 22,
+    "rating": 4.5,
+    "numReviews": 77,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/stylish-handbag.webp",
+      "/images/sliderimage1.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_4",
+    "title": "Luxury Perfume",
+    "slug": "luxury-perfume",
+    "sku": "AG-PF-404",
+    "description": "An enchanting blend of warm amber, blooming jasmine, and delicate Madagascar vanilla.",
+    "category": "cat_1",
+    "price": 79.99,
+    "comparePrice": 99.99,
+    "stock": 60,
+    "rating": 4.5,
+    "numReviews": 57,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/luxury-perfume.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_5",
+    "title": "Running Shoes",
+    "slug": "running-shoes",
+    "sku": "AG-RS-505",
+    "description": "Engineered mesh upper with responsive foam midsole designed for distance performance.",
+    "category": "cat_2",
+    "price": 59.99,
+    "comparePrice": 89.99,
+    "stock": 18,
+    "rating": 4.5,
+    "numReviews": 68,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/running-shoes.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_6",
+    "title": "Noise Cancelling Headphones",
+    "slug": "noise-cancelling-headphones",
+    "sku": "AG-HP-606",
+    "description": "Industry-leading active noise cancellation with 40-hour battery life and spatial audio immersion.",
+    "category": "cat_2",
+    "price": 89.99,
+    "comparePrice": 129.99,
+    "stock": 35,
+    "rating": 4.5,
+    "numReviews": 71,
+    "badge": "todays_deals",
+    "images": [
+      "/images/products/noise-cancelling-headphones.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_7",
+    "title": "Gold Pendant Necklace",
+    "slug": "gold-pendant-necklace",
+    "sku": "AG-GP-707",
+    "description": "18k gold plated handcrafted delicate chain with solitaire cubic zirconia.",
+    "category": "cat_3",
+    "price": 34.99,
+    "comparePrice": 49.99,
+    "stock": 25,
+    "rating": 4.8,
+    "numReviews": 89,
+    "badge": "top_rated",
+    "images": [
+      "/images/products/gold-pendant-necklace.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  },
+  {
+    "_id": "prod_8",
+    "title": "Ceramic Table Lamp",
+    "slug": "ceramic-table-lamp",
+    "sku": "AG-CL-808",
+    "description": "Minimalist beige textured ceramic body with warm linen fabric shade.",
+    "category": "cat_4",
+    "price": 64,
+    "comparePrice": 85,
+    "stock": 15,
+    "rating": 4.9,
+    "numReviews": 42,
+    "badge": "new_arrivals",
+    "images": [
+      "/images/products/ceramic-table-lamp.webp"
+    ],
+    "isFeatured": true,
+    "isActive": true,
+    "createdAt": "2026-11-24T09:36:22.264Z"
+  }
+]

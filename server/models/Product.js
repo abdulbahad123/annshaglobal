@@ -39,6 +39,18 @@ const productSchema = new mongoose.Schema({
   
   rating: { type: Number, default: 4.5, min: 0, max: 5 },
   numReviews: { type: Number, default: 12 },
+  
+  // Real Customer Reviews System (Task 1)
+  reviews: [{
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    userName: { type: String, required: true },
+    rating: { type: Number, required: true, min: 1, max: 5 },
+    title: { type: String, default: '' },
+    comment: { type: String, required: true },
+    isVerified: { type: Boolean, default: true },
+    createdAt: { type: Date, default: Date.now }
+  }],
+
   isFeatured: { type: Boolean, default: false },
   isActive: { type: Boolean, default: true, index: true }
 }, { timestamps: true });

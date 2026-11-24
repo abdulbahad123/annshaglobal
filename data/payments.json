@@ -1,0 +1,28 @@
+{
+  "key": "global_payment_settings",
+  "stripe": {
+    "enabled": true,
+    "publishableKey": "pk_test_sample_stripe_annsha",
+    "secretKey": "sk_test_sample_stripe_annsha",
+    "isLive": false
+  },
+  "razorpay": {
+    "enabled": true,
+    "keyId": "rzp_test_sample_key",
+    "keySecret": "rzp_test_sample_secret",
+    "isLive": false
+  },
+  "paypal": {
+    "enabled": false,
+    "clientId": "",
+    "secretKey": "",
+    "isLive": false
+  },
+  "cod": {
+    "enabled": true,
+    "extraFee": 0,
+    "maxOrderAmount": 50000
+  },
+  "currency": "INR",
+  "currencySymbol": "₹"
+}

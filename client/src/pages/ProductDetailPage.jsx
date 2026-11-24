@@ -26,10 +26,16 @@ import {
   Headphones,
   Gem,
   Gift,
-  Tag
+  Tag,
+  AlertCircle,
+  MessageSquare,
+  Send,
+  UserCheck
 } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useWishlist } from '../context/WishlistContext';
+import { useAuth } from '../context/AuthContext';
+import axiosClient from '../api/axiosClient';
 
 export default function ProductDetailPage({ 
   product, 
@@ -39,8 +45,10 @@ export default function ProductDetailPage({
   onShopBanner,
   allProducts = [], 
   onBuyNow,
-  cmsConfig
+  cmsConfig,
+  onOpenAuthModal
 }) {
+  const { user } = useAuth();
   const { addToCart } = useCart();
   const { toggleWishlist, isInWishlist } = useWishlist();
 
@@ -65,15 +73,17 @@ export default function ProductDetailPage({
     offerText: 'Flat ₹100 OFF on 1st prepaid order'
   };
 
-  // Coupons List matching Image 2 UI/UX
-  const couponsList = [
+  // Coupons List matching Image 2 & Image 8 UI/UX (Dual-pill badge + ticket notches)
+  const defaultCoupons = [
     { 
       code: 'NEW100', 
       badge: 'WELCOME', 
       offerText: 'Offer 🎁', 
       title: 'Flat ₹100 OFF', 
       subtitle: 'For New Customers Only', 
-      discount: 100 
+      discount: 100,
+      minPurchaseAmount: 499,
+      firstOrderOnly: true
     },
     { 
       code: 'DIWALI200', 
@@ -81,7 +91,9 @@ export default function ProductDetailPage({
       offerText: 'Offer 💥', 
       title: 'Flat 200Rs OFF', 
       subtitle: 'For All Prepaid Orders', 
-      discount: 200 
+      discount: 200,
+      minPurchaseAmount: 1499,
+      firstOrderOnly: false
     },
     { 
       code: 'SAVE100', 
@@ -89,9 +101,37 @@ export default function ProductDetailPage({
       offerText: 'Offer ⚡', 
       title: 'Flat ₹100 OFF', 
       subtitle: 'On Orders Above ₹999', 
-      discount: 100 
+      discount: 100,
+      minPurchaseAmount: 999,
+      firstOrderOnly: false
     }
   ];
+
+  // Dynamic live coupons fetched from backend database
+  const [liveCoupons, setLiveCoupons] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+    fetch('http://127.0.0.1:5000/api/v1/coupons')
+      .then(r => r.json())
+      .then(data => {
+        if (isMounted && data?.success && data.coupons?.length > 0) {
+          setLiveCoupons(data.coupons);
+        }
+      })
+      .catch(() => {});
+    return () => { isMounted = false; };
+  }, []);
+
+  // Filter out expired coupons or inactive ones dynamically (Task 1 auto-hide)
+  const nowTime = new Date();
+  const sourceCoupons = liveCoupons.length > 0 ? liveCoupons : (pdpConfig.coupons || defaultCoupons);
+  const couponsList = sourceCoupons.filter(c => {
+    if (c.isActive === false) return false;
+    if (c.endDate && new Date(c.endDate) < nowTime) return false;
+    if (c.startDate && new Date(c.startDate) > nowTime) return false;
+    return true;
+  });
 
   const trustBoxes = (pdpConfig.trustBoxes && pdpConfig.trustBoxes.length > 0) ? pdpConfig.trustBoxes : [
     { title: '100% Cashback', subtitle: 'up to ₹500 via UPI', icon: 'cashback' },
@@ -158,17 +198,57 @@ export default function ProductDetailPage({
   const calculateDeliveryDate = (code) => {
     setIsCheckingPincode(true);
     setTimeout(() => {
-      const targetDate = new Date();
-      targetDate.setDate(targetDate.getDate() + (deliveryConfig.defaultDays || 3));
-      const options = { weekday: 'long', day: 'numeric', month: 'short' };
-      const formattedDate = targetDate.toLocaleDateString('en-US', options);
-      setDeliveryResult({
-        date: formattedDate,
-        pincode: code || '110091',
-        isFree: true
+      const cleanCode = String(code || '').trim().replace(/\s+/g, '');
+      const rules = deliveryConfig.coverageRules && deliveryConfig.coverageRules.length > 0 
+        ? deliveryConfig.coverageRules 
+        : [
+            { country: 'Australia', code: 'AU', pinLength: 4, citiesLabel: 'Australia (Sydney, Melbourne, Brisbane, Perth, All Cities)', estimatedDays: 4, isFree: true },
+            { country: 'India', code: 'IN', pinLength: 6, citiesLabel: 'India (Delhi / Pan-India Delivery)', estimatedDays: 3, isFree: true },
+            { country: 'United States', code: 'US', pinLength: 5, citiesLabel: 'United States (All States & Metro Cities)', estimatedDays: 5, isFree: true }
+          ];
+
+      // Dynamic rule matching based on admin rules
+      let matchedRule = rules.find(r => {
+        if (r.pinLength && cleanCode.length === Number(r.pinLength) && /^\d+$/.test(cleanCode)) return true;
+        if (r.pinPrefix && cleanCode.startsWith(r.pinPrefix)) return true;
+        return false;
       });
+
+      // Default smart country fallbacks (Australia 4-digit all-city, India 6-digit, US 5-digit)
+      if (!matchedRule) {
+        if (/^\d{4}$/.test(cleanCode)) {
+          matchedRule = { country: 'Australia', citiesLabel: 'Australia (All Cities Covered)', estimatedDays: 4, isFree: true };
+        } else if (/^\d{6}$/.test(cleanCode)) {
+          matchedRule = { country: 'India', citiesLabel: 'Pan-India Priority Delivery', estimatedDays: 3, isFree: true };
+        } else if (/^\d{5}$/.test(cleanCode)) {
+          matchedRule = { country: 'USA', citiesLabel: 'United States Priority', estimatedDays: 5, isFree: true };
+        }
+      }
+
+      if (matchedRule) {
+        const leadDays = matchedRule.estimatedDays || deliveryConfig.defaultDays || 3;
+        const targetDate = new Date();
+        targetDate.setDate(targetDate.getDate() + leadDays);
+        const options = { weekday: 'long', day: 'numeric', month: 'short' };
+        const formattedDate = targetDate.toLocaleDateString('en-US', options);
+        setDeliveryResult({
+          valid: true,
+          date: formattedDate,
+          pincode: cleanCode,
+          locationName: matchedRule.citiesLabel || matchedRule.country,
+          country: matchedRule.country,
+          isFree: true,
+          leadDays
+        });
+      } else {
+        setDeliveryResult({
+          valid: false,
+          pincode: cleanCode,
+          message: `Delivery currently unavailable to postal code "${cleanCode}". Please contact our 24/7 concierge.`
+        });
+      }
       setIsCheckingPincode(false);
-    }, 400);
+    }, 350);
   };
 
   useEffect(() => {
@@ -217,6 +297,63 @@ export default function ProductDetailPage({
       navigator.clipboard.writeText(window.location.href);
       setIsCopied(true);
       setTimeout(() => setIsCopied(false), 2000);
+    }
+  };
+
+  // Customer Reviews System State (Task 1)
+  const [reviewsList, setReviewsList] = useState(product.reviews || []);
+  const [isWritingReview, setIsWritingReview] = useState(false);
+  const [newRating, setNewRating] = useState(5);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [newTitle, setNewTitle] = useState('');
+  const [newComment, setNewComment] = useState('');
+  const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [reviewMsg, setReviewMsg] = useState('');
+  const [reviewError, setReviewError] = useState('');
+
+  // Sync reviews when product changes
+  useEffect(() => {
+    if (product?.reviews && product.reviews.length > 0) {
+      setReviewsList(product.reviews);
+    } else if (product?._id) {
+      axiosClient.get(`/products/${product._id}/reviews`)
+        .then(res => {
+          if (res.success && res.reviews) setReviewsList(res.reviews);
+        })
+        .catch(() => {});
+    }
+  }, [product?._id]);
+
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+    if (!newComment.trim()) {
+      setReviewError('Please write your review comment.');
+      return;
+    }
+    setIsSubmittingReview(true);
+    setReviewError('');
+    setReviewMsg('');
+    try {
+      const res = await axiosClient.post(`/products/${product._id}/reviews`, {
+        rating: newRating,
+        title: newTitle.trim(),
+        comment: newComment.trim()
+      });
+      if (res.success) {
+        setReviewsList(res.reviews || [res.review, ...reviewsList]);
+        setReviewMsg('Thank you! Your verified customer review has been published.');
+        setNewTitle('');
+        setNewComment('');
+        setNewRating(5);
+        setTimeout(() => {
+          setIsWritingReview(false);
+          setReviewMsg('');
+        }, 2500);
+      }
+    } catch (err) {
+      setReviewError(err.response?.data?.message || err.message || 'Failed to submit review.');
+    } finally {
+      setIsSubmittingReview(false);
     }
   };
 
@@ -274,8 +411,9 @@ export default function ProductDetailPage({
           
           {/* ========================================================== */}
           {/* LEFT COLUMN: Main Showcase Image + Bottom Thumbnails Slider */}
+          {/* Sticky & Fixed on scroll: lg:sticky lg:top-24 self-start    */}
           {/* ========================================================== */}
-          <div className="lg:col-span-6 flex flex-col gap-3">
+          <div className="lg:col-span-6 lg:sticky lg:top-24 self-start flex flex-col gap-3">
             
             {/* Main Showcase Image Card */}
             <div className="w-full relative aspect-square max-h-[580px] rounded-3xl bg-white border border-[#EADBCC] p-6 sm:p-8 flex items-center justify-center overflow-hidden shadow-sm group">
@@ -440,89 +578,69 @@ export default function ProductDetailPage({
             </div>
 
             {/* ======================================================== */}
-            {/* Task 1: Quantity Incrementer + Add to Cart + BUY NOW Row */}
+            {/* Task 2: SINGLE ROW: Quantity Counter + Add to Cart + BUY NOW */}
             {/* ======================================================== */}
-            <div className="flex items-center gap-3 pt-1">
-              {/* Quantity Counter */}
-              <div className="inline-flex items-center bg-white border border-[#E2E8F0] rounded-2xl px-3 py-2 shadow-sm h-12">
+            <div className="space-y-2 pt-1">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2.5">
+                {/* Quantity Counter */}
+                <div className="inline-flex items-center justify-between bg-white border border-[#CBD5E1] rounded-2xl px-2.5 py-1.5 shadow-sm h-12 shrink-0 min-w-[110px]">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-7 h-7 rounded-xl flex items-center justify-center text-[#475569] hover:bg-[#F1F5F9] transition-colors"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="w-3.5 h-3.5" />
+                  </button>
+                  <span className="px-2 text-sm font-bold text-[#1E293B] min-w-[24px] text-center">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={() => setQuantity(Math.min(product.stock || 20, quantity + 1))}
+                    className="w-7 h-7 rounded-xl flex items-center justify-center text-[#475569] hover:bg-[#F1F5F9] transition-colors"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+
+                {/* Add to Cart Button */}
                 <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-7 h-7 rounded-xl flex items-center justify-center text-[#475569] hover:bg-[#F1F5F9] transition-colors"
-                  aria-label="Decrease quantity"
+                  onClick={() => addToCart(product, quantity)}
+                  className="flex-1 h-12 px-5 bg-[#1E293B] hover:bg-[#0F172A] text-white rounded-2xl text-xs sm:text-sm font-bold tracking-wide shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 shrink-0 sm:shrink"
                 >
-                  <Minus className="w-3.5 h-3.5" />
+                  <ShoppingBag className="w-4 h-4" />
+                  <span>Add to cart</span>
                 </button>
-                <span className="px-4 text-sm font-bold text-[#1E293B] min-w-[28px] text-center">
-                  {quantity}
-                </span>
+
+                {/* BUY NOW Button */}
                 <button
-                  onClick={() => setQuantity(Math.min(product.stock || 20, quantity + 1))}
-                  className="w-7 h-7 rounded-xl flex items-center justify-center text-[#475569] hover:bg-[#F1F5F9] transition-colors"
-                  aria-label="Increase quantity"
+                  onClick={handleBuyNowClick}
+                  className="flex-1 h-12 px-5 bg-[#1E6038] hover:bg-[#16482A] text-white rounded-2xl text-xs sm:text-sm font-extrabold tracking-wide shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 border border-[#16482A] group shrink-0 sm:shrink"
                 >
-                  <Plus className="w-3.5 h-3.5" />
+                  <Zap className="w-4 h-4 text-[#34D399] fill-current" />
+                  <span className="font-serif uppercase">BUY NOW</span>
+                  <span className="text-white/80 group-hover:translate-x-1 transition-transform">→</span>
+                  <span className="text-xs font-semibold text-white/90 ml-1">
+                    {formatPrice(currentPrice * quantity)}
+                  </span>
                 </button>
               </div>
 
-              {/* Add to Cart Button */}
-              <button
-                onClick={() => addToCart(product, quantity)}
-                className="flex-1 h-12 px-6 bg-[#1E293B] hover:bg-[#0F172A] text-white rounded-2xl text-sm font-bold tracking-wide shadow-md transition-all active:scale-95 flex items-center justify-center gap-2"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Add to cart</span>
-              </button>
-            </div>
-
-            {/* Luxury BUY NOW Button */}
-            <div className="space-y-1.5 pt-1">
-              <button
-                onClick={handleBuyNowClick}
-                className="w-full rounded-2xl overflow-hidden bg-[#1E6038] hover:bg-[#16482A] text-white shadow-lg transition-all active:scale-[0.99] group border border-[#16482A]"
-              >
-                {/* Top highlight bar */}
-                <div className="bg-[#174D2D] py-1 text-center text-[10px] sm:text-[11px] font-bold tracking-wider text-[#A7F3D0] uppercase flex items-center justify-center gap-1.5">
-                  <Zap className="w-3 h-3 text-[#34D399]" />
+              {/* Trust Micro-copy Line beneath Single Row */}
+              <div className="flex flex-wrap items-center justify-between text-[11px] sm:text-xs text-[#28583B] pt-0.5 px-1 font-medium gap-2">
+                <span className="flex items-center gap-1">
+                  <Zap className="w-3.5 h-3.5 text-[#1E6038]" />
                   <span>Extra Fast Shipping on Prepaid Orders</span>
-                </div>
-
-                {/* Main button row */}
-                <div className="px-5 py-3.5 flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <span className="font-serif text-base sm:text-lg font-extrabold tracking-wide">
-                      BUY NOW
-                    </span>
-                    <span className="text-white/80 group-hover:translate-x-1 transition-transform">→</span>
-                  </div>
-
-                  <div className="text-right">
-                    <div className="flex items-center gap-2 justify-end">
-                      {comparePrice > currentPrice && (
-                        <span className="text-xs text-white/60 line-through">
-                          {formatPrice(comparePrice * quantity)}
-                        </span>
-                      )}
-                      <span className="text-base sm:text-lg font-extrabold text-white">
-                        {formatPrice(currentPrice * quantity)}
-                      </span>
-                    </div>
-                    {savings > 0 && (
-                      <span className="text-[10px] font-bold text-[#A7F3D0] block">
-                        Save {formatPrice(savings * quantity)}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </button>
-
-              <p className="text-center text-[11px] sm:text-xs text-[#28583B] font-medium flex items-center justify-center gap-1">
-                <Check className="w-3.5 h-3.5 text-[#28583B]" />
-                <span>86% of customers choose Pay Online for faster, hassle-free delivery</span>
-              </p>
+                </span>
+                <span className="flex items-center gap-1">
+                  <Check className="w-3.5 h-3.5 text-[#1E6038]" />
+                  <span>86% choose Pay Online for faster delivery</span>
+                </span>
+              </div>
             </div>
 
             {/* ======================================================== */}
-            {/* Task 1: Ticket Voucher COUPON Cards (Exact Image 2 UI/UX) */}
+            {/* Task 1: Ticket Voucher COUPON Cards (Exact Image 8 UI/UX) */}
             {/* ======================================================== */}
             <div className="pt-2">
               <div className="flex items-center gap-3.5 overflow-x-auto no-scrollbar py-2">
@@ -530,49 +648,67 @@ export default function ProductDetailPage({
                   <div
                     key={idx}
                     onClick={() => handleCopyCoupon(coupon.code)}
-                    className="cursor-pointer bg-white rounded-3xl border border-[#EADBCC] shadow-sm hover:shadow-md transition-all flex items-center p-3.5 sm:p-4 min-w-[310px] sm:min-w-[340px] shrink-0 relative overflow-hidden group select-none"
+                    className="cursor-pointer bg-white rounded-3xl border border-[#E2E8F0] shadow-sm hover:shadow-md transition-all flex items-center p-3.5 sm:p-4 min-w-[310px] sm:min-w-[340px] shrink-0 relative overflow-hidden group select-none"
                   >
                     {/* Left Section of Ticket */}
-                    <div className="flex-1 pr-2">
+                    <div className="flex-1 pr-3">
                       {/* Dual pill badge (e.g. [WELCOME | Offer 🎁]) */}
-                      <div className="inline-flex items-center">
-                        <span className="bg-[#EDF2F7] text-[#1E293B] font-extrabold text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-l-full">
+                      <div className="inline-flex items-center shadow-xs">
+                        <span className="bg-[#EFF6FF] text-[#1E3A8A] font-extrabold text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-l-full border border-r-0 border-[#DBEAFE]">
                           {coupon.badge}
                         </span>
-                        <span className="bg-[#EA580C] text-white font-extrabold text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-r-full -ml-0.5 flex items-center gap-1">
+                        <span className="bg-[#EA580C] text-white font-extrabold text-[10px] sm:text-[11px] px-2.5 py-0.5 rounded-r-full -ml-0.5 flex items-center gap-1 shadow-sm">
                           {coupon.offerText}
                         </span>
                       </div>
 
                       {/* Main Title */}
-                      <h4 className="font-sans text-base sm:text-lg font-extrabold text-[#111827] mt-1.5 tracking-tight leading-tight">
+                      <h4 className="font-sans text-base sm:text-lg font-black text-[#0F172A] mt-1.5 tracking-tight leading-tight">
                         {coupon.title}
                       </h4>
 
                       {/* Subtitle */}
-                      <p className="text-[11px] sm:text-xs text-[#64748B] font-medium mt-0.5">
+                      <p className="text-[11px] sm:text-xs text-[#64748B] font-semibold mt-0.5">
                         {coupon.subtitle}
                       </p>
+
+                      {/* Dynamic Eligibility Badges (Min Order & First Order Only) */}
+                      <div className="flex flex-wrap items-center gap-1.5 mt-1">
+                        {coupon.minPurchaseAmount > 0 && (
+                          <span className="text-[9px] sm:text-[10px] bg-[#F1F5F9] text-[#334155] px-1.5 py-0.5 rounded font-bold border border-[#E2E8F0]">
+                            Min Order: ₹{coupon.minPurchaseAmount}
+                          </span>
+                        )}
+                        {coupon.firstOrderOnly && (
+                          <span className="text-[9px] sm:text-[10px] bg-[#FEF3C7] text-[#92400E] px-1.5 py-0.5 rounded font-bold border border-[#FDE68A]">
+                            1st Order Only
+                          </span>
+                        )}
+                      </div>
                     </div>
 
                     {/* Ticket Perforated Divider with Semicircular Notches */}
-                    <div className="relative border-r border-dashed border-[#CBD5E1] h-16 mx-2 flex items-center justify-center shrink-0">
+                    <div className="relative border-r-2 border-dashed border-[#CBD5E1] h-16 mx-2 flex items-center justify-center shrink-0">
                       {/* Top semicircular notch */}
-                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FAF5EE] rounded-full border border-[#EADBCC]"></div>
+                      <div className="absolute -top-6 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FAF5EE] rounded-full border border-[#CBD5E1]"></div>
                       {/* Bottom semicircular notch */}
-                      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FAF5EE] rounded-full border border-[#EADBCC]"></div>
+                      <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-4 h-4 bg-[#FAF5EE] rounded-full border border-[#CBD5E1]"></div>
                     </div>
 
                     {/* Right Section of Ticket */}
                     <div className="pl-2 flex flex-col items-center justify-center shrink-0">
                       <span className="text-[9px] sm:text-[10px] font-bold text-[#94A3B8] uppercase tracking-wider block mb-1">
-                        TAP TO COPY
+                        {copiedCoupon === coupon.code ? 'COPIED! ✓' : 'TAP TO COPY'}
                       </span>
 
                       {/* Dashed orange pill with code and copy icon */}
-                      <div className="border-2 border-dashed border-[#EA580C] bg-[#FFF7ED] text-[#EA580C] px-3 py-1 sm:py-1.5 rounded-xl font-extrabold font-mono text-xs sm:text-sm flex items-center justify-center gap-1.5 group-hover:bg-[#FFEDD5] transition-colors shadow-sm">
+                      <div className={`border-2 border-dashed ${copiedCoupon === coupon.code ? 'border-[#16A34A] bg-[#DCFCE7] text-[#16A34A]' : 'border-[#EA580C] bg-[#FFF7ED] text-[#EA580C]'} px-3 py-1.5 rounded-xl font-black font-mono text-xs sm:text-sm flex items-center justify-center gap-1.5 group-hover:bg-[#FFEDD5] transition-colors shadow-sm`}>
                         <span>{coupon.code}</span>
-                        <Copy className="w-3.5 h-3.5 text-[#EA580C]" />
+                        {copiedCoupon === coupon.code ? (
+                          <Check className="w-3.5 h-3.5 text-[#16A34A]" />
+                        ) : (
+                          <Copy className="w-3.5 h-3.5 text-[#EA580C]" />
+                        )}
                       </div>
                     </div>
                   </div>
@@ -604,7 +740,7 @@ export default function ProductDetailPage({
                     type="text"
                     value={pincode}
                     onChange={(e) => setPincode(e.target.value)}
-                    placeholder="Enter 6-digit Pincode"
+                    placeholder="Enter Pincode / Postal Code (e.g. 2000, 110091)"
                     className="w-full pl-9 pr-3 py-2 text-xs font-semibold rounded-xl bg-[#FAF5EE] border border-[#EADBCC] focus:border-[#28583B] focus:bg-white focus:outline-none"
                   />
                 </div>
@@ -618,12 +754,18 @@ export default function ProductDetailPage({
               </form>
 
               {/* Estimated Delivery Status */}
-              {deliveryResult && (
+              {deliveryResult && deliveryResult.valid && (
                 <div className="p-2.5 rounded-xl bg-[#F0FDF4] border border-[#DCFCE7] flex items-center gap-2 text-xs text-[#166534]">
                   <Check className="w-4 h-4 text-[#16A34A] shrink-0" />
                   <span>
-                    Estimated Delivery by <strong>{deliveryResult.date}</strong> to {deliveryResult.pincode}
+                    Estimated Delivery by <strong>{deliveryResult.date}</strong> to {deliveryResult.locationName} ({deliveryResult.pincode})
                   </span>
+                </div>
+              )}
+              {deliveryResult && !deliveryResult.valid && (
+                <div className="p-2.5 rounded-xl bg-[#FEF2F2] border border-[#FEE2E2] flex items-center gap-2 text-xs text-[#991B1B]">
+                  <AlertCircle className="w-4 h-4 text-[#DC2626] shrink-0" />
+                  <span>{deliveryResult.message}</span>
                 </div>
               )}
 
@@ -729,7 +871,7 @@ export default function ProductDetailPage({
                 { id: 'details', label: 'Product Details' },
                 { id: 'shipping', label: 'Shipping & Delivery' },
                 { id: 'returns', label: 'Return Policy' },
-                { id: 'reviews', label: `Customer Reviews (${product.numReviews ? Number(product.numReviews).toLocaleString() : '12,480'})` }
+                { id: 'reviews', label: `Customer Reviews (${reviewsList.length > 0 ? reviewsList.length : (product.numReviews || 3)})` }
               ].map(tab => (
                 <button
                   key={tab.id}
@@ -816,34 +958,218 @@ export default function ProductDetailPage({
               </div>
             )}
 
-            {/* Tab Content: Reviews */}
+            {/* Tab Content: Reviews (Task 1: Full System with Login Gated Submission) */}
             {activeTab === 'reviews' && (
               <div className="space-y-4 text-xs">
-                <div className="p-4 rounded-2xl bg-[#FAF5EE] border border-[#EADBCC] flex items-center justify-between">
+                {/* Reviews Summary & Write a Review CTA */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-[#FAF5EE] border border-[#EADBCC] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                   <div>
-                    <span className="text-3xl font-bold font-serif text-[#2B1E16]">{product.rating || 4.5}</span>
-                    <span className="text-xs text-[#7A6E65] ml-2">out of 5.0</span>
-                    <div className="flex text-[#C59B27] mt-1">
-                      {[...Array(5)].map((_, i) => <Star key={i} className="w-3.5 h-3.5 fill-current" />)}
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-3xl font-bold font-serif text-[#2B1E16]">{product.rating || 4.8}</span>
+                      <span className="text-xs text-[#7A6E65]">out of 5.0</span>
                     </div>
+                    <div className="flex text-[#C59B27] mt-1 gap-0.5">
+                      {[...Array(5)].map((_, i) => (
+                        <Star key={i} className={`w-3.5 h-3.5 ${i < Math.round(product.rating || 4.8) ? 'fill-current' : 'text-[#D0C0B0]'}`} />
+                      ))}
+                    </div>
+                    <p className="text-[11px] text-[#7A6E65] mt-1 font-medium">
+                      Based on {reviewsList.length} verified buyer reviews
+                    </p>
                   </div>
-                  <div className="text-right">
-                    <span className="font-bold text-[#704214] block">99% Customer Satisfaction</span>
-                    <span className="text-[10px] text-[#7A6E65]">Based on {product.numReviews ? Number(product.numReviews).toLocaleString() : '12,480'} verified reviews</span>
+
+                  <div className="flex flex-col sm:items-end gap-2">
+                    <span className="text-xs font-bold text-[#704214] bg-[#F5EBE1] px-3 py-1 rounded-full border border-[#E7DACD]">
+                      ✓ 99% Customer Satisfaction
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => setIsWritingReview(!isWritingReview)}
+                      className="px-4 py-2 bg-[#704214] hover:bg-[#59330E] text-white rounded-xl text-xs font-bold tracking-wide shadow-sm transition-all active:scale-95 flex items-center gap-1.5 self-start sm:self-auto"
+                    >
+                      <MessageSquare className="w-3.5 h-3.5" />
+                      <span>{isWritingReview ? 'Close Form' : 'Write a Review'}</span>
+                    </button>
                   </div>
                 </div>
 
-                <div className="p-4 rounded-xl border border-[#F0E7DB] bg-white space-y-1.5">
-                  <div className="flex items-center justify-between">
-                    <span className="font-bold text-[#2B1E16]">Elena Rostova</span>
-                    <span className="text-[10px] text-[#7A6E65]">Verified Buyer • 2 days ago</span>
+                {/* Review Submission Form (Gated: Only Logged-In Customers) */}
+                {isWritingReview && (
+                  <div className="p-4 sm:p-5 rounded-2xl bg-white border border-[#EADBCC] shadow-sm space-y-4 transition-all animate-fadeIn">
+                    {user ? (
+                      <form onSubmit={handleSubmitReview} className="space-y-3.5">
+                        <div className="flex items-center justify-between border-b border-[#F0E7DB] pb-2">
+                          <h4 className="font-serif text-sm font-bold text-[#2B1E16] flex items-center gap-2">
+                            <UserCheck className="w-4 h-4 text-[#2E7D32]" />
+                            <span>Verified Review by {user.name}</span>
+                          </h4>
+                          <span className="text-[10px] text-[#7A6E65]">{user.email}</span>
+                        </div>
+
+                        {reviewError && (
+                          <div className="p-2.5 rounded-xl bg-[#FDF0EE] text-[#B93822] text-xs border border-[#F5C2BA]">
+                            {reviewError}
+                          </div>
+                        )}
+
+                        {reviewMsg && (
+                          <div className="p-2.5 rounded-xl bg-[#E8F5E9] text-[#2E7D32] text-xs font-semibold border border-[#C8E6C9]">
+                            {reviewMsg}
+                          </div>
+                        )}
+
+                        {/* Star Rating Picker */}
+                        <div>
+                          <label className="text-[11px] font-bold text-[#605248] block mb-1">
+                            Your Rating *
+                          </label>
+                          <div className="flex items-center gap-1.5">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <button
+                                key={star}
+                                type="button"
+                                onClick={() => setNewRating(star)}
+                                onMouseEnter={() => setHoverRating(star)}
+                                onMouseLeave={() => setHoverRating(0)}
+                                className="p-1 hover:scale-110 transition-transform"
+                                aria-label={`${star} Stars`}
+                              >
+                                <Star
+                                  className={`w-5 h-5 ${
+                                    star <= (hoverRating || newRating)
+                                      ? 'text-[#C59B27] fill-current'
+                                      : 'text-[#D0C0B0]'
+                                  }`}
+                                />
+                              </button>
+                            ))}
+                            <span className="text-xs font-bold text-[#704214] ml-2">
+                              {newRating} / 5 Stars
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Review Headline / Title */}
+                        <div>
+                          <label className="text-[11px] font-bold text-[#605248] block mb-1">
+                            Review Title (Optional)
+                          </label>
+                          <input
+                            type="text"
+                            value={newTitle}
+                            onChange={(e) => setNewTitle(e.target.value)}
+                            placeholder="e.g. Absolutely stunning quality and packaging!"
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF5EE] border border-[#EADBCC] text-[#2B1E16] focus:border-[#704214] focus:bg-white focus:outline-none"
+                          />
+                        </div>
+
+                        {/* Review Comment */}
+                        <div>
+                          <label className="text-[11px] font-bold text-[#605248] block mb-1">
+                            Your Detailed Review *
+                          </label>
+                          <textarea
+                            rows="3"
+                            required
+                            value={newComment}
+                            onChange={(e) => setNewComment(e.target.value)}
+                            placeholder="Share your experience regarding material quality, sizing, packaging, and delivery..."
+                            className="w-full px-3 py-2 text-xs rounded-xl bg-[#FAF5EE] border border-[#EADBCC] text-[#2B1E16] focus:border-[#704214] focus:bg-white focus:outline-none"
+                          />
+                        </div>
+
+                        <div className="flex items-center justify-end gap-2.5 pt-1">
+                          <button
+                            type="button"
+                            onClick={() => setIsWritingReview(false)}
+                            className="px-4 py-2 rounded-xl text-xs font-semibold text-[#7A6E65] hover:bg-[#FAF5EE] transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            disabled={isSubmittingReview}
+                            className="px-5 py-2 bg-[#704214] hover:bg-[#59330E] text-white rounded-xl text-xs font-bold tracking-wide shadow-sm transition-all flex items-center gap-1.5 disabled:opacity-50"
+                          >
+                            <Send className="w-3.5 h-3.5" />
+                            <span>{isSubmittingReview ? 'Submitting...' : 'Post Customer Review'}</span>
+                          </button>
+                        </div>
+                      </form>
+                    ) : (
+                      /* Not Logged In Prompt */
+                      <div className="text-center py-4 space-y-3">
+                        <div className="w-10 h-10 rounded-full bg-[#FAF5EE] border border-[#EADBCC] flex items-center justify-center mx-auto text-[#704214]">
+                          <MessageSquare className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="font-serif text-sm font-bold text-[#2B1E16]">
+                            Customer Login Required
+                          </h4>
+                          <p className="text-[11px] text-[#7A6E65] max-w-sm mx-auto mt-0.5">
+                            To ensure authentic feedback from genuine buyers, only logged-in customers can submit verified reviews.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            if (onOpenAuthModal) onOpenAuthModal('login');
+                          }}
+                          className="px-5 py-2.5 bg-[#704214] hover:bg-[#59330E] text-white rounded-xl text-xs font-bold tracking-wide shadow-md transition-all active:scale-95 inline-flex items-center gap-1.5"
+                        >
+                          <UserCheck className="w-4 h-4" />
+                          <span>Sign In / Create Account to Review</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
-                  <div className="flex text-[#C59B27]">
-                    {[...Array(5)].map((_, i) => <Star key={i} className="w-3 h-3 fill-current" />)}
-                  </div>
-                  <p className="text-[#605248]">
-                    "Absolutely breathtaking quality. The leather is buttery soft and the hardware has a satisfying, weighty feel. Worth every penny."
-                  </p>
+                )}
+
+                {/* Existing Customer Reviews List */}
+                <div className="space-y-3 pt-1">
+                  {reviewsList.map((rev, idx) => (
+                    <div
+                      key={rev._id || idx}
+                      className="p-4 rounded-2xl border border-[#F0E7DB] bg-white space-y-2 hover:border-[#EADBCC] transition-colors shadow-2xs"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <div className="w-7 h-7 rounded-full bg-[#FAF5EE] border border-[#EADBCC] flex items-center justify-center text-[#704214] font-bold text-[11px]">
+                            {(rev.userName || 'Customer').charAt(0).toUpperCase()}
+                          </div>
+                          <div>
+                            <span className="font-bold text-[#2B1E16] block">{rev.userName || 'Verified Customer'}</span>
+                            <span className="text-[10px] text-[#2E7D32] font-semibold flex items-center gap-1">
+                              <Check className="w-3 h-3" /> Verified Buyer
+                            </span>
+                          </div>
+                        </div>
+
+                        <span className="text-[10px] text-[#7A6E65]">
+                          {rev.createdAt ? new Date(rev.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'Verified Review'}
+                        </span>
+                      </div>
+
+                      <div className="flex text-[#C59B27] gap-0.5">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`w-3 h-3 ${i < (rev.rating || 5) ? 'fill-current' : 'text-[#D0C0B0]'}`}
+                          />
+                        ))}
+                      </div>
+
+                      {rev.title && (
+                        <h5 className="font-semibold text-xs text-[#2B1E16] pt-0.5">
+                          {rev.title}
+                        </h5>
+                      )}
+
+                      <p className="text-[#605248] text-xs leading-relaxed">
+                        "{rev.comment}"
+                      </p>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}

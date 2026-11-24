@@ -1,0 +1,112 @@
+[
+  {
+    "_id": "ord_1",
+    "orderNumber": "AG-2026-10481",
+    "customer": "usr_1",
+    "customerName": "Sophia Laurent",
+    "customerEmail": "sophia@example.com",
+    "items": [
+      {
+        "product": "prod_1",
+        "title": "Nike Air Force 1 Sneakers",
+        "image": "/images/products/nike-air-force-1.webp",
+        "price": 69.99,
+        "quantity": 1,
+        "total": 69.99
+      },
+      {
+        "product": "prod_4",
+        "title": "Luxury Perfume",
+        "image": "/images/products/luxury-perfume.webp",
+        "price": 79.99,
+        "quantity": 1,
+        "total": 79.99
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Sophia Laurent",
+      "phone": "+33 6 12 34 56 78",
+      "addressLine": "14 Rue de la Paix",
+      "city": "Paris",
+      "state": "Île-de-France",
+      "postalCode": "75001",
+      "country": "France"
+    },
+    "subtotal": 149.98,
+    "shippingFee": 0,
+    "tax": 7.5,
+    "grandTotal": 157.48,
+    "paymentMethod": "stripe",
+    "paymentStatus": "paid",
+    "orderStatus": "delivered",
+    "createdAt": "2026-11-24T09:36:22.265Z"
+  },
+  {
+    "_id": "ord_2",
+    "orderNumber": "AG-2026-10482",
+    "customer": "usr_2",
+    "customerName": "Alexander Wright",
+    "customerEmail": "alex@example.com",
+    "items": [
+      {
+        "product": "prod_2",
+        "title": "Smart Watch Series 7",
+        "image": "/images/products/smart-watch-series-7.webp",
+        "price": 99.99,
+        "quantity": 1,
+        "total": 99.99
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Alexander Wright",
+      "phone": "+44 7911 123456",
+      "addressLine": "42 Baker Street",
+      "city": "London",
+      "state": "Greater London",
+      "postalCode": "NW1 6XE",
+      "country": "United Kingdom"
+    },
+    "subtotal": 99.99,
+    "shippingFee": 0,
+    "tax": 5,
+    "grandTotal": 104.99,
+    "paymentMethod": "paypal",
+    "paymentStatus": "paid",
+    "orderStatus": "processing",
+    "createdAt": "2026-11-23T09:36:22.265Z"
+  },
+  {
+    "_id": "ord_3",
+    "orderNumber": "AG-2026-10483",
+    "customer": "usr_4",
+    "customerName": "Tariq Al-Mansoor",
+    "customerEmail": "tariq@example.com",
+    "items": [
+      {
+        "product": "prod_6",
+        "title": "Noise Cancelling Headphones",
+        "image": "/images/products/noise-cancelling-headphones.webp",
+        "price": 89.99,
+        "quantity": 2,
+        "total": 179.98
+      }
+    ],
+    "shippingAddress": {
+      "fullName": "Tariq Al-Mansoor",
+      "phone": "+971 50 123 4567",
+      "addressLine": "Villa 12, Jumeirah Beach Road",
+      "city": "Dubai",
+      "state": "Dubai",
+      "postalCode": "00000",
+      "country": "United Arab Emirates"
+    },
+    "subtotal": 179.98,
+    "shippingFee": 0,
+    "tax": 9,
+    "grandTotal": 188.98,
+    "paymentMethod": "cod",
+    "paymentStatus": "pending",
+    "orderStatus": "pending",
+    "createdAt": "2026-11-24T09:36:22.265Z"
+  }
+]

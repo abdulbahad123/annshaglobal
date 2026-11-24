@@ -90,12 +90,6 @@ export default function MobileNav({ isOpen, onClose, logoUrl, categories = [], o
               Flash Deals
             </button>
             <button
-              onClick={() => { onSelectNav && onSelectNav('our_collection'); onClose(); }}
-              className="w-full text-left px-3 py-2 hover:bg-[#F5EBE1] rounded-xl font-medium"
-            >
-              Our Collection
-            </button>
-            <button
               onClick={() => { onSelectNav && onSelectNav('our_brand'); onClose(); }}
               className="w-full text-left px-3 py-2 hover:bg-[#F5EBE1] rounded-xl font-medium"
             >
