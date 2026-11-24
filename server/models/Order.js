@@ -15,7 +15,7 @@ const orderSchema = new mongoose.Schema({
   customerName: { type: String, required: true },
   customerEmail: { type: String, required: true },
   items: [orderItemSchema],
-  
+
   shippingAddress: {
     fullName: { type: String, required: true },
     phone: { type: String, required: true },
@@ -36,11 +36,11 @@ const orderSchema = new mongoose.Schema({
   paymentStatus: { type: String, enum: ['pending', 'paid', 'failed', 'refunded'], default: 'pending', index: true },
   paymentTransactionId: { type: String, default: '' },
 
-  orderStatus: { 
-    type: String, 
-    enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'], 
+  orderStatus: {
+    type: String,
+    enum: ['pending', 'processing', 'shipped', 'delivered', 'cancelled'],
     default: 'pending',
-    index: true 
+    index: true
   },
   deliveredAt: { type: Date },
   cancelledAt: { type: Date },
