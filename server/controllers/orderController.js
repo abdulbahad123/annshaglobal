@@ -6,7 +6,14 @@ import { dbStore, isMongoConnected } from '../services/dbStore.js';
 
 export const createOrder = async (req, res, next) => {
   try {
-    const { items, shippingAddress, paymentMethod = 'cod' } = req.body;
+    const { 
+      items, 
+      shippingAddress, 
+      paymentMethod = 'cod', 
+      discountCode = '', 
+      discount = 0,
+      paymentTransactionId = ''
+    } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return res.status(400).json({ success: false, message: 'Your cart is empty.' });
@@ -15,6 +22,10 @@ export const createOrder = async (req, res, next) => {
     if (!shippingAddress || !shippingAddress.fullName || !shippingAddress.addressLine) {
       return res.status(400).json({ success: false, message: 'Complete shipping address is required.' });
     }
+
+    const customerId = req.user?._id || null;
+    const customerName = req.user?.name || shippingAddress.fullName || 'Guest Customer';
+    const customerEmail = req.user?.email || shippingAddress.email || req.body.email || 'customer@annshaglobal.com';
 
     let subtotal = 0;
     const verifiedItems = [];
@@ -40,28 +51,37 @@ export const createOrder = async (req, res, next) => {
         await product.save();
       }
 
-      const shippingFee = subtotal > 50 ? 0 : 5.00;
+      const shippingFee = subtotal > 500 ? 0 : 0; // Free shipping for luxury launch
       const tax = Number((subtotal * 0.05).toFixed(2));
-      const grandTotal = Number((subtotal + shippingFee + tax).toFixed(2));
+      const discountNum = Number(discount) || 0;
+      const grandTotal = Math.max(0, Number((subtotal + shippingFee + tax - discountNum).toFixed(2)));
       const orderNumber = `AG-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
 
-      const order = await Order.create({
+      const orderData = {
         orderNumber,
-        customer: req.user._id,
-        customerName: req.user.name,
-        customerEmail: req.user.email,
+        customerName,
+        customerEmail,
         items: verifiedItems,
         shippingAddress,
         subtotal,
         shippingFee,
         tax,
+        discount: discountNum,
         grandTotal,
         paymentMethod,
         paymentStatus: paymentMethod === 'cod' ? 'pending' : 'paid',
+        paymentTransactionId: paymentTransactionId || '',
         orderStatus: 'pending'
-      });
+      };
+      if (customerId) {
+        orderData.customer = customerId;
+      }
 
-      await User.findByIdAndUpdate(req.user._id, { $inc: { totalOrders: 1, totalSpent: grandTotal } });
+      const order = await Order.create(orderData);
+
+      if (customerId) {
+        await User.findByIdAndUpdate(customerId, { $inc: { totalOrders: 1, totalSpent: grandTotal } });
+      }
       return res.status(201).json({ success: true, message: 'Order placed successfully!', order });
     }
 
@@ -87,36 +107,47 @@ export const createOrder = async (req, res, next) => {
     }
     dbStore.write('products', products);
 
-    const shippingFee = subtotal > 50 ? 0 : 5.00;
+    const shippingFee = 0;
     const tax = Number((subtotal * 0.05).toFixed(2));
-    const grandTotal = Number((subtotal + shippingFee + tax).toFixed(2));
+    const discountNum = Number(discount) || 0;
+    const grandTotal = Math.max(0, Number((subtotal + shippingFee + tax - discountNum).toFixed(2)));
     const orderNumber = `AG-${new Date().getFullYear()}-${Math.floor(10000 + Math.random() * 90000)}`;
 
     const newOrder = {
       _id: `ord_${Date.now()}`,
       orderNumber,
-      customer: req.user._id,
-      customerName: req.user.name,
-      customerEmail: req.user.email,
+      customer: customerId,
+      customerName,
+      customerEmail,
       items: verifiedItems,
       shippingAddress,
       subtotal,
       shippingFee,
       tax,
+      discount: discountNum,
       grandTotal,
       paymentMethod,
       paymentStatus: paymentMethod === 'cod' ? 'pending' : 'paid',
+      paymentTransactionId: paymentTransactionId || '',
       orderStatus: 'pending',
       createdAt: new Date().toISOString()
     };
 
-    const orders = dbStore.read('orders');
+    const orders = dbStore.read('orders') || [];
     orders.unshift(newOrder);
     dbStore.write('orders', orders);
 
-    // Update user stats
-    const users = dbStore.read('users');
-    const u = users.find(usr => String(usr._id) === String(req.user._id));
+    if (customerId) {
+      const users = dbStore.read('users') || [];
+      const u = users.find(usr => String(usr._id) === String(customerId));
+      if (u) {
+        u.totalOrders = (u.totalOrders || 0) + 1;
+        u.totalSpent = (u.totalSpent || 0) + grandTotal;
+        dbStore.write('users', users);
+      }
+    }
+
+    return res.status(201).json({ success: true, message: 'Order placed successfully!', order: newOrder });
     if (u) {
       u.totalOrders = (u.totalOrders || 0) + 1;
       u.totalSpent = Number(((u.totalSpent || 0) + grandTotal).toFixed(2));

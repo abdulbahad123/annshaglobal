@@ -59,6 +59,40 @@ const cmsContentSchema = new mongoose.Schema({
     playStoreLink: { type: String, default: '#' },
     appStoreLink: { type: String, default: '#' },
     copyrightText: { type: String, default: '© 2025 Annsha Global. All rights reserved.' }
+  },
+
+  pdpSettings: {
+    urgency: {
+      viewingCount: { type: Number, default: 65 },
+      saleEndsHours: { type: Number, default: 12 },
+      saleEndsMinutes: { type: Number, default: 42 },
+      bestsellerBadge: { type: Boolean, default: true },
+      ratingText: { type: String, default: '4.87/5 Rated by 119 Verified Customers' }
+    },
+    welcomeOffer: {
+      badgeText: { type: String, default: 'WELCOME OFFER' },
+      offerText: { type: String, default: 'Flat ₹100 OFF on 1st prepaid order' }
+    },
+    coupons: [{
+      code: { type: String, default: 'DIWALI200' },
+      title: { type: String, default: 'Flat ₹200 OFF' },
+      subtitle: { type: String, default: 'On Orders Above ₹1499' },
+      discount: { type: Number, default: 200 },
+      discountType: { type: String, default: 'fixed' },
+      minOrder: { type: Number, default: 1499 }
+    }],
+    deliveryEstimator: {
+      title: { type: String, default: 'Get estimated delivery date' },
+      subtitle: { type: String, default: 'Prepaid orders are delivered on priority' },
+      perk1: { type: String, default: '10% Off Every Prepaid Order' },
+      perk2: { type: String, default: 'FREE Shipping on all orders' },
+      defaultDays: { type: Number, default: 3 }
+    },
+    trustBoxes: [{
+      title: { type: String, default: '100% Cashback' },
+      subtitle: { type: String, default: 'up to ₹500 via UPI' },
+      icon: { type: String, default: 'cashback' }
+    }]
   }
 }, { strict: false, timestamps: true });
 

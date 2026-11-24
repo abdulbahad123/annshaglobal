@@ -8,20 +8,25 @@ const paymentSettingSchema = new mongoose.Schema({
     secretKey: { type: String, default: 'sk_test_sample_stripe_annsha' },
     isLive: { type: Boolean, default: false }
   },
-  paypal: {
+  razorpay: {
     enabled: { type: Boolean, default: true },
-    clientId: { type: String, default: 'sb-sample-paypal-client-id' },
-    secretKey: { type: String, default: 'sb-sample-paypal-secret' },
+    keyId: { type: String, default: 'rzp_test_sample_key' },
+    keySecret: { type: String, default: 'rzp_test_sample_secret' },
+    isLive: { type: Boolean, default: false }
+  },
+  paypal: {
+    enabled: { type: Boolean, default: false },
+    clientId: { type: String, default: '' },
+    secretKey: { type: String, default: '' },
     isLive: { type: Boolean, default: false }
   },
   cod: {
     enabled: { type: Boolean, default: true },
     extraFee: { type: Number, default: 0 },
-    maxOrderAmount: { type: Number, default: 1000 }
+    maxOrderAmount: { type: Number, default: 50000 }
   },
-  currency: { type: String, default: 'USD' },
-  currencySymbol: { type: String, default: '$' }
+  currency: { type: String, default: 'INR' },
+  currencySymbol: { type: String, default: '₹' }
 }, { timestamps: true });
 
 export default mongoose.model('PaymentSetting', paymentSettingSchema);
-

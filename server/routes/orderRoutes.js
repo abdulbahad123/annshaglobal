@@ -6,12 +6,12 @@ import {
   updateOrderStatus,
   getOrderById
 } from '../controllers/orderController.js';
-import { verifyToken } from '../middlewares/authMiddleware.js';
+import { verifyToken, optionalAuth } from '../middlewares/authMiddleware.js';
 import { requireAdmin } from '../middlewares/roleMiddleware.js';
 
 const router = express.Router();
 
-router.post('/checkout', verifyToken, createOrder);
+router.post('/checkout', optionalAuth, createOrder);
 router.get('/my-orders', verifyToken, getMyOrders);
 
 // Admin Order Endpoints

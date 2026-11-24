@@ -374,6 +374,38 @@ const initialCMS = {
     playStoreLink: 'https://play.google.com',
     appStoreLink: 'https://apple.com/app-store',
     copyrightText: '© 2025 Annsha Global. All rights reserved.'
+  },
+  pdpSettings: {
+    urgency: {
+      viewingCount: 65,
+      saleEndsHours: 12,
+      saleEndsMinutes: 42,
+      saleEndsSeconds: 31,
+      bestsellerBadge: true,
+      ratingText: '4.87/5 Rated by 119 Verified Customers'
+    },
+    welcomeOffer: {
+      badgeText: 'WELCOME OFFER',
+      offerText: 'Flat ₹100 OFF on 1st prepaid order'
+    },
+    coupons: [
+      { code: 'DIWALI200', title: 'Flat ₹200 OFF', subtitle: 'On Orders Above ₹1499', discount: 200, discountType: 'fixed', minOrder: 1499 },
+      { code: 'SAVE100', title: 'Flat ₹100 OFF', subtitle: 'On Orders Above ₹999', discount: 100, discountType: 'fixed', minOrder: 999 },
+      { code: 'WELCOME10', title: '10% OFF', subtitle: 'On All First Orders', discount: 10, discountType: 'percent', minOrder: 499 }
+    ],
+    deliveryEstimator: {
+      title: 'Get estimated delivery date',
+      subtitle: 'Prepaid orders are delivered on priority',
+      perk1: '10% Off Every Prepaid Order',
+      perk2: 'FREE Shipping on all orders',
+      defaultDays: 3
+    },
+    trustBoxes: [
+      { title: '100% Cashback', subtitle: 'up to ₹500 via UPI', icon: 'cashback' },
+      { title: '6-Month', subtitle: 'Free replacement', icon: 'shield' },
+      { title: 'Lab Certified', subtitle: '100% authentic', icon: 'award' },
+      { title: 'Free Shipping', subtitle: 'on orders ₹499+', icon: 'truck' }
+    ]
   }
 };
 
@@ -464,11 +496,12 @@ const initialOrders = [
 
 const initialPayment = {
   key: 'global_payment_settings',
-  stripe: { enabled: true, publishableKey: 'pk_test_sample', secretKey: 'sk_test_sample', isLive: false },
-  paypal: { enabled: true, clientId: 'sb-client-id', secretKey: 'sb-secret', isLive: false },
-  cod: { enabled: true, extraFee: 0, maxOrderAmount: 1000 },
-  currency: 'USD',
-  currencySymbol: '$'
+  stripe: { enabled: true, publishableKey: 'pk_test_sample_stripe_annsha', secretKey: 'sk_test_sample_stripe_annsha', isLive: false },
+  razorpay: { enabled: true, keyId: 'rzp_test_sample_key', keySecret: 'rzp_test_sample_secret', isLive: false },
+  paypal: { enabled: false, clientId: '', secretKey: '', isLive: false },
+  cod: { enabled: true, extraFee: 0, maxOrderAmount: 50000 },
+  currency: 'INR',
+  currencySymbol: '₹'
 };
 
 class LocalDataStore {

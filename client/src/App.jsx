@@ -24,6 +24,7 @@ import OurBrandPage from './pages/OurBrandPage';
 import FAQPage from './pages/FAQPage';
 import ContactUsPage from './pages/ContactUsPage';
 import WishlistPage from './pages/WishlistPage';
+import CheckoutPage from './pages/CheckoutPage';
 
 // Modals
 import CartDrawer from './components/cart/CartDrawer';
@@ -235,11 +236,20 @@ export default function App() {
           <ProductDetailPage
             product={activeProduct}
             allProducts={products}
+            cmsConfig={cmsConfig}
             onBack={() => navigate('/shop')}
             onSelectProduct={handleSelectProduct}
             onSelectCategory={handleSelectCategory}
             onShopBanner={() => navigate('/shop')}
-            onBuyNow={() => setIsCheckoutOpen(true)}
+            onBuyNow={() => navigate('/checkout')}
+          />
+        )}
+
+        {/* DEDICATED FULL CHECKOUT PAGE ROUTE: /checkout (Task 2 - Dedicated Page, No Popup Modal!) */}
+        {currentPath === '/checkout' && (
+          <CheckoutPage
+            navigate={navigate}
+            onSelectProduct={handleSelectProduct}
           />
         )}
 
@@ -385,13 +395,7 @@ export default function App() {
       />
 
       {/* Slide-out Cart Drawer */}
-      <CartDrawer onCheckout={() => setIsCheckoutOpen(true)} />
-
-      {/* Checkout Dialog Modal */}
-      <CheckoutModal
-        isOpen={isCheckoutOpen}
-        onClose={() => setIsCheckoutOpen(false)}
-      />
+      <CartDrawer onCheckout={() => navigate('/checkout')} />
 
       {/* Customer / Admin Auth Modal */}
       <AuthModal

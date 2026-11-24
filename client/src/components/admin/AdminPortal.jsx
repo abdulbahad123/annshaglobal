@@ -1765,6 +1765,12 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
                   >
                     🌐 Footer & Global
                   </button>
+                  <button
+                    onClick={() => setEditorTab('pdp')}
+                    className={`px-4 py-2 rounded-sm transition-all ${editorTab === 'pdp' ? 'bg-[#2271b1] text-white shadow-sm' : 'bg-white text-[#1d2327] hover:bg-[#f0f0f1]'}`}
+                  >
+                    💎 Product Page &amp; Conversion
+                  </button>
                 </div>
 
                 {/* 1. HOMEPAGE TAB */}
@@ -2962,6 +2968,412 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
                     </div>
                   </div>
                 )}
+
+                {/* 7. PRODUCT DETAIL PAGE (PDP) & CONVERSION SETTINGS (Task 1) */}
+                {editorTab === 'pdp' && (
+                  <div className="space-y-6">
+                    {/* Urgency & Rating Row */}
+                    <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                      <h3 className="font-sans text-base font-bold text-[#1d2327]">
+                        ⚡ Urgency Indicators &amp; Social Proof
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Live Viewers Count</label>
+                          <input
+                            type="number"
+                            value={cmsConfig.pdpSettings?.urgency?.viewingCount ?? 65}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                urgency: {
+                                  ...(cmsConfig.pdpSettings?.urgency || {}),
+                                  viewingCount: Number(e.target.value)
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Sale Timer (Hours)</label>
+                          <input
+                            type="number"
+                            value={cmsConfig.pdpSettings?.urgency?.saleEndsHours ?? 12}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                urgency: {
+                                  ...(cmsConfig.pdpSettings?.urgency || {}),
+                                  saleEndsHours: Number(e.target.value)
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Sale Timer (Minutes)</label>
+                          <input
+                            type="number"
+                            value={cmsConfig.pdpSettings?.urgency?.saleEndsMinutes ?? 42}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                urgency: {
+                                  ...(cmsConfig.pdpSettings?.urgency || {}),
+                                  saleEndsMinutes: Number(e.target.value)
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div className="flex items-center pt-5">
+                          <label className="flex items-center gap-2 cursor-pointer text-xs font-semibold text-[#2c3338]">
+                            <input
+                              type="checkbox"
+                              checked={cmsConfig.pdpSettings?.urgency?.bestsellerBadge !== false}
+                              onChange={(e) => setCmsConfig({
+                                ...cmsConfig,
+                                pdpSettings: {
+                                  ...cmsConfig.pdpSettings,
+                                  urgency: {
+                                    ...(cmsConfig.pdpSettings?.urgency || {}),
+                                    bestsellerBadge: e.target.checked
+                                  }
+                                }
+                              })}
+                              className="w-4 h-4 text-[#2271b1] rounded"
+                            />
+                            <span>Show "Bestseller" Tag</span>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Rating Social Proof Text</label>
+                        <input
+                          type="text"
+                          value={cmsConfig.pdpSettings?.urgency?.ratingText || '4.87/5 Rated by 119 Verified Customers'}
+                          onChange={(e) => setCmsConfig({
+                            ...cmsConfig,
+                            pdpSettings: {
+                              ...cmsConfig.pdpSettings,
+                              urgency: {
+                                ...(cmsConfig.pdpSettings?.urgency || {}),
+                                ratingText: e.target.value
+                              }
+                            }
+                          })}
+                          className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                        />
+                      </div>
+                    </div>
+
+                    {/* Welcome Offer Banner */}
+                    <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                      <h3 className="font-sans text-base font-bold text-[#1d2327]">
+                        🎁 Welcome Offer Strip
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Badge Text</label>
+                          <input
+                            type="text"
+                            value={cmsConfig.pdpSettings?.welcomeOffer?.badgeText || 'WELCOME OFFER'}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                welcomeOffer: {
+                                  ...(cmsConfig.pdpSettings?.welcomeOffer || {}),
+                                  badgeText: e.target.value
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Offer Description Text</label>
+                          <input
+                            type="text"
+                            value={cmsConfig.pdpSettings?.welcomeOffer?.offerText || 'Flat ₹100 OFF on 1st prepaid order'}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                welcomeOffer: {
+                                  ...(cmsConfig.pdpSettings?.welcomeOffer || {}),
+                                  offerText: e.target.value
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Interactive Coupons Manager */}
+                    <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                      <div className="flex items-center justify-between border-b border-[#c3c4c7] pb-3">
+                        <div>
+                          <h3 className="font-sans text-base font-bold text-[#1d2327]">
+                            🎟️ "Tap to Copy" Coupons Manager
+                          </h3>
+                          <p className="text-xs text-[#646970]">
+                            Manage voucher coupons shown to customers on Product Detail Pages and applicable at Checkout.
+                          </p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            const current = cmsConfig.pdpSettings?.coupons || [
+                              { code: 'DIWALI200', title: 'Flat ₹200 OFF', subtitle: 'On Orders Above ₹1499', discount: 200, discountType: 'fixed' },
+                              { code: 'SAVE100', title: 'Flat ₹100 OFF', subtitle: 'On Orders Above ₹999', discount: 100, discountType: 'fixed' }
+                            ];
+                            setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                coupons: [
+                                  ...current,
+                                  { code: `NEW${Math.floor(10 + Math.random() * 90)}`, title: 'Special Discount', subtitle: 'On All Orders', discount: 50, discountType: 'fixed' }
+                                ]
+                              }
+                            });
+                          }}
+                          className="px-3 py-1.5 bg-[#2271b1] text-white rounded text-xs font-semibold hover:bg-[#135e96] flex items-center gap-1.5"
+                        >
+                          <Plus className="w-3.5 h-3.5" />
+                          <span>Add Coupon</span>
+                        </button>
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        {(cmsConfig.pdpSettings?.coupons || [
+                          { code: 'DIWALI200', title: 'Flat ₹200 OFF', subtitle: 'On Orders Above ₹1499', discount: 200 },
+                          { code: 'SAVE100', title: 'Flat ₹100 OFF', subtitle: 'On Orders Above ₹999', discount: 100 },
+                          { code: 'WELCOME10', title: '10% OFF', subtitle: 'On All First Orders', discount: 10 }
+                        ]).map((cp, idx) => (
+                          <div key={idx} className="p-3.5 rounded-lg bg-[#FAF5EE] border border-[#c3c4c7] space-y-2 relative">
+                            <button
+                              type="button"
+                              onClick={() => {
+                                const current = [...(cmsConfig.pdpSettings?.coupons || [])];
+                                current.splice(idx, 1);
+                                setCmsConfig({
+                                  ...cmsConfig,
+                                  pdpSettings: { ...cmsConfig.pdpSettings, coupons: current }
+                                });
+                              }}
+                              className="absolute top-2 right-2 text-[#b32d2e] hover:bg-white p-1 rounded"
+                              title="Delete Coupon"
+                            >
+                              <Trash2 className="w-3.5 h-3.5" />
+                            </button>
+
+                            <div>
+                              <label className="text-[10px] uppercase font-bold text-[#646970] block">Coupon Code</label>
+                              <input
+                                type="text"
+                                value={cp.code}
+                                onChange={(e) => {
+                                  const current = [...(cmsConfig.pdpSettings?.coupons || [])];
+                                  current[idx] = { ...current[idx], code: e.target.value.toUpperCase() };
+                                  setCmsConfig({
+                                    ...cmsConfig,
+                                    pdpSettings: { ...cmsConfig.pdpSettings, coupons: current }
+                                  });
+                                }}
+                                className="w-full px-2 py-1 bg-white border border-[#c3c4c7] rounded text-xs font-mono font-bold"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] uppercase font-bold text-[#646970] block">Title Tag</label>
+                              <input
+                                type="text"
+                                value={cp.title}
+                                onChange={(e) => {
+                                  const current = [...(cmsConfig.pdpSettings?.coupons || [])];
+                                  current[idx] = { ...current[idx], title: e.target.value };
+                                  setCmsConfig({
+                                    ...cmsConfig,
+                                    pdpSettings: { ...cmsConfig.pdpSettings, coupons: current }
+                                  });
+                                }}
+                                className="w-full px-2 py-1 bg-white border border-[#c3c4c7] rounded text-xs font-semibold"
+                              />
+                            </div>
+
+                            <div>
+                              <label className="text-[10px] uppercase font-bold text-[#646970] block">Discount Amount (₹)</label>
+                              <input
+                                type="number"
+                                value={cp.discount || 50}
+                                onChange={(e) => {
+                                  const current = [...(cmsConfig.pdpSettings?.coupons || [])];
+                                  current[idx] = { ...current[idx], discount: Number(e.target.value) };
+                                  setCmsConfig({
+                                    ...cmsConfig,
+                                    pdpSettings: { ...cmsConfig.pdpSettings, coupons: current }
+                                  });
+                                }}
+                                className="w-full px-2 py-1 bg-white border border-[#c3c4c7] rounded text-xs"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Location Pincode Delivery Estimator Settings */}
+                    <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                      <h3 className="font-sans text-base font-bold text-[#1d2327]">
+                        📍 Pincode Delivery Estimator Box
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Header Title</label>
+                          <input
+                            type="text"
+                            value={cmsConfig.pdpSettings?.deliveryEstimator?.title || 'Get estimated delivery date'}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                deliveryEstimator: {
+                                  ...(cmsConfig.pdpSettings?.deliveryEstimator || {}),
+                                  title: e.target.value
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Subtitle</label>
+                          <input
+                            type="text"
+                            value={cmsConfig.pdpSettings?.deliveryEstimator?.subtitle || 'Prepaid orders are delivered on priority'}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                deliveryEstimator: {
+                                  ...(cmsConfig.pdpSettings?.deliveryEstimator || {}),
+                                  subtitle: e.target.value
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Perk 1 Text</label>
+                          <input
+                            type="text"
+                            value={cmsConfig.pdpSettings?.deliveryEstimator?.perk1 || '10% Off Every Prepaid Order'}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                deliveryEstimator: {
+                                  ...(cmsConfig.pdpSettings?.deliveryEstimator || {}),
+                                  perk1: e.target.value
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Perk 2 Text</label>
+                          <input
+                            type="text"
+                            value={cmsConfig.pdpSettings?.deliveryEstimator?.perk2 || 'FREE Shipping on all orders'}
+                            onChange={(e) => setCmsConfig({
+                              ...cmsConfig,
+                              pdpSettings: {
+                                ...cmsConfig.pdpSettings,
+                                deliveryEstimator: {
+                                  ...(cmsConfig.pdpSettings?.deliveryEstimator || {}),
+                                  perk2: e.target.value
+                                }
+                              }
+                            })}
+                            className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded-sm text-xs"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* 4 Value / Trust Containers */}
+                    <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                      <h3 className="font-sans text-base font-bold text-[#1d2327]">
+                        🛡️ 4 Trust / Value Containers Grid
+                      </h3>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        {(cmsConfig.pdpSettings?.trustBoxes || [
+                          { title: '100% Cashback', subtitle: 'up to ₹500 via UPI' },
+                          { title: '6-Month', subtitle: 'Free replacement' },
+                          { title: 'Lab Certified', subtitle: '100% authentic' },
+                          { title: 'Free Shipping', subtitle: 'on orders ₹499+' }
+                        ]).map((box, idx) => (
+                          <div key={idx} className="p-3.5 rounded-lg bg-[#FAF5EE] border border-[#c3c4c7] space-y-2">
+                            <span className="text-[10px] font-bold text-[#2271b1] uppercase">Container {idx + 1}</span>
+                            <div>
+                              <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Title</label>
+                              <input
+                                type="text"
+                                value={box.title}
+                                onChange={(e) => {
+                                  const current = [...(cmsConfig.pdpSettings?.trustBoxes || [])];
+                                  current[idx] = { ...current[idx], title: e.target.value };
+                                  setCmsConfig({
+                                    ...cmsConfig,
+                                    pdpSettings: { ...cmsConfig.pdpSettings, trustBoxes: current }
+                                  });
+                                }}
+                                className="w-full px-2 py-1 bg-white border border-[#c3c4c7] rounded text-xs font-bold"
+                              />
+                            </div>
+                            <div>
+                              <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Subtitle</label>
+                              <input
+                                type="text"
+                                value={box.subtitle}
+                                onChange={(e) => {
+                                  const current = [...(cmsConfig.pdpSettings?.trustBoxes || [])];
+                                  current[idx] = { ...current[idx], subtitle: e.target.value };
+                                  setCmsConfig({
+                                    ...cmsConfig,
+                                    pdpSettings: { ...cmsConfig.pdpSettings, trustBoxes: current }
+                                  });
+                                }}
+                                className="w-full px-2 py-1 bg-white border border-[#c3c4c7] rounded text-xs"
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                  </div>
+                )}
               </div>
             )}
 
@@ -3022,105 +3434,299 @@ export default function AdminPortal({ onBackToStore, onClose, currentPath = '/ad
               </div>
             )}
 
-            {/* 8. PAYMENT GATEWAY MENU */}
+            {/* 8. PAYMENT GATEWAY MENU (Real Stripe, Razorpay & COD - Task 3) */}
             {activeMenu === 'payments' && paymentSettings && (
               <div className="space-y-6">
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
                   <div>
                     <h1 className="font-sans text-2xl font-bold text-[#1d2327]">
-                      Dynamic Payment Settings
+                      Real Payment Gateways &amp; Currency
                     </h1>
                     <p className="text-xs text-[#646970]">
-                      Enable/disable payment channels and configure credentials
+                      Configure real Test &amp; Live API credentials for Stripe, Razorpay, Cash on Delivery, and currency.
                     </p>
                   </div>
                   <button
                     onClick={handleSavePaymentSettings}
                     disabled={loading}
-                    className="px-6 py-2.5 bg-[#2271b1] text-white rounded text-xs font-semibold hover:bg-[#59330E]"
+                    className="px-6 py-2.5 bg-[#2271b1] hover:bg-[#135e96] text-white rounded text-xs font-bold shadow-md transition-all flex items-center gap-2"
                   >
-                    Save Settings
+                    <CheckCircle className="w-4 h-4 text-[#C59B27]" />
+                    <span>{loading ? 'Saving Settings...' : 'Save Payment Settings'}</span>
                   </button>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {/* Stripe */}
-                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-[#1d2327]">Stripe Card</h3>
+                {/* Store Currency Banner */}
+                <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <div>
+                    <h3 className="font-bold text-sm text-[#1d2327]">Default Store Currency</h3>
+                    <p className="text-xs text-[#646970]">All storefront prices and gateway charges will convert to this currency.</p>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <select
+                      value={paymentSettings.currency || 'INR'}
+                      onChange={(e) => {
+                        const cur = e.target.value;
+                        const symbols = { INR: '₹', USD: '$', EUR: '€', GBP: '£', AED: 'د.إ' };
+                        setPaymentSettings({
+                          ...paymentSettings,
+                          currency: cur,
+                          currencySymbol: symbols[cur] || '$'
+                        });
+                      }}
+                      className="px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-bold text-[#1d2327]"
+                    >
+                      <option value="INR">INR (₹) - Indian Rupee (Default)</option>
+                      <option value="USD">USD ($) - US Dollar</option>
+                      <option value="EUR">EUR (€) - Euro</option>
+                      <option value="GBP">GBP (£) - British Pound</option>
+                      <option value="AED">AED (د.إ) - UAE Dirham</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {/* Stripe Payment Gateway */}
+                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#c3c4c7] pb-3">
+                      <div className="flex items-center gap-2">
+                        <CreditCard className="w-5 h-5 text-[#635BFF]" />
+                        <h3 className="font-bold text-sm text-[#1d2327]">Stripe Payment Gateway</h3>
+                      </div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={paymentSettings.stripe?.enabled}
+                          onChange={(e) => setPaymentSettings({
+                            ...paymentSettings,
+                            stripe: { ...paymentSettings.stripe, enabled: e.target.checked }
+                          })}
+                          className="w-4 h-4 text-[#2271b1] rounded"
+                        />
+                        <span className="text-xs font-semibold">{paymentSettings.stripe?.enabled ? 'Active' : 'Disabled'}</span>
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-4 text-xs font-semibold">
+                      <span className="text-[#646970]">Gateway Mode:</span>
+                      <label className="flex items-center gap-1.5 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="stripeMode"
+                          checked={!paymentSettings.stripe?.isLive}
+                          onChange={() => setPaymentSettings({
+                            ...paymentSettings,
+                            stripe: { ...paymentSettings.stripe, isLive: false }
+                          })}
+                        />
+                        <span className="px-2 py-0.5 rounded bg-[#FAF5EE] text-[#704214] font-bold text-[11px]">Test Mode</span>
+                      </label>
+                      <label className="flex items-center gap-1.5 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="stripeMode"
+                          checked={paymentSettings.stripe?.isLive}
+                          onChange={() => setPaymentSettings({
+                            ...paymentSettings,
+                            stripe: { ...paymentSettings.stripe, isLive: true }
+                          })}
+                        />
+                        <span className="px-2 py-0.5 rounded bg-[#EBF7EE] text-[#1E7E34] font-bold text-[11px]">Live Production</span>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Stripe Publishable Key (pk_test_... or pk_live_...)</label>
                       <input
-                        type="checkbox"
-                        checked={paymentSettings.stripe?.enabled}
+                        type="text"
+                        value={paymentSettings.stripe?.publishableKey || ''}
                         onChange={(e) => setPaymentSettings({
                           ...paymentSettings,
-                          stripe: { ...paymentSettings.stripe, enabled: e.target.checked }
+                          stripe: { ...paymentSettings.stripe, publishableKey: e.target.value }
                         })}
-                        className="w-4 h-4 text-[#2271b1] rounded"
+                        placeholder="pk_test_..."
+                        className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-mono"
                       />
                     </div>
-                    <label className="text-[11px] text-[#2c3338] block">Publishable Key</label>
-                    <input
-                      type="text"
-                      value={paymentSettings.stripe?.publishableKey || ''}
-                      onChange={(e) => setPaymentSettings({
-                        ...paymentSettings,
-                        stripe: { ...paymentSettings.stripe, publishableKey: e.target.value }
-                      })}
-                      className="w-full px-3 py-1.5 bg-[#FAF5EE] border border-[#c3c4c7] rounded-lg text-xs"
-                    />
+
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Stripe Secret Key (sk_test_... or sk_live_...)</label>
+                      <input
+                        type="password"
+                        value={paymentSettings.stripe?.secretKey || ''}
+                        onChange={(e) => setPaymentSettings({
+                          ...paymentSettings,
+                          stripe: { ...paymentSettings.stripe, secretKey: e.target.value }
+                        })}
+                        placeholder="sk_test_..."
+                        className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-mono"
+                      />
+                      <p className="text-[10px] text-[#646970] mt-1">Stored securely on your server. Used for creating official PaymentIntents.</p>
+                    </div>
                   </div>
 
-                  {/* PayPal */}
-                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-[#1d2327]">PayPal Express</h3>
+                  {/* Razorpay Payment Gateway */}
+                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#c3c4c7] pb-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-5 h-5 rounded bg-[#0C2340] text-white text-[10px] font-extrabold flex items-center justify-center">R</span>
+                        <h3 className="font-bold text-sm text-[#1d2327]">Razorpay (UPI / Netbanking)</h3>
+                      </div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={paymentSettings.razorpay?.enabled !== false}
+                          onChange={(e) => setPaymentSettings({
+                            ...paymentSettings,
+                            razorpay: { ...(paymentSettings.razorpay || {}), enabled: e.target.checked }
+                          })}
+                          className="w-4 h-4 text-[#2271b1] rounded"
+                        />
+                        <span className="text-xs font-semibold">{paymentSettings.razorpay?.enabled !== false ? 'Active' : 'Disabled'}</span>
+                      </label>
+                    </div>
+
+                    <div className="flex items-center gap-4 text-xs font-semibold">
+                      <span className="text-[#646970]">Gateway Mode:</span>
+                      <label className="flex items-center gap-1.5 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="razorpayMode"
+                          checked={!paymentSettings.razorpay?.isLive}
+                          onChange={() => setPaymentSettings({
+                            ...paymentSettings,
+                            razorpay: { ...(paymentSettings.razorpay || {}), isLive: false }
+                          })}
+                        />
+                        <span className="px-2 py-0.5 rounded bg-[#FAF5EE] text-[#704214] font-bold text-[11px]">Test Mode</span>
+                      </label>
+                      <label className="flex items-center gap-1.5 cursor-pointer">
+                        <input
+                          type="radio"
+                          name="razorpayMode"
+                          checked={paymentSettings.razorpay?.isLive}
+                          onChange={() => setPaymentSettings({
+                            ...paymentSettings,
+                            razorpay: { ...(paymentSettings.razorpay || {}), isLive: true }
+                          })}
+                        />
+                        <span className="px-2 py-0.5 rounded bg-[#EBF7EE] text-[#1E7E34] font-bold text-[11px]">Live Production</span>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Razorpay Key ID (rzp_test_... or rzp_live_...)</label>
                       <input
-                        type="checkbox"
-                        checked={paymentSettings.paypal?.enabled}
+                        type="text"
+                        value={paymentSettings.razorpay?.keyId || ''}
                         onChange={(e) => setPaymentSettings({
                           ...paymentSettings,
-                          paypal: { ...paymentSettings.paypal, enabled: e.target.checked }
+                          razorpay: { ...(paymentSettings.razorpay || {}), keyId: e.target.value }
                         })}
-                        className="w-4 h-4 text-[#2271b1] rounded"
+                        placeholder="rzp_test_..."
+                        className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-mono"
                       />
                     </div>
-                    <label className="text-[11px] text-[#2c3338] block">Client ID</label>
-                    <input
-                      type="text"
-                      value={paymentSettings.paypal?.clientId || ''}
-                      onChange={(e) => setPaymentSettings({
-                        ...paymentSettings,
-                        paypal: { ...paymentSettings.paypal, clientId: e.target.value }
-                      })}
-                      className="w-full px-3 py-1.5 bg-[#FAF5EE] border border-[#c3c4c7] rounded-lg text-xs"
-                    />
+
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Razorpay Key Secret</label>
+                      <input
+                        type="password"
+                        value={paymentSettings.razorpay?.keySecret || ''}
+                        onChange={(e) => setPaymentSettings({
+                          ...paymentSettings,
+                          razorpay: { ...(paymentSettings.razorpay || {}), keySecret: e.target.value }
+                        })}
+                        placeholder="Enter razorpay key secret"
+                        className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-mono"
+                      />
+                      <p className="text-[10px] text-[#646970] mt-1">Allows real automated order generation with official Razorpay API.</p>
+                    </div>
                   </div>
 
-                  {/* Cash on Delivery */}
-                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] space-y-3">
-                    <div className="flex items-center justify-between">
-                      <h3 className="font-bold text-sm text-[#1d2327]">Cash on Delivery</h3>
+                  {/* Cash on Delivery (COD) */}
+                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#c3c4c7] pb-3">
+                      <div className="flex items-center gap-2">
+                        <Truck className="w-5 h-5 text-[#28583B]" />
+                        <h3 className="font-bold text-sm text-[#1d2327]">Cash on Delivery (COD)</h3>
+                      </div>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={paymentSettings.cod?.enabled}
+                          onChange={(e) => setPaymentSettings({
+                            ...paymentSettings,
+                            cod: { ...paymentSettings.cod, enabled: e.target.checked }
+                          })}
+                          className="w-4 h-4 text-[#2271b1] rounded"
+                        />
+                        <span className="text-xs font-semibold">{paymentSettings.cod?.enabled ? 'Active' : 'Disabled'}</span>
+                      </label>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-3">
+                      <div>
+                        <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Extra COD Handling Fee (₹)</label>
+                        <input
+                          type="number"
+                          value={paymentSettings.cod?.extraFee || 0}
+                          onChange={(e) => setPaymentSettings({
+                            ...paymentSettings,
+                            cod: { ...paymentSettings.cod, extraFee: Number(e.target.value) }
+                          })}
+                          className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">Max Order Limit for COD (₹)</label>
+                        <input
+                          type="number"
+                          value={paymentSettings.cod?.maxOrderAmount || 50000}
+                          onChange={(e) => setPaymentSettings({
+                            ...paymentSettings,
+                            cod: { ...paymentSettings.cod, maxOrderAmount: Number(e.target.value) }
+                          })}
+                          className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-mono"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* PayPal (Optional) */}
+                  <div className="p-5 rounded-sm bg-white border border-[#c3c4c7] shadow-sm space-y-4">
+                    <div className="flex items-center justify-between border-b border-[#c3c4c7] pb-3">
+                      <h3 className="font-bold text-sm text-[#1d2327]">PayPal Express (International)</h3>
+                      <label className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={paymentSettings.paypal?.enabled}
+                          onChange={(e) => setPaymentSettings({
+                            ...paymentSettings,
+                            paypal: { ...paymentSettings.paypal, enabled: e.target.checked }
+                          })}
+                          className="w-4 h-4 text-[#2271b1] rounded"
+                        />
+                        <span className="text-xs font-semibold">{paymentSettings.paypal?.enabled ? 'Active' : 'Disabled'}</span>
+                      </label>
+                    </div>
+
+                    <div>
+                      <label className="text-[11px] font-semibold text-[#2c3338] block mb-1">PayPal Client ID</label>
                       <input
-                        type="checkbox"
-                        checked={paymentSettings.cod?.enabled}
+                        type="text"
+                        value={paymentSettings.paypal?.clientId || ''}
                         onChange={(e) => setPaymentSettings({
                           ...paymentSettings,
-                          cod: { ...paymentSettings.cod, enabled: e.target.checked }
+                          paypal: { ...paymentSettings.paypal, clientId: e.target.value }
                         })}
-                        className="w-4 h-4 text-[#2271b1] rounded"
+                        placeholder="sb-..."
+                        className="w-full px-3 py-2 bg-[#FAF5EE] border border-[#c3c4c7] rounded text-xs font-mono"
                       />
                     </div>
-                    <label className="text-[11px] text-[#2c3338] block">Max Order Amount ($)</label>
-                    <input
-                      type="number"
-                      value={paymentSettings.cod?.maxOrderAmount || 1000}
-                      onChange={(e) => setPaymentSettings({
-                        ...paymentSettings,
-                        cod: { ...paymentSettings.cod, maxOrderAmount: Number(e.target.value) }
-                      })}
-                      className="w-full px-3 py-1.5 bg-[#FAF5EE] border border-[#c3c4c7] rounded-lg text-xs"
-                    />
                   </div>
+
                 </div>
               </div>
             )}
